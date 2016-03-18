@@ -484,12 +484,12 @@ void divideEdges(){
 			second=rightInit;
 		}  
 		while(true) {
-			head->print();
-			first->print();
-			second->print();
-			cout<<"cnt "<<traverseInSingleEdgeAndSaveEdgeCount<<" allEdges.size() "<<allEdges.size()<<endl;
+			// head->print();
+			// first->print();
+			// second->print();
+			// cout<<"cnt "<<traverseInSingleEdgeAndSaveEdgeCount<<" allEdges.size() "<<allEdges.size()<<endl;
 			traverseInSingleEdgeAndSaveEdgeCount++;
-			cout<<"---------------------------------"<<endl;	
+			// cout<<"---------------------------------"<<endl;	
 			Pixel* up = second->upPixel;
 			Pixel* down = second->downPixel;
 			Pixel* left = second->leftPixel;
@@ -547,6 +547,14 @@ void testRectangle4() {
 	cout<<"rec.direction "<<rec.direction<<endl;
 	insertRectangleIntoPixelMap(rec,pixelMap);
 }
+
+
+void testRectangle5() {
+	Rectangle rec(Point(0,1000,2000),Point(1000,0,2000));
+	cout<<"rec.direction "<<rec.direction<<endl;
+	insertRectangleIntoPixelMap(rec,pixelMap);
+}
+
 void printMap() {
 	cout<<pixelMap.size()<<endl;
 	int c=0;
@@ -588,6 +596,7 @@ int main () {
 	testRectangle2();
 	testRectangle3();
 	testRectangle4();
+	testRectangle5();
 	//printMap();
 	extactEdgesFromMap();
 	printAllEdges();
