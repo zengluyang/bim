@@ -1,6 +1,6 @@
 package com.ifc.jyg;
 
-import test.ifc.jyg.Beam;
+ 
 
 public class Cuboid {
 	public final int  BEAM = 0;
