@@ -50,17 +50,28 @@ public class ParseObjFile {
 			int i = 0;
 			int j = 0;	
 			int mark = 0; 
+			int type = 0;
 			boolean isNewCuboid = false; 
 			File file = new File(fileName);
 			FileInputStream fin = new FileInputStream(file);
 			InputStreamReader isr = new InputStreamReader(fin);
 			br = new BufferedReader(isr);
 			while ((line = br.readLine()) != null) {
-				
-				if (line.startsWith("g ")) {
+				 
+				if (line.startsWith("g ____-____:")) {
 					content = line.split(":");
 					ID = content[2];
-					
+					type = 0;		//Beam
+					isNewCuboid = true;
+				} else if (line.startsWith("g ____-____-__:")) {
+					content = line.split(":");
+					ID = content[2];
+					type = 1;		//Column
+					isNewCuboid = true;
+				} else if (line.startsWith("g __:")) {
+					content = line.split(":");
+					ID = content[2];
+					type = 2;		//Slab
 					isNewCuboid = true;
 				} else if(line.startsWith("v ") && isNewCuboid) {
 					String[] coordinate = line.split(" ");  
@@ -83,6 +94,7 @@ public class ParseObjFile {
 					//System.out.println("ID : " + ID + " numOfcuboidPoint : " + numOfcuboidPoint);
 					cuboids[j] = new Cuboid(ID, numOfcuboidPoint);
 					cuboids[j].setPoints(cuboidPoints);
+					cuboids[j].setType(type);
 					j++;
 					isNewCuboid = false;
 				} 

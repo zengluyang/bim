@@ -44,7 +44,5 @@ public class Cuboid {
 
 	public void setType(int type) {
 		this.type = type;
-	}
-	
-
+	} 
 }
