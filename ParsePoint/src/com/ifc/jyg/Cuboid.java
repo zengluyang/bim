@@ -1,12 +1,21 @@
 package com.ifc.jyg;
 
- 
+import java.util.TreeSet; 
 
 public class Cuboid {
 	public final int  BEAM = 0;
 	public final int  COLUMN = 1;
 	public final int  SLAB = 2;
 	
+	TreeSet<CoordinateOfPoint>  treeSetCop = new TreeSet<CoordinateOfPoint>();
+	public CoordinateOfPoint topTopLeft;
+	public CoordinateOfPoint topTopRight;
+	public CoordinateOfPoint topdownLeft;
+	public CoordinateOfPoint topdownRight;
+	public CoordinateOfPoint downTopLeft;
+	public CoordinateOfPoint downTopRight;
+	public CoordinateOfPoint downDownLeft;
+	public CoordinateOfPoint downDownRight;
 	
 	private int type;
 	private CoordinateOfPoint[] cuboidPoints;
@@ -20,6 +29,7 @@ public class Cuboid {
 	
 	public void setPoints(CoordinateOfPoint[] cuboidPoints) {
 		this.cuboidPoints = cuboidPoints;
+		treeSetCop.add
 	}
 	
 	public CoordinateOfPoint[] getPoint() {
