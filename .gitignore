@@ -30,6 +30,6 @@ phpunit.phar
 .tags
 .tags_sorted_by_file
 
-.class
+*.class
 
-PaserPoint.bin
+/PaserPoint/bin
