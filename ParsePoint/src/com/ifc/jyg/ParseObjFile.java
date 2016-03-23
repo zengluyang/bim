@@ -2,17 +2,19 @@ package com.ifc.jyg;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream; 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader; 
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class ParseObjFile {
 
 	private String fileName;
 	private int pointNumber = 0;
-	private int cuboidNumber;
-	private CoordinateOfPoint[] points;
-	private Cuboid[] cuboids;
+	private int cuboidNumber; 
+	private ArrayList<CoordinateOfPoint> listPoints;
+	private ArrayList<Cuboid> listCuboids;
+ 
 	private BufferedReader br;
 	public ParseObjFile(String fileName) {
 		this.fileName = fileName;
@@ -34,21 +36,20 @@ public class ParseObjFile {
 			}
 		} catch (IOException e) { 
 			e.printStackTrace();
-		}
-		cuboids = new Cuboid[cuboidNumber];
-		points = new CoordinateOfPoint[pointNumber];
-		//System.out.println("cuboidNumber : " + cuboidNumber + " pointNumber : " + pointNumber);
+		} 
+		listPoints = new ArrayList<CoordinateOfPoint>(pointNumber);
+		listCuboids = new ArrayList<Cuboid>(cuboidNumber);
+		System.out.println("cuboidNumber : " + cuboidNumber + " pointNumber : " + pointNumber);
 	}
 	
 	
-	public Cuboid[] getCuboid() {
+	public ArrayList<Cuboid> getCuboid() {
 		initObjParameter();
 		try {
 			String line = null;
 			String ID = null;			
 			String[] content = null;
-			int i = 0;
-			int j = 0;	
+			int i = 0; 
 			int mark = 0; 
 			int type = 0;
 			boolean isNewCuboid = false; 
@@ -56,8 +57,8 @@ public class ParseObjFile {
 			FileInputStream fin = new FileInputStream(file);
 			InputStreamReader isr = new InputStreamReader(fin);
 			br = new BufferedReader(isr);
+			Cuboid cuboid = null;
 			while ((line = br.readLine()) != null) {
-				 
 				if (line.startsWith("g ____-____:")) {
 					content = line.split(":");
 					ID = content[2];
@@ -74,34 +75,28 @@ public class ParseObjFile {
 					type = 2;		//Slab
 					isNewCuboid = true;
 				} else if(line.startsWith("v ") && isNewCuboid) {
-					String[] coordinate = line.split(" ");  
-					points[i] = new CoordinateOfPoint(); 
-					points[i].setX(Double.parseDouble(coordinate[1]));
-					points[i].setY(Double.parseDouble(coordinate[2]));
-					points[i].setZ(Double.parseDouble(coordinate[3]));		
+					String[] coordinate = line.split(" "); 
+					CoordinateOfPoint point = new CoordinateOfPoint();
+					point.setX(Double.parseDouble(coordinate[1]));
+					point.setY(Double.parseDouble(coordinate[2]));
+					point.setZ(Double.parseDouble(coordinate[3])); 
+					listPoints.add(point); 
 					i++;
 				} else if (line.startsWith("usemt")) {
+					cuboid = new Cuboid(Integer.parseInt(ID), type);
 					int numOfcuboidPoint = i - mark;	 //计算该几何体的点数
-					CoordinateOfPoint[] cuboidPoints = new CoordinateOfPoint[numOfcuboidPoint]; 
-					
-					for (int k = 0; k < cuboidPoints.length; k++, mark++) {
-						cuboidPoints[k] = new CoordinateOfPoint();
-						
-						cuboidPoints[k].setX(points[mark].getX());
-						cuboidPoints[k].setY(points[mark].getY());
-						cuboidPoints[k].setZ(points[mark].getZ());
+					for (int k = 0; k < numOfcuboidPoint; k++) {
+						cuboid.addPoint(listPoints.get(mark++));
+						cuboid.setType(type);
 					}
-					//System.out.println("ID : " + ID + " numOfcuboidPoint : " + numOfcuboidPoint);
-					cuboids[j] = new Cuboid(ID, numOfcuboidPoint);
-					cuboids[j].setPoints(cuboidPoints);
-					cuboids[j].setType(type);
-					j++;
+					cuboid.assignPoints();
+					listCuboids.add(cuboid); 
 					isNewCuboid = false;
 				} 
 			}
 		} catch (Exception e) {
 			// TODO: handle exception 
-		} 
-		return cuboids;
+		}  
+		return listCuboids;
 	}
 }

@@ -1,6 +1,6 @@
 package com.ifc.jyg;
 
-public class CoordinateOfPoint {
+public class CoordinateOfPoint implements Comparable<Object>{
 
 	private double x;
 	private double y;
@@ -43,7 +43,7 @@ public class CoordinateOfPoint {
 	public String getLocation() {
 		return location;
 	}
-
+	/*
 	public int compareTo(CoordinateOfPoint o) {
 		if(this.getX() < o.getX())  {
 			return -1;
@@ -64,8 +64,10 @@ public class CoordinateOfPoint {
 		return 1;
 
 	}
+	*/
 	
 	
+	 
 	public String parseLocation(CoordinateOfPoint point) {
 		
 		if (x == point.getX() && y == point.getY() && z == point.getZ()) {
@@ -87,5 +89,43 @@ public class CoordinateOfPoint {
 		} 
 		setDescribe(location);
 		return location;
+	}
+
+	@Override
+	public String toString() { 
+		StringBuilder sb = new StringBuilder();
+		sb.append("Point (").append(x).append(",").append(y).append(",").append(z).append(") "); 
+		return sb.toString();
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		
+		if (this == o) {
+			return 0;
+		} else if (o != null && o instanceof CoordinateOfPoint) {
+			//System.out.println("o != null && o instanceof CoordinateOfPoint");
+			CoordinateOfPoint point = (CoordinateOfPoint) o;
+			if(this.getX() < point.getX())  {
+				return -1;
+			}
+			if(this.getX() == point.getX() ) {
+				if(this.getY() < point.getY()) {
+					//System.out.println("this.getY() < this.getY()");
+					return -1;
+				}
+				if(this.getY() == point.getY()) {
+					//System.out.println("this.getY() == point.getY()");
+					if(this.getZ() < point.getZ()) {
+						//System.out.println("this.getZ() < point.getZ()");
+						return -1;
+					}
+					if(this.getZ() == point.getZ()) {
+						return 0;
+					}
+				}
+			} 
+		} 
+		return 1; 
 	}
 }
