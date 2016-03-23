@@ -43,9 +43,30 @@ public class CoordinateOfPoint {
 	public String getLocation() {
 		return location;
 	}
+
+	public int compareTo(CoordinateOfPoint o) {
+		if(this.getX() < o.getX())  {
+			return -1;
+		}
+		if(this.getX() == o.getX() ) {
+			if(this.getY() < this.getY()) {
+				return -1;
+			}
+			if(this.getY() == o.getY()) {
+				if(this.getZ() < o.getZ()) {
+					return -1;
+				}
+				if(this.getZ() == o.getZ()) {
+					return 0;
+				}
+			}
+		}
+		return 1;
+
+	}
 	
 	
-	public String compareTo(CoordinateOfPoint point) {
+	public String parseLocation(CoordinateOfPoint point) {
 		
 		if (x == point.getX() && y == point.getY() && z == point.getZ()) {
 			location = "topDownRight";			
