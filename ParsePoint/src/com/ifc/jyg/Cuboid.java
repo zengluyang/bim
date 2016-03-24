@@ -97,12 +97,16 @@ public class Cuboid {
 		case BEAM:
 		{
 			rlt = new TreeSet<Rectangle>();
-			Rectangle recBottom = new Rectangle(this.downTopLeft,this.downDownRight,Rectangle.UP_DOWN); 
+			Rectangle recDown = new Rectangle(this.downTopLeft,this.downDownRight,Rectangle.UP_DOWN); 
 			Rectangle recLeft = new Rectangle(this.topDownLeft,this.downTopLeft,Rectangle.LEFT_RIGHT); 
 			Rectangle recRight = new Rectangle(this.topDownRight,this.downTopRight,Rectangle.LEFT_RIGHT);
+			Rectangle recFront = new Rectangle(this.topDownLeft,this.downDownRight,Rectangle.FRONT_BOOTOM);
+			Rectangle recBottom = new Rectangle(this.topTopLeft,this.downTopRight, Rectangle.FRONT_BOOTOM);
 			rlt.add(recBottom);
 			rlt.add(recLeft);
 			rlt.add(recRight);
+			rlt.add(recDown);
+			rlt.add(recFront);
 			break;
 		}
 		case COLUMN:

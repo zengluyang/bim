@@ -53,16 +53,21 @@ public class test {
 		//obtain.test();
 		//ir.test();
 		Map<Map<Rectangle, Rectangle>, String> testMap = ir.getIntersectMap();
-	 
+		
 		System.out.println("testMap.size() : " + testMap.size());
+		int cnt = 0;
 		for (Map<Rectangle, Rectangle> rectMap : testMap.keySet()) {
 			for (Rectangle rectangle : rectMap.keySet()) {
+				if(rectMap.get(rectangle)!=null) {
+					cnt++;
+				}
 				System.out.print(rectangle);
 				System.out.print(rectMap.get(rectangle));
 				System.out.println(testMap.get(rectMap));
 				System.out.println("###############");
 			}
 		}
+		System.out.println(cnt);
 		bw.close();
 	}
 }

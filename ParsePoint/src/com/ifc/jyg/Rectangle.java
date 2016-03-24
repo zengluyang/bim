@@ -1,5 +1,8 @@
 package com.ifc.jyg;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class Rectangle implements Comparable<Object> {
 	
@@ -26,6 +29,10 @@ public class Rectangle implements Comparable<Object> {
 		this.direction = direction;
 		this.topLeft = topLeft;
 		this.downRight = downRight;
+	}
+	
+	public static boolean  isValid(CoordinateOfPoint a,CoordinateOfPoint b,CoordinateOfPoint c, CoordinateOfPoint d) {
+		return true;
 	}
 
 	public int getDirection() {
@@ -56,15 +63,66 @@ public class Rectangle implements Comparable<Object> {
 		}
 		return area;
 	}
-	/*
-	public boolean compareArea(Object other) {
-		if (this.) {
-			
+	
+	
+	public static boolean isBiggerContainsSmaller(Rectangle bigger, Rectangle smaller) {
+		if(bigger.direction!=smaller.direction) {
+			return false;
 		}
 		
+		if(bigger.direction==Rectangle.UP_DOWN) {
+			return false;
+		}
+		switch (bigger.direction) {
+		case Rectangle.FRONT_BOOTOM:
+		{
+			double bigValue = bigger.getIntersectvalue();
+			double smallValue = smaller.getIntersectvalue();
+			if (bigValue != smallValue) {
+				return false;
+			}
+			if ( bigger.topLeft.getZ() == smaller.topLeft.getZ() && 
+					bigger.downRight.getZ() > smaller.downRight.getZ() ) {
+				return true;
+			}
+			break;
+		}
+		case Rectangle.LEFT_RIGHT:
+		{
+			double bigValue = bigger.getIntersectvalue();
+			double smallValue = smaller.getIntersectvalue();
+			if (bigValue != smallValue) {
+				return false;
+			}
+			if ( bigger.topLeft.getZ() == smaller.topLeft.getZ() && 
+					bigger.downRight.getZ() < smaller.downRight.getZ() ) {
+				return true;
+			}
+			break; 
+		}
+		default:
+			break;
+		}
 		return false;
 	}
-	*/
+	
+	private boolean isAtTopContainedByBigger (Rectangle bigger) {
+		return Rectangle.isBiggerContainsSmaller(bigger,this);
+	}
+	
+	private boolean isAtTopContainsSmaller(Rectangle smaller) {
+		return Rectangle.isBiggerContainsSmaller(this,smaller);
+	}
+	 
+	public boolean isAtTopContainedByOrContains(Rectangle other) {
+		if(isAtTopContainedByBigger(other)) {
+			return true;
+		}
+		if(isAtTopContainsSmaller(other)) {
+			return true;
+		}
+		return false;
+	}
 	public double getIntersectvalue() {
 		double value = 0.0;
 		switch (direction) {

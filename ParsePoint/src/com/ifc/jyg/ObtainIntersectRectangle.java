@@ -7,6 +7,7 @@ import java.util.TreeSet;
 
 public class ObtainIntersectRectangle {
 	
+	
 	private Map<Integer, Map<Double, Rectangle>> intersectRectangle = new HashMap<Integer, Map<Double,Rectangle>>();
 	//Integer : direct, Double : value, Rectangle example : FRONT_BOOTOM, y = 2.0, rectangle
 	
