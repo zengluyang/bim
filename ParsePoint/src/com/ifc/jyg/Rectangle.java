@@ -56,15 +56,7 @@ public class Rectangle implements Comparable<Object> {
 		}
 		return area;
 	}
-	/*
-	public boolean compareArea(Object other) {
-		if (this.) {
-			
-		}
-		
-		return false;
-	}
-	*/
+	 
 	public double getIntersectvalue() {
 		double value = 0.0;
 		switch (direction) {

@@ -63,12 +63,17 @@ public class IntersectRectangle {
 				//System.out.println("FRONT_BOOTOM size:" + list.size()); 
 				for (int i = 0; i < list.size(); i++) {
 					Rectangle key = list.get(i);
+//					System.out.println("key :" + key);
 					if (key != null) {
 						double value = key.getIntersectvalue();
 						for (int j = list.size() - 1; j > i; j--) {
 							if (list.get(j) != null && value == list.get(j).getIntersectvalue()) {
+//								System.out.println("list.get(j) : " + list.get(j));
+//								System.out.println("key.getArea():" + key.getArea() +
+//										" list.get(j).getArea():" + list.get(j).getArea());
 								
 								if (key.getArea() > list.get(j).getArea()) {
+									System.out.println("aaaaaaaaa");
 									if ( key.topLeft.getY() <= list.get(j).topLeft.getY() && 
 											key.downRight.getZ() <= list.get(j).topLeft.getZ() ) {
 										Map<Rectangle, Rectangle> rectangleMap = new HashMap<>();
@@ -79,7 +84,7 @@ public class IntersectRectangle {
 										break;
 									}
 								} else if(key.getArea() <= list.get(j).getArea()) {
-									if ( key.topLeft.getY() <= list.get(j).topLeft.getY() && 
+									if (key.topLeft.getY() >= list.get(j).topLeft.getY() && 
 											key.downRight.getZ() <= list.get(j).topLeft.getZ()) {
 										Map<Rectangle, Rectangle> rectangleMap = new HashMap<>();
 										rectangleMap.put(list.get(j), key);
@@ -103,7 +108,7 @@ public class IntersectRectangle {
 						intersectMap.put(rectangleMap, "FRONT_BOOTOM " + "value :" + rectangle.getIntersectvalue());
 					}
 				} 
-				//System.out.println(k);
+				System.out.println("k : " + k);
 				break; 
 			}
 			case Rectangle.LEFT_RIGHT:
