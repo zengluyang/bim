@@ -30,6 +30,10 @@ public class Rectangle implements Comparable<Object> {
 		this.topLeft = topLeft;
 		this.downRight = downRight;
 	}
+	
+	public static boolean  isValid(CoordinateOfPoint a,CoordinateOfPoint b,CoordinateOfPoint c, CoordinateOfPoint d) {
+		return true;
+	}
 
 	public int getDirection() {
 		return direction;
