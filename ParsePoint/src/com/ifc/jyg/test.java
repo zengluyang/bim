@@ -28,7 +28,7 @@ public class test {
 				Set<Rectangle> neededRecs = cuboid.getNeededRectangels();
 				//System.out.println("neededRecs : " + neededRecs.size());
 				if(neededRecs!=null) {
-					System.out.println(neededRecs);
+					//System.out.println(neededRecs);
 					for(Rectangle r : neededRecs) {
 						ir.addRectangleTogether(r);
 						//obtain.addRectangleTogether(r); 
@@ -53,16 +53,21 @@ public class test {
 		//obtain.test();
 		//ir.test();
 		Map<Map<Rectangle, Rectangle>, String> testMap = ir.getIntersectMap();
-		/*
+		
 		System.out.println("testMap.size() : " + testMap.size());
+		int cnt = 0;
 		for (Map<Rectangle, Rectangle> rectMap : testMap.keySet()) {
 			for (Rectangle rectangle : rectMap.keySet()) {
+				if(rectMap.get(rectangle)!=null) {
+					cnt++;
+				}
 				System.out.print(rectangle);
 				System.out.print(rectMap.get(rectangle));
 				System.out.println(testMap.get(rectMap));
 				System.out.println("###############");
 			}
-		}*/
+		}
+		System.out.println(cnt);
 		bw.close();
 	}
 }
