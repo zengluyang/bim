@@ -11,7 +11,14 @@ public class CoordinateOfPoint implements Comparable<Object>{
 	public CoordinateOfPoint() {
 		
 	}
-	
+
+	public CoordinateOfPoint(double x, double y, double z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+
+	}
+
 	public void setX(double x) {
 		this.x = x;
 	} 
