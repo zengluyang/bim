@@ -39,7 +39,7 @@ public class ParseObjFile {
 		} 
 		listPoints = new ArrayList<CoordinateOfPoint>(pointNumber);
 		listCuboids = new ArrayList<Cuboid>(cuboidNumber);
-		System.out.println("cuboidNumber : " + cuboidNumber + " pointNumber : " + pointNumber);
+		//System.out.println("cuboidNumber : " + cuboidNumber + " pointNumber : " + pointNumber);
 	}
 	
 	
@@ -83,6 +83,7 @@ public class ParseObjFile {
 					listPoints.add(point); 
 					i++;
 				} else if (line.startsWith("usemt")) {
+					
 					cuboid = new Cuboid(Integer.parseInt(ID), type);
 					int numOfcuboidPoint = i - mark;	 //计算该几何体的点数
 					for (int k = 0; k < numOfcuboidPoint; k++) {
