@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <vector>
 #include <list>
+#include <string>
 using namespace std;
 
 
@@ -14,7 +15,7 @@ using namespace std;
 ----:x
 ////:y
 ||||:z
-
+1,0,0;0,1,1;UP_DOWN
 ################## UP_DOWN ##################
 topLeft
 	   ________
@@ -55,6 +56,14 @@ enum Direction{
 		LEFT_RIGHT,
 		FRONT_BOTTOM
 };
+
+const string DirectionName[3] = {
+	"UP_DOWN",
+	"LEFT_RIGHT",
+	"FRONT_BOTTOM"
+};
+
+
 class Rectangle;
 
 class Point {
@@ -63,7 +72,7 @@ public:
 	int y;
 	int z;
 	Point(int x, int y, int z):x(x),y(y),z(z){}
-	Point():Point(0,0,0){}
+	Point():x(0),y(0),z(0){}
 	Point(const Point& point) = default;
 
     bool operator<(const Point& rhs) const 
@@ -139,6 +148,7 @@ public:
 	}
 
 	void print() const{
+		cout<<"Rectangle "<<DirectionName[direction]<<endl;
 		cout<<"topLeft "<<topLeft.x<<" "<<topLeft.y<<" "<<topLeft.z<<" "<<endl;
 		cout<<"topRight "<<topRight.x<<" "<<topRight.y<<" "<<topRight.z<<" "<<endl;
 		cout<<"downLeft "<<downLeft.x<<" "<<downLeft.y<<" "<<downLeft.z<<" "<<endl;
@@ -303,6 +313,7 @@ public:
 	void print() const{
 		cout
 			<<"Pixel ["<<id<<"] "
+			<<DirectionName[direction]<<" "
 			//<<"["<<this<<"] "
 			<<topLeft.x<<" "<<topLeft.y<<" "<<topLeft.z<<" ";
 		if(upPixel) {
@@ -377,12 +388,15 @@ void testPixel() {
 void insertRectangleIntoPixelMap(Rectangle& rec, map<Point,Pixel*> &pm){
 	Point topToDownPoint = rec.topLeft;
 	Direction d = rec.direction;
-	cout<<"d "<<d<<endl;
+	//cout<<"d "<<d<<endl;
 	int i=0;
 	for(;!topToDownPoint.overReachDown(rec);topToDownPoint.moveDownByOnePixel(d)) {
 		Point currentPoint = topToDownPoint;
 		//topToDownPoint.print();
 		for(;!currentPoint.overReachRight(rec);currentPoint.moveRightByOnePixel(d)) {
+			if(false) {
+				break;
+			}
 			// currentPoint.print();
 			Pixel *p = new Pixel(currentPoint);
 			p->direction = d;
@@ -448,6 +462,8 @@ typedef vector<RectangleEdge> RectangleEdgeVector;
 RectangleEdgeVector recEdges;
 list<Pixel*> allEdges;
 map<Point,Pixel*> pixelMap;
+map<Rectangle,int> rectCountMap;
+
 
 void extactEdgesFromMap() {
 	// allEdges.reserve(pixelMap.size()/3);
@@ -521,7 +537,7 @@ void divideEdges(){
 			}
 			// cout<<"333333333"<<endl;
 		}
-		std::cout<<"22222222"<<endl;
+		//std::cout<<"22222222"<<endl;
 		recEdges.push_back(recEdge);
 	}
 }
@@ -552,6 +568,25 @@ void testRectangle4() {
 void testRectangle5() {
 	Rectangle rec(Point(0,1000,2000),Point(1000,0,2000));
 	cout<<"rec.direction "<<rec.direction<<endl;
+	insertRectangleIntoPixelMap(rec,pixelMap);
+}
+
+void testRectangle6() {
+	Rectangle rec(Point(0,2000,2000),Point(5000,0,2000));
+	cout<<"rec.direction "<<rec.direction<<endl;
+	insertRectangleIntoPixelMap(rec,pixelMap);
+}
+
+void testRectangle7() {
+	Rectangle rec(Point(0,1000,2000),Point(1000,0,2000));
+	rec.direction = FRONT_BOTTOM;
+	cout<<"rec.direction "<<rec.direction<<endl;
+	insertRectangleIntoPixelMap(rec,pixelMap);
+}
+
+void testRectangle8() {
+	Rectangle rec(Point(0,2000,1000),Point(2000,0,1000));
+	rec.direction = FRONT_BOTTOM;
 	insertRectangleIntoPixelMap(rec,pixelMap);
 }
 
@@ -590,13 +625,35 @@ void printSingleEdges()  {
 	}
 }
 
+const int L = 8000;
+const int W = 6000;
+
+const int l = 800;
+const int w = 600;
+
+int F_paper(int x,int y) {
+	//cout<<"F_paper("<<x<<","<<y<<")"<<endl;
+	if(x<=0||y<=0){
+		return 0;
+	}
+	return std::max(F_paper(x,y-l)+x/w,F_paper(x-l,y)+y/w);
+}
+
+void testF_paper() {
+	cout<<"std::max(L,W) "<<std::max(L,W)<<endl;
+	cout<<"F_paper(2000,1000) "<<F_paper(2000,1000)<<endl;
+}
+
 int main () {
-	testPixel();
+	// testF_paper();
+	// testPixel();
 	testRectangle1();
 	testRectangle2();
 	testRectangle3();
 	testRectangle4();
 	testRectangle5();
+	testRectangle6();
+	// testRectangle7();
 	//printMap();
 	extactEdgesFromMap();
 	printAllEdges();
