@@ -224,7 +224,7 @@ public class Edge implements Comparable<Object>{
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Edge ").append(first).append(second).append("");
+		sb.append("Edge ").append(first).append(second).append("\n");
 		return sb.toString();
 	}
 	
