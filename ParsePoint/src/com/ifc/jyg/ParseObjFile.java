@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class ParseObjFile {
 
@@ -38,13 +39,13 @@ public class ParseObjFile {
 			br = new BufferedReader(isr);
 			String content = null;
 			while ((content = br.readLine()) != null) {
-				if (content.startsWith("g ____-")) {	//Í³¼Æ³¤·½ÌåµÄ¸öÊý
+				if (content.startsWith("g ____-")) {	//Í³ï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½
 					cuboidNumber++;
-				} else if (content.startsWith("v ")) {	//Í³¼ÆµãµÄ¸öÊý
+				} else if (content.startsWith("v ")) {	//Í³ï¿½Æµï¿½Ä¸ï¿½ï¿½ï¿½
 					pointNumber++;
-				} else if (content.startsWith("g __:")) {	//Í³¼ÆSlabµÄ¸öÊý
+				} else if (content.startsWith("g __:")) {	//Í³ï¿½ï¿½Slabï¿½Ä¸ï¿½ï¿½ï¿½
 					slabNumber++;
-				} else if (content.startsWith("f ")) {	//Í³¼ÆSlabµÄ¸öÊý
+				} else if (content.startsWith("f ")) {	//Í³ï¿½ï¿½Slabï¿½Ä¸ï¿½ï¿½ï¿½
 					//triangleNumber++;
 				} 
 			}
@@ -55,7 +56,6 @@ public class ParseObjFile {
 		listCuboids = new ArrayList<Cuboid>(cuboidNumber);
 		listSlabs = new ArrayList<Slab>(slabNumber);
 		listMarkLocations = new ArrayList<MarkLocation>();
-		listTriangles = new ArrayList<Triangle>();
 		triNumber = new int[slabNumber];  
 		slabMap = new HashMap<Integer, ArrayList<Triangle>>();
 	}
@@ -112,7 +112,7 @@ public class ParseObjFile {
 					
 					if (type != 2) {	//not Slab 
 						cuboid = new Cuboid(Integer.parseInt(ID), type);
-						int numOfcuboidPoint = i - mark;	 //¼ÆËã¸Ã¼¸ºÎÌåµÄµãÊý
+						int numOfcuboidPoint = i - mark;	 //ï¿½ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½
 						for (int k = 0; k < numOfcuboidPoint; k++) {
 							cuboid.addPoint(listPoints.get(mark++));
 							cuboid.setType(type);
@@ -121,7 +121,7 @@ public class ParseObjFile {
 						listCuboids.add(cuboid); 
 						isNewCuboid = false;
 					}  
-				}  else if (line.startsWith("f ") && type == 2) {	//»ñÈ¡¶ÔÓ¦¶¥µãµÄÈý½ÇÐÎ±íÊ¾
+				}  else if (line.startsWith("f ") && type == 2) {	//ï¿½ï¿½È¡ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î±ï¿½Ê¾
 					
 					String[] location = line.split(" ");
 					int a = Integer.parseInt(location[1].split("//")[0]);
@@ -144,6 +144,7 @@ public class ParseObjFile {
 		
 	 
 		for (int i = 0; i < triNumber.length; i++) {
+			ArrayList<Triangle> listTriangles = new ArrayList<Triangle>();
 			 for (int j = 0; j < triNumber[i]; j++) {
 				MarkLocation markLocation = listMarkLocations.get(j);
 				int a = markLocation.getA()- 1;
@@ -155,10 +156,76 @@ public class ParseObjFile {
 //				System.out.println(listPoints.get(a).toString() + listPoints.get(b ).toString() + listPoints.get(c).toString());
 //				System.out.println();
 			 }
-			 slabMap.put(triNumber[i], listTriangles); 
-			 break;
-		} 
-		 return slabMap;
+			 slabMap.put(i, listTriangles);
+		}
+		return slabMap;
+	}
+
+	private static Polyhedron constructFromTrianglesOfOneSlab (ArrayList<Triangle> listTriangles) {
+		Map<Double, Map<Edge, Integer>> dmeMap = new TreeMap<Double, Map<Edge,Integer>>();	//double ï¿½ï¿½Ê¾zÖµ ï¿½ï¿½ Map<Edge,int>ï¿½ï¿½Ê¾ï¿½ßºÍ¶ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Ä¿
+		int upDownCnt = 0;
+		for (Triangle triangle : listTriangles) {
+			if (triangle.getDirection() == Triangle.UP_DOWN) {
+				ArrayList<Edge> edges = triangle.getEdges();
+				for (Edge edge : edges) {
+					Double z = edge.getFirstPoint().getZ();
+
+					if(!dmeMap.containsKey(z)) {
+						dmeMap.put(z, new TreeMap<Edge, Integer>());
+
+					}
+					Map<Edge, Integer> ecmMap = dmeMap.get(z);
+					Integer cnt = ecmMap.get(edge);
+					if(cnt!=null) {
+						//int cnt = ecmMap.get(edge) + 1;
+						ecmMap.put(edge, cnt+1);
+					} else {
+						ecmMap.put(edge, 1);
+					}
+
+				}
+				upDownCnt++;
+
+			}
+		}
+		ArrayList<Edge> listNewEdges = new ArrayList<Edge>();
+		if(dmeMap.size()!=2) {
+			System.out.println("dmeMap.size()!=2 error!");
+		}
+		Double lowerZ=0.0;
+		Double higherZ=0.0;
+
+		int i=0;
+		for(Double d:dmeMap.keySet()) {
+			if(i==0) {
+				lowerZ = d;
+			} else if(i==1) {
+				higherZ = d;
+			}
+			i++;
+		}
+		Map<Edge, Integer> ecm = dmeMap.get(lowerZ);
+		for (Edge edge : ecm.keySet()) {
+			if (ecm.get(edge) == 1) {
+				listNewEdges.add(edge);
+			}
+		}
+		Polygon polygon = new Polygon(listNewEdges);
+		double height = higherZ-lowerZ;
+		Polyhedron polyhedron = new Polyhedron(polygon,height);
+		return polyhedron;
+	}
+
+	public ArrayList<Polyhedron> getSlabPolys() {
+		ArrayList<Polyhedron> rlt = new ArrayList<Polyhedron>();
+		Map<Integer, ArrayList<Triangle>> slabMap = this.getSlabs();	//integer ï¿½ï¿½Ê¾slabï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½triangleï¿½Ä¸ï¿½ï¿½ï¿½
+		//System.out.println("listSlabs size:" + slabMap.size());
+		for (int number : slabMap.keySet()) {
+			ArrayList<Triangle> listTriangles = slabMap.get(number);
+			Polyhedron p = this.constructFromTrianglesOfOneSlab(listTriangles);
+			rlt.add(p);
+		}
+		return rlt;
 	}
 	
 	 

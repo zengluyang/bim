@@ -9,6 +9,14 @@ public class Polyhedron implements Comparable<Object>{
     private Polygon downPolygon;
     private double height;
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Polyhedron \n downPolygon: ").append(this.downPolygon);
+        sb.append("\n height:").append(this.height).append("\n");
+        return sb.toString();
+    }
+
     public Polyhedron(Polygon downPolygon, double height) {
         if(downPolygon.getDirection()!=Polygon.UP_DOWN) {
             System.out.println("Polyhedron(Polygon downPolygon, double height) error!");

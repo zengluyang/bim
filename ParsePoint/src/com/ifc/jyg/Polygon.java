@@ -45,7 +45,7 @@ public class Polygon implements Comparable<Object>{
     }
 
     public Polygon(ArrayList<Edge> edges) {
-        this.direction = edges.get(0).getDirection();
+        this.direction = UP_DOWN;
         this.setEdgeListAndPointListFromUnorderedEdgeList(edges);
 
     }
@@ -96,6 +96,21 @@ public class Polygon implements Comparable<Object>{
                 pointList.add(pToAdd);
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Polygon :\n Points: \n");
+        for(CoordinateOfPoint p:pointList) {
+            sb.append("\t").append(p).append("\n");
+        }
+        sb.append("Polygon :\n Edges: \n");
+        for(Edge e: edgeList) {
+            sb.append("\t").append(e);
+        }
+        sb.append("\n");
+        return sb.toString();
     }
 
     public Polygon(Rectangle a, Rectangle b) {

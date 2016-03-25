@@ -1,6 +1,8 @@
 package com.ifc.jyg;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeMap;
 
 public class Edge implements Comparable<Object>{
 
@@ -28,7 +30,7 @@ public class Edge implements Comparable<Object>{
 		
 		if(first.getY()==second.getY() && first.getZ()==second.getZ()) {
 			this.direction = X_AXIS;
-		} else if(first.getY()==second.getX() && first.getZ()==second.getZ()) {
+		} else if(first.getX()==second.getX() && first.getZ()==second.getZ()) {
 			this.direction = Y_AXIS;
 		} else if(first.getX()==second.getX() && first.getY()==second.getY()) {
 			this.direction = Z_AXIS;
@@ -52,7 +54,24 @@ public class Edge implements Comparable<Object>{
 		}
 		return 1; 
 	}
-	
+
+//	static {
+//		//test compareTo
+//		CoordinateOfPoint p1 = new CoordinateOfPoint(-12.8362,8.50043,2.775);
+//		CoordinateOfPoint p2 = new CoordinateOfPoint(-7.28625,8.50043,2.775);
+//		Edge e1 = new Edge(p1,p2);
+//
+//		CoordinateOfPoint p3 = new CoordinateOfPoint(-12.8362,8.50043,2.775);
+//		CoordinateOfPoint p4 = new CoordinateOfPoint(-7.28625,8.50043,2.775);
+//		Edge e2 = new Edge(p3,p4);
+//		System.out.println("test compareTo"+e1.compareTo(e2));
+//		TreeMap<Edge, Integer> emp = new TreeMap<>();
+//		emp.put(e1,1);
+//		if(emp.containsKey(e2)) {
+//			emp.put(e1,2);
+//		}
+//	}
+//
 	
 	
 	public static boolean  isOnSameAxis (Edge a, Edge b) {
