@@ -159,8 +159,9 @@ public class ParseObjFile {
 			 }
 			 slabMap.put(triNumber[i], listTriangles); 
 			 break;
-		}
-		 
+		} 
 		 return slabMap;
 	}
+	
+	 
 }

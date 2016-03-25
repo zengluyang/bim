@@ -187,6 +187,46 @@ public class Edge implements Comparable<Object>{
 			return 0.0;
 		}
 	}
+
+	public CoordinateOfPoint getFirst() {
+		return first;
+	}
+
+	public CoordinateOfPoint getSecond() {
+		return second;
+	}
+
+	public int getDirection() {
+		return direction;
+	}
+
+	public static boolean isConnectedByTwoEdges(Edge a, Edge b) {
+		if(a.first==b.first) {
+			return true;
+		} else if(a.first==b.second) {
+			return true;
+		} else if(a.second==b.first) {
+			return true;
+		} else if(a.second ==b.second) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean isConnectedTo(Edge other) {
+		if(Edge.isConnectedByTwoEdges(this,other) || Edge.isConnectedByTwoEdges(other,this) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Edge ").append(first).append(second).append("");
+		return sb.toString();
+	}
 	
 	public CoordinateOfPoint getFirstPoint() {
 		return first;
