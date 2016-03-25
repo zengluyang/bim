@@ -88,35 +88,37 @@ public class Edge implements Comparable<Object>{
 		
 		double A = longer.getFirstIntersectValue();
 		double B = longer.getSecondIntersectValue();
-		double C = longer.getFirstIntersectValue();
-		double D = longer.getSecondIntersectValue();
-		if(B > C) {
+		double C = shorter.getFirstIntersectValue();
+		double D = shorter.getSecondIntersectValue();
+		if(B < C) {
+			rlt.add(longer);
+			rlt.add(shorter);
 			return rlt;
 		} else if (B == C) {
 			Edge edge = new Edge(a, d);
 			rlt.add(edge);
 			return rlt;
-		} else if (B < C && C < A && D < B) {
+		} else if (B > C && C > A && D > B) {
 			Edge edge1 = new Edge(a, c);
 			Edge edge2 = new Edge(b, d);
 			rlt.add(edge1);
 			rlt.add(edge2);
 			return rlt;
-		} else if (B < C && C < A && D == B) {
+		} else if (B > C && C > A && D == B) {
 			Edge edge1 = new Edge(a, c); 
 			rlt.add(edge1); 
 			return rlt;
-		} else if (B < C && C < A && B < D && D < A) {
+		} else if (B > C && C > A && B > D && D > A) {
 			Edge edge1 = new Edge(a, c);
 			Edge edge2 = new Edge(b, d);
 			rlt.add(edge1);
 			rlt.add(edge2);
 			return rlt;
-		} else if (C == A && B < D) { 
+		} else if (C == A && B > D) {
 			Edge edge2 = new Edge(b, d); 
 			rlt.add(edge2);
 			return rlt;
-		} else if (C > A && B < D && D < A) {
+		} else if (C < A && B > D && D > A) {
 			Edge edge1 = new Edge(a, c);
 			Edge edge2 = new Edge(b, d);
 			rlt.add(edge1);
@@ -126,7 +128,9 @@ public class Edge implements Comparable<Object>{
 			Edge edge2 = new Edge(b, c); 
 			rlt.add(edge2);
 			return rlt;
-		}  else if (D > A) { 
+		}  else if (D < A) {
+			rlt.add(longer);
+			rlt.add(shorter);
 			return rlt;
 		} else {
 			System.out.println("getNewEgdesFromTwoEdges error!");
@@ -224,7 +228,7 @@ public class Edge implements Comparable<Object>{
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Edge ").append(first).append(second).append("\n");
+		sb.append("Edge ").append(first).append(second).append("");
 		return sb.toString();
 	}
 	
@@ -234,6 +238,18 @@ public class Edge implements Comparable<Object>{
 	 
 	public CoordinateOfPoint getSecondPoint() {
 		return second;
+	}
+
+	public static void testgetNewEgdesFromThisAndThatEdges() {
+		CoordinateOfPoint A = new CoordinateOfPoint(0,0,0);
+		CoordinateOfPoint B = new CoordinateOfPoint(20,0,0);
+
+		CoordinateOfPoint C = new CoordinateOfPoint(10,0,0);
+		CoordinateOfPoint D = new CoordinateOfPoint(15,0,0);
+		Edge ab = new Edge(A,B);
+		Edge cd = new Edge(C,D);
+		ArrayList<Edge> edges = Edge.getNewEgdesFromTwoEdges(ab,cd);
+		System.out.println("testgetNewEgdesFromThisAndThatEdges "+edges);
 	}
 	
 }

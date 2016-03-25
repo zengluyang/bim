@@ -51,6 +51,10 @@ public class Polygon implements Comparable<Object>{
     }
 
     private void setEdgeListAndPointListFromUnorderedEdgeList(ArrayList<Edge> edges) {
+        if(edges.size()==0) {
+            System.out.println("setEdgeListAndPointListFromUnorderedEdgeList error!");
+            return;
+        }
         Edge first = edges.get(0);
         edges.remove(0);
         Edge e = null;
@@ -62,7 +66,7 @@ public class Polygon implements Comparable<Object>{
             }
             first=e;
         }
-        System.out.println(edgeList);
+        //System.out.println(edgeList);
         for(int i=0;i<edgeList.size()-1;i++) {
             Edge edge =edgeList.get(i);
             if(i==0) {

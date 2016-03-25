@@ -119,12 +119,12 @@ public class test {
 					cnt++;
 					Rectangle a = rectangle;
 					Rectangle b = rectMap.get(rectangle);
-					System.out.print(a);
-					System.out.print(b);
+					//System.out.print(a);
+					//System.out.print(b);
 
 					Polygon polygon = new Polygon(a,b);
-//					System.out.println(polygon.getEdgeList());
-//					System.out.println(polygon.getPointList());
+					System.out.println(polygon.getEdgeList());
+					System.out.println(polygon.getPointList());
 					
 				}
 				System.out.println("###############");

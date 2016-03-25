@@ -107,7 +107,18 @@ public class Rectangle implements Comparable<Object> {
 		return false;
 	}
 	
-	
+	/*
+	   -----1-----
+	   |         |
+	   |         |
+	   |         |
+	   4         2
+	   |         |
+	   |         |
+	   |         |
+	   -----3-----
+
+	 */
 	public ArrayList<Edge> getEdges() {
 		ArrayList<Edge> listEdges = new ArrayList<Edge>();
 		CoordinateOfPoint topRight = new CoordinateOfPoint();
