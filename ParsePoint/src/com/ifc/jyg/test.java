@@ -17,12 +17,12 @@ public class test {
 	public static void main(String[] args) throws IOException {
 		ParseObjFile parseObjFile = new ParseObjFile("E:\\IFC\\IFCFile\\Whole.obj");
 		//bw = new BufferedWriter(new FileWriter("E:\\IFC\\objFile\\Whole1.obj")); 
-		Map<Double, Map<Edge, Integer>> dmeMap = new HashMap<Double, Map<Edge,Integer>>();	//double 表示z值 ， Map<Edge,int>表示边和对应的数目
+		Map<Double, Map<Edge, Integer>> dmeMap = new HashMap<Double, Map<Edge,Integer>>();	//double 锟斤拷示z值 锟斤拷 Map<Edge,int>锟斤拷示锟竭和讹拷应锟斤拷锟斤拷目
 		Map<Edge, Integer> ecmMap = null;
 		Map<Double, ArrayList<Triangle>> samevalueMap = new HashMap<>();
 		IntersectRectangle ir = new IntersectRectangle();  
 		ArrayList<Cuboid> listCuboids = parseObjFile.getCuboid(); 
-		Map<Integer, ArrayList<Triangle>> slabMap = parseObjFile.getSlabs();	//integer 表示slab所具有的triangle的个数
+		Map<Integer, ArrayList<Triangle>> slabMap = parseObjFile.getSlabs();	//integer 锟斤拷示slab锟斤拷锟斤拷锟叫碉拷triangle锟侥革拷锟斤拷
 		//System.out.println("listSlabs size:" + slabMap.size());
 		
 		for (int number : slabMap.keySet()) {
@@ -76,7 +76,7 @@ public class test {
 				}
 			}
 		}
-		ArrayList<Edge> listNewEdges = null;
+		ArrayList<Edge> listNewEdges = new ArrayList<Edge>();
 		System.out.println("test : "  + dmeMap.size());
 		for (double z : dmeMap.keySet()) {
 			System.out.println("z" + z);
@@ -85,13 +85,18 @@ public class test {
 				//System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString());
 				if (ecm.get(edge) == 1) {
 					//listNewEdges = Edge.getNewEgdesFromTwoEdges(longer, shorter)
-					System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString());
+					listNewEdges.add(edge);
+					//System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString());
 					//ecm.remove(edge);
 				}else {
 					//System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString());
 				}
 			}
-			System.out.println(ecm.size());
+			System.out.println(listNewEdges.size());
+			System.out.println(listNewEdges);
+			Polygon polygon = new Polygon(listNewEdges);
+			System.out.println(polygon.getEdgeList());
+			System.out.println(polygon.getPointList());
 		}
 		
 		 
