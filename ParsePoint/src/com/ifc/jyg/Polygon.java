@@ -16,6 +16,11 @@ public class Polygon implements Comparable<Object>{
     }
 
     public Polygon(ArrayList<Edge> edges) {
+        this.setEdgeListAndPointListFromUnorderedEdgeList(edges);
+
+    }
+    
+    private void setEdgeListAndPointListFromUnorderedEdgeList(ArrayList<Edge> edges) {
         Edge first = edges.get(0);
         edges.remove(0);
         Edge e = null;
@@ -27,34 +32,36 @@ public class Polygon implements Comparable<Object>{
             }
             first=e;
         }
-        //System.out.println(edgeList);
-        for(int i=0;i<edgeList.size();i++) {
+        System.out.println(edgeList);
+        for(int i=0;i<edgeList.size()-1;i++) {
             Edge edge =edgeList.get(i);
-            int lastStepChoice = 0; //0 indicates picks first, 1 indicates picks second.
             if(i==0) {
                 pointList.add(edge.getFirst());
                 pointList.add(edge.getSecond());
             } else {
                 CoordinateOfPoint pLast = pointList.get((i+1)-1);
                 CoordinateOfPoint pLastLast = pointList.get((i+1)-2);
+//                System.out.println("i "+i+" pointList "+pointList);
+//                System.out.println("pLastLast "+pLastLast);
+//                System.out.println("pLast "+pLast);
+//                System.out.println("edge.getSecond() "+edge.getSecond());
+//                boolean test =edge.getSecond()==pLastLast;
+//                System.out.println("edge.getSecond()==pLastLast "+ test);
+                CoordinateOfPoint pToAdd = null;
                 if(pLast==edge.getFirst()) {
-                    pointList.add(edge.getSecond());
-                    lastStepChoice = 1;
+                    pToAdd = edge.getSecond();
                 } else if(pLast==edge.getSecond()) {
-                    pointList.add(edge.getFirst());
-                    lastStepChoice = 1;
+                    pToAdd = edge.getFirst();
                 } else if(pLastLast==edge.getFirst()) {
-                    pointList.add(edge.getSecond());
-                    lastStepChoice = 0;
-                } else if(pLastLast==edge.getFirst()){
-                    pointList.add(edge.getFirst());
-                    lastStepChoice = 0;
+                    pToAdd = edge.getSecond();
+                } else if(pLastLast==edge.getSecond()){
+                    pToAdd = edge.getFirst();
                 } else {
                     System.out.println("Polygon(ArrayList<Edge> edges) error!");
                 }
+                pointList.add(pToAdd);
             }
         }
-
     }
 
     public Polygon(Rectangle a, Rectangle b) {
