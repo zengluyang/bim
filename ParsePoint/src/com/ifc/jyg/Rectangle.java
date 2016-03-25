@@ -1,5 +1,6 @@
 package com.ifc.jyg;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,11 +107,43 @@ public class Rectangle implements Comparable<Object> {
 		return false;
 	}
 	
-	private boolean isAtTopContainedByBigger (Rectangle bigger) {
+	
+	public ArrayList<Edge> getEdges() {
+		ArrayList<Edge> listEdges = new ArrayList<Edge>();
+		CoordinateOfPoint topRight = new CoordinateOfPoint();
+		CoordinateOfPoint DownLeft = new CoordinateOfPoint();
+		switch (direction) {
+		case 0:
+			topRight.setX(this.topLeft.getX());
+			topRight.setY(this.downRight.getY());
+			topRight.setZ(this.topLeft.getZ());				
+			DownLeft.setX(this.topLeft.getX());
+			DownLeft.setY(this.topLeft.getY());
+			DownLeft.setZ(this.downRight.getZ()); 
+			break;
+		case 1:
+			topRight.setY(this.topLeft.getY());
+			topRight.setX(this.downRight.getX());
+			topRight.setZ(this.topLeft.getZ());
+			DownLeft.setX(this.topLeft.getX());
+			DownLeft.setY(this.topLeft.getY());
+			DownLeft.setZ(this.downRight.getZ());			
+			break;
+		default:
+			break;
+		}
+		listEdges.add(new Edge(this.topLeft, topRight));
+		listEdges.add(new Edge(topRight, this.downRight));
+		listEdges.add(new Edge(this.downRight, DownLeft));
+		listEdges.add(new Edge(DownLeft, this.topLeft)); 
+		return listEdges;
+ 
+	}
+	public boolean isAtTopContainedByBigger (Rectangle bigger) {
 		return Rectangle.isBiggerContainsSmaller(bigger,this);
 	}
 	
-	private boolean isAtTopContainsSmaller(Rectangle smaller) {
+	public boolean isAtTopContainsSmaller(Rectangle smaller) {
 		return Rectangle.isBiggerContainsSmaller(this,smaller);
 	}
 	 

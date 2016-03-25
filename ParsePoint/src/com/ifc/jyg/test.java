@@ -71,24 +71,12 @@ public class test {
 			System.out.println("listNewEdges size : " + listNewEdges.size());
 			//System.out.println(listNewEdges);
 			Polygon polygon = new Polygon(listNewEdges);
-			//System.out.println(polygon.getEdgeList());
-			System.out.println("polygon.getPointList.size()"+polygon.getPointList().size());
-			System.out.println(polygon.getPointList());
+
+			System.out.println(polygon.getEdgeList());
+//			System.out.println(polygon.getPointList());
 		}
-//		Map<CoordinateOfPoint, Integer> points = new HashMap<>();
-//		for (Edge edge : listNewEdges) {
-//			System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString());
-//			CoordinateOfPoint firstPoint = edge.getFirstPoint();
-//			CoordinateOfPoint secondpPoint = edge.getSecondPoint();
-//			points.put(firstPoint, 1);
-//			points.put(secondpPoint, 1);
-//		}
-//		System.out.println("@@@@@@@@@@");
-//		for (CoordinateOfPoint point : points.keySet()) {
-//			System.out.println(point.toString());
-//		}
-		
-		/*//System.out.println("listCuboids.size() : " +listCuboids.size());
+
+		//System.out.println("listCuboids.size() : " +listCuboids.size());
 		for (int j = 0; j < listCuboids.size(); j++) {
 			Cuboid cuboid = listCuboids.get(j);
 			//System.out.println("ID: " + cuboid.getCuboidID() + " type : " + cuboid.getType());
@@ -116,7 +104,7 @@ public class test {
 //				bw.newLine();
 //				bw.flush();
 			}
-			bw.newLine();
+			//bw.newLine();
 			//System.out.println();
 		}
 		//obtain.test();
@@ -129,14 +117,20 @@ public class test {
 			for (Rectangle rectangle : rectMap.keySet()) {
 				if(rectMap.get(rectangle)!=null) {
 					cnt++;
+					Rectangle a = rectangle;
+					Rectangle b = rectMap.get(rectangle);
+					System.out.print(a);
+					System.out.print(b);
+
+					Polygon polygon = new Polygon(a,b);
+//					System.out.println(polygon.getEdgeList());
+//					System.out.println(polygon.getPointList());
+					
 				}
-				System.out.print(rectangle);
-				System.out.print(rectMap.get(rectangle));
-				System.out.println(testMap.get(rectMap));
 				System.out.println("###############");
 			}
 		}
 		System.out.println(cnt);
-		bw.close();*/
+		//bw.close();
 	}
 }
