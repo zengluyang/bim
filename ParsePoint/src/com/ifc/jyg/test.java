@@ -70,8 +70,8 @@ public class test {
 			}
 			System.out.println("listNewEdges size : " + listNewEdges.size());
 			//System.out.println(listNewEdges);
-//			Polygon polygon = new Polygon(listNewEdges);
-//			System.out.println(polygon.getEdgeList());
+			Polygon polygon = new Polygon(listNewEdges);
+			System.out.println(polygon.getEdgeList());
 //			System.out.println(polygon.getPointList());
 		}
 		Map<CoordinateOfPoint, Integer> points = new HashMap<>();
