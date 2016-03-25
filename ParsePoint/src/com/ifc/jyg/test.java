@@ -41,32 +41,29 @@ public class test {
 					}
 					System.out.println();*/
 					//System.out.println("dmeMap.size() :" + dmeMap.size());
-					double z = triangle.getFirstEdge().getFirstPoint().getZ();
-					
-					if (z  < 3) {
-						if (dmeMap.get(z) == null) {			
-							
-							dmeMap.put(z, new HashMap<Edge, Integer>()); 
-						} 
-						//Map<Edge, Integer> ecmMap = dmeMap.get(z);
-						ecmMap = dmeMap.get(z);
-						boolean isNewEdge = true;
-						for (Edge e : edges) {
-							for (Edge edge : ecmMap.keySet()) {
+					for (Edge edge : edges) {
+						double z = edge.getFirstPoint().getZ();
+						if (z < 3) {
+							if (dmeMap.get(z) == null) {	 
+								dmeMap.put(z, new HashMap<Edge, Integer>()); 
+							} 
+							ecmMap = dmeMap.get(z);
+							boolean isNewEdge = true;
+							for (Edge e : ecmMap.keySet()) {
 								
 								if (e.compareTo(edge) == 0) { 
-									int cnt = ecmMap.get(edge) + 1;
-									ecmMap.put(edge, cnt);
+									int cnt = ecmMap.get(e) + 1;
+									ecmMap.put(e, cnt);
 									isNewEdge = false;
 									break;
 								}
 							}
 							if (isNewEdge) { 
-								ecmMap.put(e, 1);
+								ecmMap.put(edge, 1);
 							}
-						}  
-					}
-					
+						}
+					} 
+					 
 //					System.out.println("ecmMap.size: " + ecmMap.size());
 //					for (Edge edge : ecmMap.keySet()) { 
 //						System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString() + 
@@ -76,7 +73,7 @@ public class test {
 				}
 			}
 		}
-		ArrayList<Edge> listNewEdges = null;
+		ArrayList<Edge> listNewEdges = new ArrayList<Edge>();
 		System.out.println("test : "  + dmeMap.size());
 		for (double z : dmeMap.keySet()) {
 			System.out.println("z" + z);
@@ -85,7 +82,8 @@ public class test {
 				//System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString());
 				if (ecm.get(edge) == 1) {
 					//listNewEdges = Edge.getNewEgdesFromTwoEdges(longer, shorter)
-					System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString());
+					//System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString());
+					listNewEdges.add(edge);
 					//ecm.remove(edge);
 				}else {
 					//System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString());
@@ -93,8 +91,19 @@ public class test {
 			}
 			System.out.println(ecm.size());
 		}
+		Map<CoordinateOfPoint, Integer> points = new HashMap<>();
+		for (Edge edge : listNewEdges) {
+			System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString());
+			CoordinateOfPoint firstPoint = edge.getFirstPoint();
+			CoordinateOfPoint secondpPoint = edge.getSecondPoint();
+			points.put(firstPoint, 1);
+			points.put(secondpPoint, 1);
+		}
+		System.out.println("@@@@@@@@@@");
+		for (CoordinateOfPoint point : points.keySet()) {
+			System.out.println(point.toString());
+		}
 		
-		 
 		/*//System.out.println("listCuboids.size() : " +listCuboids.size());
 		for (int j = 0; j < listCuboids.size(); j++) {
 			Cuboid cuboid = listCuboids.get(j);
