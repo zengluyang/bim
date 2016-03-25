@@ -1,5 +1,6 @@
 package com.ifc.jyg;
 
+import java.lang.Thread.State;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -187,6 +188,51 @@ public class Polygon implements Comparable<Object>{
          
         } 
         return rlt;
+    }
+    
+    static {
+    	CoordinateOfPoint aTopLeft = new CoordinateOfPoint(10, 0, 10);
+    	CoordinateOfPoint aDownRight = new CoordinateOfPoint(0, 0, 0);
+    	
+    	CoordinateOfPoint bTopLeft = new CoordinateOfPoint(8, 0, 10);
+    	CoordinateOfPoint bDownRight = new CoordinateOfPoint(5, 0, 5);
+    	
+    	CoordinateOfPoint cTopLeft = new CoordinateOfPoint(5, 0, 10);
+    	CoordinateOfPoint cDownRight = new CoordinateOfPoint(0, 0, 6);
+    	Rectangle a = new Rectangle(aTopLeft, aDownRight);
+    	Rectangle b = new Rectangle(bTopLeft, bDownRight);
+    	Rectangle c = new Rectangle(cTopLeft, cDownRight);
+    	ArrayList<Edge> re = getEdgeListFromTwoRectangles(a, b, c);
+    	for (int i = 0; i < re.size(); i++) {
+    		System.out.println("test getEdgeListFromTwoRectangles" + re.get(i));
+		}
+    }
+    
+    private static ArrayList<Edge> getEdgeListFromTwoRectangles(Rectangle a, Rectangle b, Rectangle c) {
+    	ArrayList<Edge> rlt = new ArrayList<Edge>();
+    	
+    	CoordinateOfPoint aDownLeft = a.getPoint();
+    	CoordinateOfPoint bDownLeft = b.getPoint();
+    	CoordinateOfPoint cDownLeft = c.getPoint();
+    	
+		Edge e1 = new Edge(a.topLeft, b.topLeft); 
+    	Edge e2 = new Edge(b.topLeft, bDownLeft);
+    	Edge e3 = new Edge(bDownLeft, b.downRight);
+    	Edge e4 = new Edge(b.downRight, cDownLeft);
+    	Edge e5 = new Edge(cDownLeft, c.downRight);
+    	Edge e6 = new Edge(c.downRight, a.downRight);
+    	Edge e7 = new Edge(a.downRight, aDownLeft);
+    	Edge e8 = new Edge(aDownLeft, a.topLeft);
+    	
+    	rlt.add(e1);
+    	rlt.add(e2);
+    	rlt.add(e3);
+    	rlt.add(e4);
+    	rlt.add(e5);
+    	rlt.add(e6);
+    	rlt.add(e7);
+    	rlt.add(e8);    	
+    	return rlt;
     }
 
     private Edge findNextConnectedEdge(ArrayList<Edge> edges,Edge edge) {

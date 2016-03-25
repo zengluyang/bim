@@ -15,7 +15,7 @@ public class test {
 
 	private static BufferedWriter bw = null;
 	public static void main(String[] args) throws IOException {
-		ParseObjFile parseObjFile = new ParseObjFile("/whole.obj");
+		ParseObjFile parseObjFile = new ParseObjFile("E:\\IFC\\IFCFile\\whole.obj");
 		//bw = new BufferedWriter(new FileWriter("E:\\IFC\\objFile\\Whole1.obj"));
 		Map<Double, ArrayList<Triangle>> samevalueMap = new HashMap<>();
 		IntersectRectangle ir = new IntersectRectangle();  

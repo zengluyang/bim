@@ -156,9 +156,34 @@ public class Rectangle implements Comparable<Object> {
 		listEdges.add(new Edge(topRight, this.downRight));
 		listEdges.add(new Edge(this.downRight, DownLeft));
 		listEdges.add(new Edge(DownLeft, this.topLeft)); 
-		return listEdges;
- 
+		return listEdges; 
 	}
+	
+	public CoordinateOfPoint getPoint() {
+		//ArrayList<CoordinateOfPoint> points = new ArrayList<CoordinateOfPoint>();
+		//CoordinateOfPoint topRight = new CoordinateOfPoint();
+		CoordinateOfPoint DownLeft = new CoordinateOfPoint();
+		switch (direction) {
+		case 0:
+//			topRight.setX(this.topLeft.getX());
+//			topRight.setY(this.downRight.getY());
+//			topRight.setZ(this.topLeft.getZ());				
+			DownLeft.setX(this.topLeft.getX());
+			DownLeft.setY(this.topLeft.getY());
+			DownLeft.setZ(this.downRight.getZ()); 
+			break;
+		case 1:
+		 
+			DownLeft.setX(this.topLeft.getX());
+			DownLeft.setY(this.topLeft.getY());
+			DownLeft.setZ(this.downRight.getZ());			
+			break;
+		default:
+			break;
+		}
+		return DownLeft;
+	}
+	
 	public boolean isAtTopContainedByBigger (Rectangle bigger) {
 		return Rectangle.isBiggerContainsSmaller(bigger,this);
 	}

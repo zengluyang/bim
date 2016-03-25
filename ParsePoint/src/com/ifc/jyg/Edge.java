@@ -259,16 +259,16 @@ public class Edge implements Comparable<Object>{
 		return second;
 	}
 
-	public static void testgetNewEgdesFromThisAndThatEdges() {
-		CoordinateOfPoint A = new CoordinateOfPoint(0,0,0);
-		CoordinateOfPoint B = new CoordinateOfPoint(20,0,0);
-
-		CoordinateOfPoint C = new CoordinateOfPoint(10,0,0);
-		CoordinateOfPoint D = new CoordinateOfPoint(15,0,0);
-		Edge ab = new Edge(A,B);
-		Edge cd = new Edge(C,D);
-		ArrayList<Edge> edges = Edge.getNewEgdesFromTwoEdges(ab,cd);
-		System.out.println("testgetNewEgdesFromThisAndThatEdges "+edges);
-	}
+//	public static void testgetNewEgdesFromThisAndThatEdges() {
+//		CoordinateOfPoint A = new CoordinateOfPoint(0,0,0);
+//		CoordinateOfPoint B = new CoordinateOfPoint(20,0,0);
+//
+//		CoordinateOfPoint C = new CoordinateOfPoint(10,0,0);
+//		CoordinateOfPoint D = new CoordinateOfPoint(15,0,0);
+//		Edge ab = new Edge(A,B);
+//		Edge cd = new Edge(C,D);
+//		ArrayList<Edge> edges = Edge.getNewEgdesFromTwoEdges(ab,cd);
+//		System.out.println("testgetNewEgdesFromThisAndThatEdges "+edges);
+//	}
 	
 }

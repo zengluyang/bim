@@ -39,13 +39,13 @@ public class ParseObjFile {
 			br = new BufferedReader(isr);
 			String content = null;
 			while ((content = br.readLine()) != null) {
-				if (content.startsWith("g ____-")) {	//ͳ�Ƴ�����ĸ���
+				if (content.startsWith("g ____-")) {	//统锟狡筹拷锟斤拷锟斤拷母锟斤拷锟�
 					cuboidNumber++;
-				} else if (content.startsWith("v ")) {	//ͳ�Ƶ�ĸ���
+				} else if (content.startsWith("v ")) {	//统锟狡碉拷母锟斤拷锟�
 					pointNumber++;
-				} else if (content.startsWith("g __:")) {	//ͳ��Slab�ĸ���
+				} else if (content.startsWith("g __:")) {	//统锟斤拷Slab锟侥革拷锟斤拷
 					slabNumber++;
-				} else if (content.startsWith("f ")) {	//ͳ��Slab�ĸ���
+				} else if (content.startsWith("f ")) {	//统锟斤拷Slab锟侥革拷锟斤拷
 					//triangleNumber++;
 				} 
 			}
@@ -112,7 +112,7 @@ public class ParseObjFile {
 					
 					if (type != 2) {	//not Slab 
 						cuboid = new Cuboid(Integer.parseInt(ID), type);
-						int numOfcuboidPoint = i - mark;	 //����ü�����ĵ���
+						int numOfcuboidPoint = i - mark;	 //锟斤拷锟斤拷眉锟斤拷锟斤拷锟侥碉拷锟斤拷
 						for (int k = 0; k < numOfcuboidPoint; k++) {
 							cuboid.addPoint(listPoints.get(mark++));
 							cuboid.setType(type);
@@ -121,7 +121,7 @@ public class ParseObjFile {
 						listCuboids.add(cuboid); 
 						isNewCuboid = false;
 					}  
-				}  else if (line.startsWith("f ") && type == 2) {	//��ȡ��Ӧ����������α�ʾ
+				}  else if (line.startsWith("f ") && type == 2) {	//锟斤拷取锟斤拷应锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷伪锟绞�
 					
 					String[] location = line.split(" ");
 					int a = Integer.parseInt(location[1].split("//")[0]);
@@ -162,9 +162,8 @@ public class ParseObjFile {
 	}
 
 	private static Polyhedron constructFromTrianglesOfOneSlab (ArrayList<Triangle> listTriangles) {
-		Map<Double, Map<Edge, Integer>> dmeMap = new TreeMap<Double, Map<Edge,Integer>>();	//double ��ʾzֵ �� Map<Edge,int>��ʾ�ߺͶ�Ӧ����Ŀ
-		int upDownCnt = 0;
-		for (Triangle triangle : listTriangles) {
+		Map<Double, Map<Edge, Integer>> dmeMap = new TreeMap<Double, Map<Edge,Integer>>();	//double 锟斤拷示z值 锟斤拷 Map<Edge,int>锟斤拷示锟竭和讹拷应锟斤拷锟斤拷目
+ 		for (Triangle triangle : listTriangles) {
 			if (triangle.getDirection() == Triangle.UP_DOWN) {
 				ArrayList<Edge> edges = triangle.getEdges();
 				for (Edge edge : edges) {
@@ -183,9 +182,7 @@ public class ParseObjFile {
 						ecmMap.put(edge, 1);
 					}
 
-				}
-				upDownCnt++;
-
+				} 
 			}
 		}
 		ArrayList<Edge> listNewEdges = new ArrayList<Edge>();
@@ -218,7 +215,7 @@ public class ParseObjFile {
 
 	public ArrayList<Polyhedron> getSlabPolys() {
 		ArrayList<Polyhedron> rlt = new ArrayList<Polyhedron>();
-		Map<Integer, ArrayList<Triangle>> slabMap = this.getSlabs();	//integer ��ʾslab�����е�triangle�ĸ���
+		Map<Integer, ArrayList<Triangle>> slabMap = this.getSlabs();	//integer 锟斤拷示slab锟斤拷锟斤拷锟叫碉拷triangle锟侥革拷锟斤拷
 		//System.out.println("listSlabs size:" + slabMap.size());
 		for (int number : slabMap.keySet()) {
 			ArrayList<Triangle> listTriangles = slabMap.get(number);
