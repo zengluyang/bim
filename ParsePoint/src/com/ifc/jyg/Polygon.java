@@ -52,10 +52,14 @@ public class Polygon implements Comparable<Object>{
 
     }
 
+    public Polygon(Rectangle a, Rectangle b) {
+        
+    }
+
     private Edge findNextConnectedEdge(ArrayList<Edge> edges,Edge edge) {
         for(int i=0;i<edges.size();i++) {
             Edge e = edges.get(i);
-            System.out.println("cmp "+e+edge);
+            //System.out.println("cmp "+e+edge);
             if(e.isConnectedTo(edge)) {
                 edges.remove(i);
                 edgeList.add(e);
