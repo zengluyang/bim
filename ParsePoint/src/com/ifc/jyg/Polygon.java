@@ -62,8 +62,8 @@ public class Polygon implements Comparable<Object>{
     }
 
     private static ArrayList<Edge> getEdgeListFromTwoRectangle(Rectangle a, Rectangle b) {
-        ArrayList<Rectangle> rlt = new ArrayList<Edge>();
-        //TODO
+        ArrayList<Edge> rlt = new ArrayList<Edge>();
+        
         return rlt;
     }
 

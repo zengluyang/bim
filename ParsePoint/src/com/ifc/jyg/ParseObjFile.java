@@ -95,8 +95,7 @@ public class ParseObjFile {
 					isNewCuboid = true; 
 					System.out.println(triangleNumber);
 					if (triangleNumber != 0) {
-						triNumber[slabNum] = triangleNumber;
-						//System.out.println("triangleNumber " + triangleNumber + " slabNum : " + slabNum);
+						triNumber[slabNum] = triangleNumber; 
 						triangleNumber = 0;
 						slabNum++;
 					}
@@ -131,8 +130,7 @@ public class ParseObjFile {
 					MarkLocation markLocation = new MarkLocation(a, b, c);
 					listMarkLocations.add(markLocation);
 					
-					triangleNumber++;
-					//System.out.println("" + a + " " + b + " " + c); 
+					triangleNumber++; 
 				}
 			}    
 			triNumber[slabNumber-1] = triangleNumber;
