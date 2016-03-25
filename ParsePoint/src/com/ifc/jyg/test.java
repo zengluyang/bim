@@ -15,7 +15,7 @@ public class test {
 
 	private static BufferedWriter bw = null;
 	public static void main(String[] args) throws IOException {
-		ParseObjFile parseObjFile = new ParseObjFile("E:\\IFC\\IFCFile\\Whole.obj");
+		ParseObjFile parseObjFile = new ParseObjFile("/whole.obj");
 		//bw = new BufferedWriter(new FileWriter("E:\\IFC\\objFile\\Whole1.obj")); 
 		Map<Double, Map<Edge, Integer>> dmeMap = new HashMap<Double, Map<Edge,Integer>>();	//double ��ʾzֵ �� Map<Edge,int>��ʾ�ߺͶ�Ӧ����Ŀ
 		Map<Edge, Integer> ecmMap = null;
@@ -70,22 +70,23 @@ public class test {
 			}
 			System.out.println("listNewEdges size : " + listNewEdges.size());
 			//System.out.println(listNewEdges);
-//			Polygon polygon = new Polygon(listNewEdges);
-//			System.out.println(polygon.getEdgeList());
-//			System.out.println(polygon.getPointList());
+			Polygon polygon = new Polygon(listNewEdges);
+			//System.out.println(polygon.getEdgeList());
+			System.out.println("polygon.getPointList.size()"+polygon.getPointList().size());
+			System.out.println(polygon.getPointList());
 		}
-		Map<CoordinateOfPoint, Integer> points = new HashMap<>();
-		for (Edge edge : listNewEdges) {
-			System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString());
-			CoordinateOfPoint firstPoint = edge.getFirstPoint();
-			CoordinateOfPoint secondpPoint = edge.getSecondPoint();
-			points.put(firstPoint, 1);
-			points.put(secondpPoint, 1);
-		}
-		System.out.println("@@@@@@@@@@");
-		for (CoordinateOfPoint point : points.keySet()) {
-			System.out.println(point.toString());
-		}
+//		Map<CoordinateOfPoint, Integer> points = new HashMap<>();
+//		for (Edge edge : listNewEdges) {
+//			System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString());
+//			CoordinateOfPoint firstPoint = edge.getFirstPoint();
+//			CoordinateOfPoint secondpPoint = edge.getSecondPoint();
+//			points.put(firstPoint, 1);
+//			points.put(secondpPoint, 1);
+//		}
+//		System.out.println("@@@@@@@@@@");
+//		for (CoordinateOfPoint point : points.keySet()) {
+//			System.out.println(point.toString());
+//		}
 		
 		/*//System.out.println("listCuboids.size() : " +listCuboids.size());
 		for (int j = 0; j < listCuboids.size(); j++) {

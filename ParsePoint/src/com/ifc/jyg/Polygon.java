@@ -7,8 +7,15 @@ import java.util.ArrayList;
  */
 public class Polygon implements Comparable<Object>{
 
+
+    public final static int  FRONT_BOOTOM = 0;
+    public final static int  LEFT_RIGHT = 1;
+    public final static int  UP_DOWN = 2;
+    public final static String[] directionString = {"FRONT_BOOTOM","LEFT_RIGHT","UP_DOWN"};
+
     private ArrayList<CoordinateOfPoint> pointList = new ArrayList<CoordinateOfPoint>();
     private ArrayList<Edge> edgeList = new ArrayList<Edge>();
+    private int direction = 0;
 
     @Override
     public int compareTo(Object o) {
@@ -35,6 +42,7 @@ public class Polygon implements Comparable<Object>{
     }
 
     public Polygon(ArrayList<Edge> edges) {
+        this.direction = edges.get(0).getDirection();
         this.setEdgeListAndPointListFromUnorderedEdgeList(edges);
 
     }
@@ -112,6 +120,10 @@ public class Polygon implements Comparable<Object>{
 
     public ArrayList<Edge> getEdgeList() {
         return edgeList;
+    }
+
+    public int getDirection() {
+        return direction;
     }
 
     public static void testArrayList() {
