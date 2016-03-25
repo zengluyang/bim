@@ -52,7 +52,7 @@ public class IntersectRectangle {
 			Map<Double,  ArrayList<Rectangle>> doubleMap = directionDoubleMap.get(dir);
 			if(doubleMap!=null) {
 				for(Double d:doubleMap.keySet()) {
-					System.out.println(d);
+					//System.out.println(d);
 					ArrayList<Rectangle> recList = doubleMap.get(d);
 					if(recList!=null) {
 						//System.out.println(recList);

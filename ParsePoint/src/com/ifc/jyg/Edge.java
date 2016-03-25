@@ -53,6 +53,8 @@ public class Edge implements Comparable<Object>{
 		return 1; 
 	}
 	
+	
+	
 	public static boolean  isOnSameAxis (Edge a, Edge b) {
 		if(a.direction!=b.direction) {
 			return false;
@@ -224,6 +226,14 @@ public class Edge implements Comparable<Object>{
 		StringBuilder sb = new StringBuilder();
 		sb.append("Edge ").append(first).append(second).append("");
 		return sb.toString();
+	}
+	
+	public CoordinateOfPoint getFirstPoint() {
+		return first;
+	}
+	 
+	public CoordinateOfPoint getSecondPoint() {
+		return second;
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -15,11 +16,86 @@ public class test {
 	private static BufferedWriter bw = null;
 	public static void main(String[] args) throws IOException {
 		ParseObjFile parseObjFile = new ParseObjFile("E:\\IFC\\IFCFile\\Whole.obj");
-		bw = new BufferedWriter(new FileWriter("E:\\IFC\\objFile\\Whole1.obj")); 
-		IntersectRectangle ir = new IntersectRectangle();
-		ObtainIntersectRectangle obtain = new ObtainIntersectRectangle();
+		//bw = new BufferedWriter(new FileWriter("E:\\IFC\\objFile\\Whole1.obj")); 
+		Map<Double, Map<Edge, Integer>> dmeMap = new HashMap<Double, Map<Edge,Integer>>();	//double 表示z值 ， Map<Edge,int>表示边和对应的数目
+		Map<Edge, Integer> ecmMap = null;
+		Map<Double, ArrayList<Triangle>> samevalueMap = new HashMap<>();
+		IntersectRectangle ir = new IntersectRectangle();  
 		ArrayList<Cuboid> listCuboids = parseObjFile.getCuboid(); 
-		//System.out.println("listCuboids.size() : " +listCuboids.size());
+		Map<Integer, ArrayList<Triangle>> slabMap = parseObjFile.getSlabs();	//integer 表示slab所具有的triangle的个数
+		//System.out.println("listSlabs size:" + slabMap.size());
+		
+		for (int number : slabMap.keySet()) {
+			ArrayList<Triangle> listTriangles = slabMap.get(number);
+			System.out.println("listTriangles: " + listTriangles.size());
+			for (Triangle triangle : listTriangles) {
+				//System.out.println(triangle.getEdges());
+				if (triangle.getDirection() == Triangle.UP_DOWN) {
+					ArrayList<Edge> edges = triangle.getEdges();
+					/*for (Edge e : edges) { 
+						double z = e.getFirstPoint().getZ();
+						if (z < 3) {
+							System.out.println("test : " +e.getFirstPoint().toString() + e.getSecondPoint().toString());
+						}
+						
+					}
+					System.out.println();*/
+					//System.out.println("dmeMap.size() :" + dmeMap.size());
+					double z = triangle.getFirstEdge().getFirstPoint().getZ();
+					
+					if (z  < 3) {
+						if (dmeMap.get(z) == null) {			
+							
+							dmeMap.put(z, new HashMap<Edge, Integer>()); 
+						} 
+						//Map<Edge, Integer> ecmMap = dmeMap.get(z);
+						ecmMap = dmeMap.get(z);
+						boolean isNewEdge = true;
+						for (Edge e : edges) {
+							for (Edge edge : ecmMap.keySet()) {
+								
+								if (e.compareTo(edge) == 0) { 
+									int cnt = ecmMap.get(edge) + 1;
+									ecmMap.put(edge, cnt);
+									isNewEdge = false;
+									break;
+								}
+							}
+							if (isNewEdge) { 
+								ecmMap.put(e, 1);
+							}
+						}  
+					}
+					
+//					System.out.println("ecmMap.size: " + ecmMap.size());
+//					for (Edge edge : ecmMap.keySet()) { 
+//						System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString() + 
+//								" cnt : " + ecmMap.get(edge));
+//					} 
+//					System.out.println();
+				}
+			}
+		}
+		ArrayList<Edge> listNewEdges = null;
+		System.out.println("test : "  + dmeMap.size());
+		for (double z : dmeMap.keySet()) {
+			System.out.println("z" + z);
+			Map<Edge, Integer> ecm = dmeMap.get(z);
+			for (Edge edge : ecm.keySet()) {
+				//System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString());
+				if (ecm.get(edge) == 1) {
+					//listNewEdges = Edge.getNewEgdesFromTwoEdges(longer, shorter)
+					System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString());
+					//ecm.remove(edge);
+				}else {
+					//System.out.println(edge.getFirstPoint().toString() + edge.getSecondPoint().toString());
+				}
+			}
+			System.out.println(ecm.size());
+		}
+		
+		 
+		/*//System.out.println("listCuboids.size() : " +listCuboids.size());
 		for (int j = 0; j < listCuboids.size(); j++) {
 			Cuboid cuboid = listCuboids.get(j);
 			//System.out.println("ID: " + cuboid.getCuboidID() + " type : " + cuboid.getType());
@@ -68,6 +144,6 @@ public class test {
 			}
 		}
 		System.out.println(cnt);
-		bw.close();
+		bw.close();*/
 	}
 }
