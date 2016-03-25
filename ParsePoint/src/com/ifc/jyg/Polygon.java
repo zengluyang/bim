@@ -30,6 +30,7 @@ public class Polygon implements Comparable<Object>{
         //System.out.println(edgeList);
         for(int i=0;i<edgeList.size();i++) {
             Edge edge =edgeList.get(i);
+            int lastStepChoice = 0; //0 indicates picks first, 1 indicates picks second.
             if(i==0) {
                 pointList.add(edge.getFirst());
                 pointList.add(edge.getSecond());
@@ -38,12 +39,16 @@ public class Polygon implements Comparable<Object>{
                 CoordinateOfPoint pLastLast = pointList.get((i+1)-2);
                 if(pLast==edge.getFirst()) {
                     pointList.add(edge.getSecond());
+                    lastStepChoice = 1;
                 } else if(pLast==edge.getSecond()) {
                     pointList.add(edge.getFirst());
+                    lastStepChoice = 1;
                 } else if(pLastLast==edge.getFirst()) {
                     pointList.add(edge.getSecond());
+                    lastStepChoice = 0;
                 } else if(pLastLast==edge.getFirst()){
                     pointList.add(edge.getFirst());
+                    lastStepChoice = 0;
                 } else {
                     System.out.println("Polygon(ArrayList<Edge> edges) error!");
                 }
@@ -53,7 +58,13 @@ public class Polygon implements Comparable<Object>{
     }
 
     public Polygon(Rectangle a, Rectangle b) {
-        
+
+    }
+
+    private static ArrayList<Edge> getEdgeListFromTwoRectangle(Rectangle a, Rectangle b) {
+        ArrayList<Rectangle> rlt = new ArrayList<Edge>();
+        //TODO
+        return rlt;
     }
 
     private Edge findNextConnectedEdge(ArrayList<Edge> edges,Edge edge) {
