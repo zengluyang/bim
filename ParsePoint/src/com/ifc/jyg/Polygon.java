@@ -143,7 +143,7 @@ public class Polygon implements Comparable<Object>{
 				rlt.addAll(res1);
 			}
 			
-			ArrayList<Edge> res2= a1.getNewEgdesFromThisAndThatEdges(b1);
+			ArrayList<Edge> res2= a2.getNewEgdesFromThisAndThatEdges(b2);
 			if (res2.size() == 0) {
 				rlt.add(a2);
 				rlt.add(b2);
@@ -151,7 +151,7 @@ public class Polygon implements Comparable<Object>{
 				rlt.addAll(res2);
 			}
 			
-			ArrayList<Edge> res3 = a1.getNewEgdesFromThisAndThatEdges(b1);
+			ArrayList<Edge> res3 = a3.getNewEgdesFromThisAndThatEdges(b3);
 			if (res3.size() == 0) {
 				rlt.add(a3);
 				rlt.add(b3);
@@ -159,7 +159,7 @@ public class Polygon implements Comparable<Object>{
 				rlt.addAll(res3);
 			}
 			
-			ArrayList<Edge> res4 = a1.getNewEgdesFromThisAndThatEdges(b1);
+			ArrayList<Edge> res4 = a4.getNewEgdesFromThisAndThatEdges(b4);
 			if (res4.size() == 0) {
 				rlt.add(a4);
 				rlt.add(b4);

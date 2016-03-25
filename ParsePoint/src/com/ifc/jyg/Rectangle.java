@@ -21,6 +21,15 @@ public class Rectangle implements Comparable<Object> {
 		super();
 		this.topLeft = topLeft;
 		this.downRight = downRight;
+		if(this.topLeft.getX()==this.downRight.getX()) {
+			this.direction = FRONT_BOOTOM;
+		} else if(this.topLeft.getY()==this.downRight.getY()) {
+			this.direction = LEFT_RIGHT;
+		} else if(this.topLeft.getZ()==this.downRight.getZ()) {
+			this.direction = UP_DOWN;
+		} else {
+			System.out.println("Rectangle(CoordinateOfPoint topLeft, CoordinateOfPoint downRight) error!");
+		}
 	}
 	
 
@@ -133,8 +142,8 @@ public class Rectangle implements Comparable<Object> {
 			DownLeft.setZ(this.downRight.getZ()); 
 			break;
 		case 1:
-			topRight.setY(this.topLeft.getY());
 			topRight.setX(this.downRight.getX());
+			topRight.setY(this.topLeft.getY());
 			topRight.setZ(this.topLeft.getZ());
 			DownLeft.setX(this.topLeft.getX());
 			DownLeft.setY(this.topLeft.getY());
@@ -213,5 +222,14 @@ public class Rectangle implements Comparable<Object> {
 		.append("\ttopLeft \t").append(this.topLeft.toString()).append('\n')
 		.append("\tdownRight \t").append(this.downRight.toString()).append('\n');
  		return sb.toString();
-	} 
+	}
+
+	public static void testGetEdges () {
+		CoordinateOfPoint t = new CoordinateOfPoint(5,0,5);
+		CoordinateOfPoint d = new CoordinateOfPoint(0,0,0);
+		Rectangle A = new Rectangle(t,d);
+		ArrayList<Edge> edges = A.getEdges();
+		System.out.println("testGetEdges "+edges);
+
+	}
 }

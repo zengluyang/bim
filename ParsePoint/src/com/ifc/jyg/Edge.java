@@ -61,7 +61,7 @@ public class Edge implements Comparable<Object>{
 		}
 		switch (a.direction) {
 		case X_AXIS:
-			return a.first.getY()== b.first.getY() && a.second.getY()==b.second.getY();
+			return a.first.getY()== b.first.getY() && a.second.getZ()==b.second.getZ();
 		case Y_AXIS:
 			return a.first.getX()== b.first.getX() && a.second.getZ()==b.second.getZ();
 		case Z_AXIS:
@@ -133,7 +133,7 @@ public class Edge implements Comparable<Object>{
 			rlt.add(shorter);
 			return rlt;
 		} else {
-			System.out.println("getNewEgdesFromTwoEdges error!");
+			System.out.println("getNewEgdesFromTwoEdges error! "+longer.getLength()+" "+shorter.getLength());
 		}
 		return rlt;
 	}
@@ -180,11 +180,11 @@ public class Edge implements Comparable<Object>{
 
 		switch (this.direction) {
 		case X_AXIS:
-			return this.second.getX() - this.second.getX();
+			return this.second.getX() - this.first.getX();
 		case Y_AXIS:
-			return this.second.getY() - this.second.getY();
+			return this.second.getY() - this.first.getY();
 		case Z_AXIS:
-			return this.second.getZ() - this.second.getZ();
+			return this.second.getZ() - this.first.getZ();
 		case OTHER:
 			return 0.0;
 		default:
@@ -228,7 +228,7 @@ public class Edge implements Comparable<Object>{
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Edge ").append(first).append(second).append("");
+		sb.append("Edge ").append(first).append(second).append("\n");
 		return sb.toString();
 	}
 	
