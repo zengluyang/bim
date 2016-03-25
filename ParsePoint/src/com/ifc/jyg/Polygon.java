@@ -125,13 +125,46 @@ public class Polygon implements Comparable<Object>{
         	ArrayList<Edge> alistEdges = a.getEdges();
 			ArrayList<Edge> blistEdges = b.getEdges(); 
 			
-			for (Edge aedge : alistEdges) {
-				for (Edge bedge : blistEdges) {
-					ArrayList<Edge> newEdges = Edge.getNewEgdesFromTwoEdges(aedge, bedge);
-					for (Edge newEdge : newEdges) {
-						rlt.add(newEdge);
-					}
-				} 
+			Edge a1 = alistEdges.get(0);
+			Edge a2 = alistEdges.get(1);
+			Edge a3 = alistEdges.get(2);
+			Edge a4 = alistEdges.get(3);
+			
+			Edge b1 = blistEdges.get(0);
+			Edge b2 = blistEdges.get(1);
+			Edge b3 = blistEdges.get(2);
+			Edge b4 = blistEdges.get(3);
+			
+			ArrayList<Edge> res1 = a1.getNewEgdesFromThisAndThatEdges(b1);
+			if (res1.size() == 0) {
+				rlt.add(a1);
+				rlt.add(b1);
+			} else {
+				rlt.addAll(res1);
+			}
+			
+			ArrayList<Edge> res2= a1.getNewEgdesFromThisAndThatEdges(b1);
+			if (res2.size() == 0) {
+				rlt.add(a2);
+				rlt.add(b2);
+			} else {
+				rlt.addAll(res2);
+			}
+			
+			ArrayList<Edge> res3 = a1.getNewEgdesFromThisAndThatEdges(b1);
+			if (res3.size() == 0) {
+				rlt.add(a3);
+				rlt.add(b3);
+			} else {
+				rlt.addAll(res3);
+			}
+			
+			ArrayList<Edge> res4 = a1.getNewEgdesFromThisAndThatEdges(b1);
+			if (res4.size() == 0) {
+				rlt.add(a4);
+				rlt.add(b4);
+			} else {
+				rlt.addAll(res4);
 			}
 			if(rlt.size()==0 ) {
 				System.out.println("getEdgeListFromBiggerAndSmallerRectangle error!");
