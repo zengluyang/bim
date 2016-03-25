@@ -1,10 +1,6 @@
 package com.ifc.jyg;
 
-import java.lang.Thread.State;
-import java.time.Year;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by ZLY on 2016/3/24.
@@ -197,44 +193,158 @@ public class Polygon implements Comparable<Object>{
 //    	CoordinateOfPoint bTopLeft = new CoordinateOfPoint(8, 0, 10);
 //    	CoordinateOfPoint bDownRight = new CoordinateOfPoint(5, 0, 5);
 //    	
-//    	CoordinateOfPoint cTopLeft = new CoordinateOfPoint(5, 0, 10);
-//    	CoordinateOfPoint cDownRight = new CoordinateOfPoint(0, 0, 6);
+//    	CoordinateOfPoint cTopLeft = new CoordinateOfPoint(10, 0, 10);
+//    	CoordinateOfPoint cDownRight = new CoordinateOfPoint(8, 0, 7);
 //    	Rectangle a = new Rectangle(aTopLeft, aDownRight);
 //    	Rectangle b = new Rectangle(bTopLeft, bDownRight);
 //    	Rectangle c = new Rectangle(cTopLeft, cDownRight);
 //    	ArrayList<Edge> re = getEdgeListFromTwoRectangles(a, b, c);
 //    	for (int i = 0; i < re.size(); i++) {
-//    		System.out.println("test getEdgeListFromTwoRectangles" + re.get(i));
+//    		System.out.print("test getEdgeListFromTwoRectangles" + re.get(i));
 //		}
+//    	System.out.println();
+//    	CoordinateOfPoint a1TopLeft = new CoordinateOfPoint(0, 0, 10);
+//    	CoordinateOfPoint a1DownRight = new CoordinateOfPoint(0, 10, 0);
+//    	
+//    	CoordinateOfPoint b1TopLeft = new CoordinateOfPoint(0, 5, 10);
+//    	CoordinateOfPoint b1DownRight = new CoordinateOfPoint(0, 8, 5);
+//    	
+//    	CoordinateOfPoint c1TopLeft = new CoordinateOfPoint(0, 8, 10);
+//    	CoordinateOfPoint c1DownRight = new CoordinateOfPoint(0, 10, 6);
+//    	
+//    	Rectangle a1 = new Rectangle(a1TopLeft, a1DownRight);
+//    	Rectangle b1 = new Rectangle(b1TopLeft, b1DownRight);
+//    	Rectangle c1 = new Rectangle(c1TopLeft, c1DownRight);
+//    	ArrayList<Edge> re1 = getEdgeListFromTwoRectangles(a1, b1, c1);
+//    	for (int i = 0; i < re1.size(); i++) {
+//    		System.out.print("test1 getEdgeListFromTwoRectangles" + re1.get(i));
+//		}
+//    	System.out.println();
+//    	
+//    	CoordinateOfPoint a2TopLeft = new CoordinateOfPoint(0, 0, 10);
+//    	CoordinateOfPoint a2DownRight = new CoordinateOfPoint(0, 10, 0);
+//    	
+//    	CoordinateOfPoint b2TopLeft = new CoordinateOfPoint(0, 5, 10);
+//    	CoordinateOfPoint b2DownRight = new CoordinateOfPoint(0, 8, 5);
+//    	
+//    	CoordinateOfPoint d2TopLeft = new CoordinateOfPoint(0, 8, 10);
+//    	CoordinateOfPoint d2DownRight = new CoordinateOfPoint(0, 10, 6);
+//    	
+//    	CoordinateOfPoint c2TopLeft = new CoordinateOfPoint(0, 0, 10);
+//    	CoordinateOfPoint c2DownRight = new CoordinateOfPoint(0, 5, 6);
+//    	
+//    	Rectangle a2 = new Rectangle(a2TopLeft, a2DownRight);
+//    	Rectangle b2 = new Rectangle(b2TopLeft, b2DownRight);
+//    	Rectangle c2 = new Rectangle(c2TopLeft, c2DownRight);
+//    	Rectangle d2 = new Rectangle(d2TopLeft, d2DownRight);
+//    	ArrayList<Edge> re2 = getEdgeListFromTwoRectangles(a2, b2, c2, d2);
+//    	for (int i = 0; i < re2.size(); i++) {
+//    		System.out.print("test2 getEdgeListFromTwoRectangles" + re2.get(i));
+//		}
+//    	System.out.println();
+//    	
+//    	CoordinateOfPoint a3TopLeft = new CoordinateOfPoint(10, 0, 10);
+//    	CoordinateOfPoint a3DownRight = new CoordinateOfPoint(0, 0, 0);
+//    	
+//    	CoordinateOfPoint b3TopLeft = new CoordinateOfPoint(8, 0, 10);
+//    	CoordinateOfPoint b3DownRight = new CoordinateOfPoint(5, 0, 5);
+//    	
+//    	CoordinateOfPoint c3TopLeft = new CoordinateOfPoint(10, 0, 10);
+//    	CoordinateOfPoint c3DownRight = new CoordinateOfPoint(8, 0, 7);
+//    	
+//    	CoordinateOfPoint d3TopLeft = new CoordinateOfPoint(5, 0, 7);
+//    	CoordinateOfPoint d3DownRight = new CoordinateOfPoint(0, 0, 7);
+//    	Rectangle a3 = new Rectangle(a3TopLeft, a3DownRight);
+//    	Rectangle b3 = new Rectangle(b3TopLeft, b3DownRight);
+//    	Rectangle c3 = new Rectangle(c3TopLeft, c3DownRight);
+//    	Rectangle d3 = new Rectangle(d3TopLeft, d3DownRight);
+//    	ArrayList<Edge> re3 = getEdgeListFromTwoRectangles(a3, b3, c3, d3);
+//    	for (int i = 0; i < re3.size(); i++) {
+//    		System.out.print("test3 getEdgeListFromTwoRectangles" + re3.get(i));
+//		}
+//    	System.out.println();
 //    }
 //    
     private static ArrayList<Edge> getEdgeListFromTwoRectangles(Rectangle a, Rectangle b, Rectangle c) {
     	ArrayList<Edge> rlt = new ArrayList<Edge>();
     	
-    	CoordinateOfPoint aDownLeft = a.getPoint();
-    	CoordinateOfPoint bDownLeft = b.getPoint();
-    	CoordinateOfPoint cDownLeft = c.getPoint();
+    	CoordinateOfPoint aDownLeft = a.getPoint().get(0);
+    	CoordinateOfPoint aTopRight = a.getPoint().get(1);
     	
-		Edge e1 = new Edge(a.topLeft, b.topLeft); 
-    	Edge e2 = new Edge(b.topLeft, bDownLeft);
-    	Edge e3 = new Edge(bDownLeft, b.downRight);
-    	Edge e4 = new Edge(b.downRight, cDownLeft);
-    	Edge e5 = new Edge(cDownLeft, c.downRight);
-    	Edge e6 = new Edge(c.downRight, a.downRight);
-    	Edge e7 = new Edge(a.downRight, aDownLeft);
-    	Edge e8 = new Edge(aDownLeft, a.topLeft);
+    	CoordinateOfPoint bDownLeft = b.getPoint().get(0);
+    	CoordinateOfPoint bTopRight = b.getPoint().get(1);
     	
-    	rlt.add(e1);
-    	rlt.add(e2);
-    	rlt.add(e3);
-    	rlt.add(e4);
-    	rlt.add(e5);
-    	rlt.add(e6);
-    	rlt.add(e7);
-    	rlt.add(e8);    	
+    	CoordinateOfPoint cDownLeft = c.getPoint().get(0); 
+    	 
+    	Edge[] edges = new Edge[8];
+    	if (a.topLeft.compareTo(c.topLeft) == 0) {
+			
+    		edges[0] = new Edge(cDownLeft, c.downRight); 
+			edges[1] = new Edge(c.downRight, bDownLeft);
+			edges[2] = new Edge(bDownLeft, b.downRight);
+			edges[3] = new Edge(b.downRight, bTopRight);
+			edges[4] = new Edge(bTopRight, aTopRight);
+			edges[5] = new Edge(aTopRight, a.downRight);
+			edges[6] = new Edge(a.downRight, aDownLeft);
+			edges[7] = new Edge(aDownLeft, cDownLeft);
+    		
+		} else if (a.topLeft.getZ() == c.topLeft.getZ() &&
+				a.downRight.getX() == c.downRight.getX() &&
+				a.downRight.getY() == c.downRight.getY()) { //无论是 FRONT_BOOTOM还是LEFT_RIGHT都适用
+			edges[0] = new Edge(a.topLeft, b.topLeft); 
+			edges[1] = new Edge(b.topLeft, bDownLeft);
+			edges[2] = new Edge(bDownLeft, b.downRight);
+			edges[3] = new Edge(b.downRight, cDownLeft);
+			edges[4] = new Edge(cDownLeft, c.downRight);
+			edges[5] = new Edge(c.downRight, a.downRight);
+			edges[6] = new Edge(a.downRight, aDownLeft);
+			edges[7] = new Edge(aDownLeft, a.topLeft);
+		} 
+    	
+    	for (int i = 0; i < edges.length; i++) {
+    		rlt.add(edges[i]);
+		} 
     	return rlt;
     }
 
+    
+    private static ArrayList<Edge> getEdgeListFromTwoRectangles(Rectangle a, Rectangle b, Rectangle c, Rectangle d) {
+    	ArrayList<Edge> rlt = new ArrayList<Edge>();
+    	CoordinateOfPoint aDownLeft = a.getPoint().get(0);  
+    	CoordinateOfPoint bDownLeft = b.getPoint().get(0);  
+    	CoordinateOfPoint cDownLeft = c.getPoint().get(0); 
+    	CoordinateOfPoint dDownLeft = d.getPoint().get(0);
+    	
+    	switch (a.getDirection()) {
+		case 0:
+			
+			break;
+		case 1:
+			
+			break;
+		default:
+			break;
+		}
+    	
+    	Edge edge1 = new Edge(cDownLeft, c.downRight);
+    	Edge edge2 = new Edge(c.downRight, bDownLeft);
+    	Edge edge3 = new Edge(bDownLeft, b.downRight);
+    	Edge edge4 = new Edge(b.downRight, dDownLeft);
+    	Edge edge5 = new Edge(dDownLeft, d.downRight);
+    	Edge edge6 = new Edge(d.downRight, a.downRight);
+    	Edge edge7 = new Edge(a.downRight, aDownLeft);
+    	Edge edge8 = new Edge(aDownLeft, cDownLeft);
+    	
+    	rlt.add(edge1);
+    	rlt.add(edge2);
+    	rlt.add(edge3);
+    	rlt.add(edge4);
+    	rlt.add(edge5);
+    	rlt.add(edge6);
+    	rlt.add(edge7);
+    	rlt.add(edge8);
+    	return rlt;
+    }
     private Edge findNextConnectedEdge(ArrayList<Edge> edges,Edge edge) {
         for(int i=0;i<edges.size();i++) {
             Edge e = edges.get(i);
