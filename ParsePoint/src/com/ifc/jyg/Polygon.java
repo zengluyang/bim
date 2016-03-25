@@ -87,10 +87,19 @@ public class Polygon implements Comparable<Object>{
     }
 
     public Polygon(Rectangle a, Rectangle b) {
-    	
+    	ArrayList<Edge> edges = Polygon.getEdgeListFromTwoRectangles(a, b);
+    	this.setEdgeListAndPointListFromUnorderedEdgeList(edges);    	
     }
-
-    private static ArrayList<Edge> getEdgeListFromTwoRectangle(Rectangle a, Rectangle b) {
+    
+    private static ArrayList<Edge> getEdgeListFromTwoRectangles(Rectangle a, Rectangle b){ 
+    	if(a.isAtTopContainsSmaller(b)) {
+    		return getEdgeListFromBiggerAndSmallerRectangle(a,b);
+    	} else {
+    		return getEdgeListFromBiggerAndSmallerRectangle(b,a);
+    	}
+    }
+    
+    private static ArrayList<Edge> getEdgeListFromBiggerAndSmallerRectangle(Rectangle a, Rectangle b) {
         ArrayList<Edge> rlt = new ArrayList<Edge>();
         if (a.getDirection() !=  b.getDirection()) {
 			return rlt;
@@ -111,7 +120,10 @@ public class Polygon implements Comparable<Object>{
 						rlt.add(newEdge);
 					}
 				} 
-			} 
+			}
+			if(rlt.size()==0 ) {
+				System.out.println("getEdgeListFromBiggerAndSmallerRectangle error!");
+			}
          
         } 
         return rlt;

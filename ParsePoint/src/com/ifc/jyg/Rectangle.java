@@ -139,11 +139,11 @@ public class Rectangle implements Comparable<Object> {
 		return listEdges;
  
 	}
-	private boolean isAtTopContainedByBigger (Rectangle bigger) {
+	public boolean isAtTopContainedByBigger (Rectangle bigger) {
 		return Rectangle.isBiggerContainsSmaller(bigger,this);
 	}
 	
-	private boolean isAtTopContainsSmaller(Rectangle smaller) {
+	public boolean isAtTopContainsSmaller(Rectangle smaller) {
 		return Rectangle.isBiggerContainsSmaller(this,smaller);
 	}
 	 
