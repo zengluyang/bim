@@ -12,14 +12,33 @@ public class Polygon implements Comparable<Object>{
 
     @Override
     public int compareTo(Object o) {
-        return 0;
+        if (this == o) {
+            return 0;
+        } else if (o != null && o instanceof Polygon) {
+            Polygon poly = (Polygon) o;
+            if(this.pointList.size()<poly.pointList.size()) {
+                return -1;
+            } else if(this.pointList.size()==poly.pointList.size()) {
+                for(int i=0;i<this.pointList.size();i++) {
+                    if(this.pointList.get(i).compareTo(poly.pointList.get(i))<0) {
+                        return -1;
+                    } else if(this.pointList.get(i).compareTo(poly.pointList.get(i))==0) {
+                        continue;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return 1;
     }
 
     public Polygon(ArrayList<Edge> edges) {
         this.setEdgeListAndPointListFromUnorderedEdgeList(edges);
 
     }
-    
+
     private void setEdgeListAndPointListFromUnorderedEdgeList(ArrayList<Edge> edges) {
         Edge first = edges.get(0);
         edges.remove(0);
