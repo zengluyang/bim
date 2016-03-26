@@ -121,7 +121,8 @@ public class Rectangle implements Comparable<Object> {
 					Integer direction  = e.getDirection();
 					TreeMap<CoordinateOfPoint,ArrayList<Edge>> doubleEdgeSet = intDoubleEdgeSet.get(direction);
 					if(direction==null) {
-						System.out.println("contrunctPolygonsUsingBigRectangleAndSmallRectangles error");
+						//System.out.println("contrunctPolygonsUsingBigRectangleAndSmallRectangles error");
+						break;
 					}
 					CoordinateOfPoint axisValue = e.getAxisValue();
 					if(!doubleEdgeSet.containsKey(axisValue)) {

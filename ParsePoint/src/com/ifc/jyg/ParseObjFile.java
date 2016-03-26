@@ -165,6 +165,9 @@ public class ParseObjFile {
 		}  
 //		System.out.println("triangleNumberList size:" + triangleNumberList.size() + 
 //						" listCuboids size:" + listCuboids.size() );
+		for(CoordinateOfPoint p:listPoints) {
+			System.out.println(String.format("v %f %f %f",p.getX(),p.getY(),p.getZ()));
+		}
 		return listCuboids;
 	}
 	
@@ -179,6 +182,15 @@ public class ParseObjFile {
 				int a = markLocation.getA()-1;
 				int b = markLocation.getB()-1;
 				int c = markLocation.getC()-1;
+ 				if(listPoints.get(a).compareTo(listPoints.get(b))==0) {
+					break;
+				}
+				if(listPoints.get(b).compareTo(listPoints.get(c))==0) {
+				 	break;
+				}
+				if(listPoints.get(a).compareTo(listPoints.get(c))==0) {
+					break;
+				}
 				Triangle triangle = new Triangle(listPoints.get(a), listPoints.get(b), listPoints.get(c));
 				listTriangles.add(triangle);
 //				System.out.println("" +( a + 1) + " " + (b+1) + " " + (c+1)); 
@@ -217,7 +229,7 @@ public class ParseObjFile {
 		}
 		ArrayList<Edge> listNewEdges = new ArrayList<Edge>(); 
 		if(dmeMap.size()!=2) {
-			System.out.println("dmeMap.size()!=2 error!");
+			System.out.println(";dmeMap.size()!=2 error!");
 		}
 		Double lowerZ=0.0;
 		Double higherZ=0.0;
