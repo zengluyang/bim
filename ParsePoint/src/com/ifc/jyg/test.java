@@ -15,14 +15,11 @@ public class test {
 
 	private static BufferedWriter bw = null;
 	public static void main(String[] args) throws IOException {
-		ParseObjFile parseObjFile = new ParseObjFile("E:\\IFC\\IFCFile\\whole.obj");
-		//bw = new BufferedWriter(new FileWriter("E:\\IFC\\objFile\\Whole1.obj"));
+		ParseObjFile parseObjFile = new ParseObjFile("E:\\IFC\\IFCFile\\YD_S_B04_1F.obj");
 		Map<Double, ArrayList<Triangle>> samevalueMap = new HashMap<>();
 		IntersectRectangle ir = new IntersectRectangle();  
 		ArrayList<Cuboid> listCuboids = parseObjFile.getCuboid(); 
-		//System.out.println("test : "  + dmeMap.size());
 
-		//System.out.println("listCuboids.size() : " +listCuboids.size());
 		for (int j = 0; j < listCuboids.size(); j++) {
 			Cuboid cuboid = listCuboids.get(j);
 			//System.out.println("ID: " + cuboid.getCuboidID() + " type : " + cuboid.getType());
@@ -39,24 +36,21 @@ public class test {
 					}
 				}
 			}
-//			bw.write("ID: " + cuboid.getCuboidID() + " type : " + cuboid.getType());
-//			bw.newLine();
-			TreeSet<CoordinateOfPoint> treeSetCop = cuboid.getPoint();
-			Iterator<CoordinateOfPoint> iterator = treeSetCop.iterator(); 
-			while (iterator.hasNext()) {
-				CoordinateOfPoint cp = (CoordinateOfPoint) iterator.next();
-				//System.out.println(cp.toString());
-//				bw.write(cp.toString());
-//				bw.newLine();
-//				bw.flush();
-			}
-			//bw.newLine();
-			//System.out.println();
 		}
-		//obtain.test();
-		//ir.test();
+
+		ArrayList<Polyhedron> ps = parseObjFile.getSlabPolys();
+		int slabNeededRecCnt = 0;
+		for (Polyhedron p:ps) {
+			ArrayList<Rectangle> recs = p.getNeededRectangles();
+			for(Rectangle r:recs) {
+				ir.addRectangleTogether(r);
+				slabNeededRecCnt++;
+			}
+
+		}
+
 		Map<Map<Rectangle, Rectangle>, String> testMap = ir.getIntersectMap();
-		
+
 		System.out.println("testMap.size() : " + testMap.size());
 		int cnt = 0;
 		for (Map<Rectangle, Rectangle> rectMap : testMap.keySet()) {
@@ -77,8 +71,6 @@ public class test {
 			}
 		}
 		System.out.println(cnt);
-		ArrayList<Polyhedron> ps = parseObjFile.getSlabPolys();
-		System.out.println(ps);
 		//bw.close();
 	}
 }

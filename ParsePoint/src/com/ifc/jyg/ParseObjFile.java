@@ -30,7 +30,15 @@ public class ParseObjFile {
 	public ParseObjFile(String fileName) {
 		this.fileName = fileName;
 	}
-	
+
+
+	/*
+		COL_____
+		BEA_____
+		__:___				poly slab
+		__:_____-_			cuboid slab
+
+	 */
 	private void initObjParameter() {
 		File file = new File(fileName);
 		try {

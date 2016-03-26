@@ -97,11 +97,11 @@ public class Cuboid {
 		case BEAM:
 		{
 			rlt = new TreeSet<Rectangle>();
-			Rectangle recDown = new Rectangle(this.downTopLeft,this.downDownRight,Rectangle.UP_DOWN); 
-			Rectangle recLeft = new Rectangle(this.topDownLeft,this.downTopLeft,Rectangle.LEFT_RIGHT); 
-			Rectangle recRight = new Rectangle(this.topDownRight,this.downTopRight,Rectangle.LEFT_RIGHT);
-			Rectangle recFront = new Rectangle(this.topDownLeft,this.downDownRight,Rectangle.FRONT_BOOTOM);
-			Rectangle recBottom = new Rectangle(this.topTopLeft,this.downTopRight, Rectangle.FRONT_BOOTOM);
+			Rectangle recDown = new Rectangle(this.downTopLeft,this.downDownRight);
+			Rectangle recLeft = new Rectangle(this.topDownLeft,this.downTopLeft);
+			Rectangle recRight = new Rectangle(this.topDownRight,this.downTopRight);
+			Rectangle recFront = new Rectangle(this.topDownLeft,this.downDownRight);
+			Rectangle recBottom = new Rectangle(this.topTopLeft,this.downTopRight);
 			rlt.add(recBottom);
 			rlt.add(recLeft);
 			rlt.add(recRight);
@@ -112,10 +112,10 @@ public class Cuboid {
 		case COLUMN:
 		{
 			rlt = new TreeSet<Rectangle>();
-			Rectangle recFront = new Rectangle(this.topDownLeft,this.downDownRight,Rectangle.FRONT_BOOTOM); 
-			Rectangle recBottom = new Rectangle(this.topTopLeft,this.downTopRight, Rectangle.FRONT_BOOTOM); 
-			Rectangle recRight = new Rectangle(this.topDownRight,this.downTopRight, Rectangle.LEFT_RIGHT);
-			Rectangle recLeft= new Rectangle(this.topDownLeft,this.downTopLeft,Rectangle.LEFT_RIGHT);
+			Rectangle recFront = new Rectangle(this.topDownLeft,this.downDownRight);
+			Rectangle recBottom = new Rectangle(this.topTopLeft,this.downTopRight);
+			Rectangle recRight = new Rectangle(this.topDownRight,this.downTopRight);
+			Rectangle recLeft= new Rectangle(this.topDownLeft,this.downTopLeft);
 			rlt.add(recFront);
 			rlt.add(recBottom);
 			rlt.add(recLeft);

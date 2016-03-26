@@ -14,6 +14,9 @@ public class Rectangle implements Comparable<Object> {
 	
 	public CoordinateOfPoint topLeft;
 	public CoordinateOfPoint downRight;
+	private CoordinateOfPoint topRight;
+	private CoordinateOfPoint downLeft;
+
 	private int direction = 0;
 	private double area = 0.0;
 	
@@ -30,17 +33,47 @@ public class Rectangle implements Comparable<Object> {
 		} else {
 			System.out.println("Rectangle(CoordinateOfPoint topLeft, CoordinateOfPoint downRight) error!");
 		}
+		this.topRight = new CoordinateOfPoint();
+		this.downLeft = new CoordinateOfPoint();
+		switch (this.direction) {
+			case FRONT_BOOTOM:
+				this.topRight.setX(this.topLeft.getX());
+				this.topRight.setY(this.downRight.getY());
+				this.topRight.setZ(this.topLeft.getZ());
+				this.downLeft.setX(this.topLeft.getX());
+				this.downLeft.setY(this.topLeft.getY());
+				this.downLeft.setZ(this.downRight.getZ());
+				break;
+			case LEFT_RIGHT:
+				this.topRight.setX(this.downRight.getX());
+				this.topRight.setY(this.topLeft.getY());
+				this.topRight.setZ(this.topLeft.getZ());
+				this.downLeft.setX(this.topLeft.getX());
+				this.downLeft.setY(this.topLeft.getY());
+				this.downLeft.setZ(this.downRight.getZ());
+				break;
+			case UP_DOWN:
+				this.topRight.setX(this.topLeft.getX());
+				this.topRight.setY(this.downRight.getY());
+				this.topRight.setZ(this.topLeft.getZ());
+				this.downLeft.setX(this.downRight.getX());
+				this.downLeft.setY(this.topLeft.getY());
+				this.downLeft.setZ(this.downRight.getZ());
+				break;
+			default:
+				break;
+		}
 	}
 	
-
-	public Rectangle(CoordinateOfPoint topLeft,
-			CoordinateOfPoint downRight,int direction) {
-		super();
-		this.direction = direction;
-		this.topLeft = topLeft;
-		this.downRight = downRight;
-	}
-	
+//
+//	public Rectangle(CoordinateOfPoint topLeft,
+//			CoordinateOfPoint downRight,int direction) {
+//		super();
+//		this.direction = direction;
+//		this.topLeft = topLeft;
+//		this.downRight = downRight;
+//	}
+//
 	public static boolean  isValid(CoordinateOfPoint a,CoordinateOfPoint b,CoordinateOfPoint c, CoordinateOfPoint d) {
 		return true;
 	}
@@ -130,32 +163,10 @@ public class Rectangle implements Comparable<Object> {
 	 */
 	public ArrayList<Edge> getEdges() {
 		ArrayList<Edge> listEdges = new ArrayList<Edge>();
-		CoordinateOfPoint topRight = new CoordinateOfPoint();
-		CoordinateOfPoint DownLeft = new CoordinateOfPoint();
-		switch (direction) {
-		case 0:
-			topRight.setX(this.topLeft.getX());
-			topRight.setY(this.downRight.getY());
-			topRight.setZ(this.topLeft.getZ());				
-			DownLeft.setX(this.topLeft.getX());
-			DownLeft.setY(this.topLeft.getY());
-			DownLeft.setZ(this.downRight.getZ()); 
-			break;
-		case 1:
-			topRight.setX(this.downRight.getX());
-			topRight.setY(this.topLeft.getY());
-			topRight.setZ(this.topLeft.getZ());
-			DownLeft.setX(this.topLeft.getX());
-			DownLeft.setY(this.topLeft.getY());
-			DownLeft.setZ(this.downRight.getZ());			
-			break;
-		default:
-			break;
-		}
-		listEdges.add(new Edge(this.topLeft, topRight));
-		listEdges.add(new Edge(topRight, this.downRight));
-		listEdges.add(new Edge(this.downRight, DownLeft));
-		listEdges.add(new Edge(DownLeft, this.topLeft)); 
+		listEdges.add(new Edge(this.topLeft, this.topRight));
+		listEdges.add(new Edge(this.topRight, this.downRight));
+		listEdges.add(new Edge(this.downRight, this.downLeft));
+		listEdges.add(new Edge(this.downLeft, this.topLeft));
 		return listEdges; 
 	}
 	
@@ -167,16 +178,16 @@ public class Rectangle implements Comparable<Object> {
 		case 0:
 //			topRight.setX(this.topLeft.getX());
 //			topRight.setY(this.downRight.getY());
-//			topRight.setZ(this.topLeft.getZ());				
+//			topRight.setZ(this.topLeft.getZ());
 			DownLeft.setX(this.topLeft.getX());
 			DownLeft.setY(this.topLeft.getY());
-			DownLeft.setZ(this.downRight.getZ()); 
+			DownLeft.setZ(this.downRight.getZ());
 			break;
 		case 1:
-		 
+
 			DownLeft.setX(this.topLeft.getX());
 			DownLeft.setY(this.topLeft.getY());
-			DownLeft.setZ(this.downRight.getZ());			
+			DownLeft.setZ(this.downRight.getZ());
 			break;
 		default:
 			break;
@@ -201,6 +212,156 @@ public class Rectangle implements Comparable<Object> {
 		}
 		return false;
 	}
+
+	/*
+	return true if the point p is on any edges of this rectangle.
+	 */
+	public boolean isByPointOnEdges(CoordinateOfPoint p) {
+		return this.containsPoint(p)==0;
+	}
+
+	public boolean containsBySmallerOnCorner (Rectangle smaller) {
+		return false;
+	}
+
+	public boolean isIntersectByAnotherRectangle (Rectangle r) {
+		if(this.containsPoint(r.topLeft)>=0) {
+			return true;
+		}
+		if(this.containsPoint(r.topRight)>=0) {
+			return true;
+		}
+		if(this.containsPoint(r.downLeft)>=0) {
+			return true;
+		}
+		if(this.containsPoint(r.downRight)>=0) {
+			return true;
+		}
+		return false;
+	}
+
+	public int compareByConataination() {
+		return 1;
+	}
+
+	public static ArrayList<Polygon> generateFormBiggerAndSmallers (Rectangle bigger, ArrayList<Rectangle> smallers) {
+		ArrayList<Polygon> rlt= new ArrayList<Polygon>();
+		return rlt;
+	}
+
+	public static void testIsIntersectByAnotherRectangle() {
+
+		CoordinateOfPoint tb = new CoordinateOfPoint(0,0,0);
+		CoordinateOfPoint db = new CoordinateOfPoint(5,5,0);
+		Rectangle Bigger = new Rectangle(tb,db);
+
+		CoordinateOfPoint ts1 = new CoordinateOfPoint(0,3,0);
+		CoordinateOfPoint ds1 = new CoordinateOfPoint(2,5,0);
+		Rectangle Smaller1 = new Rectangle(ts1,ds1);
+		System.out.println("Bigger.testIsIntersectByAnotherRectangle(Smaller1) " + Bigger.isIntersectByAnotherRectangle(Smaller1));
+
+	}
+
+	private int onEdgeByPointsOfAnotherRectangleCount (Rectangle r) {
+		int rlt = 0;
+		if(this.isByPointOnEdges(r.topLeft)) {
+			rlt++;
+		}
+		if(this.isByPointOnEdges(r.topRight)) {
+			rlt++;
+		}
+		if(this.isByPointOnEdges(r.downLeft)) {
+			rlt++;
+		}
+		if(this.isByPointOnEdges(r.downRight)) {
+			rlt++;
+		}
+		return rlt;
+	}
+
+
+
+	static {
+//		testContainsPoint();
+		testOnEdgeByPointsOfAnotherRectangleCount();
+		testIsIntersectByAnotherRectangle();
+	}
+
+
+	public static void testOnEdgeByPointsOfAnotherRectangleCount() {
+
+		CoordinateOfPoint tb = new CoordinateOfPoint(0,0,0);
+		CoordinateOfPoint db = new CoordinateOfPoint(5,5,0);
+		Rectangle Bigger = new Rectangle(tb,db);
+
+		CoordinateOfPoint ts1 = new CoordinateOfPoint(0,3,0);
+		CoordinateOfPoint ds1 = new CoordinateOfPoint(2,5,0);
+		Rectangle Smaller1 = new Rectangle(ts1,ds1);
+		System.out.println("Bigger.onEdgeByPointsOfAnotherRectangleCount(Smaller1) " + Bigger.onEdgeByPointsOfAnotherRectangleCount(Smaller1));
+
+	}
+
+
+	/*
+	if rec contains point return, 1
+	if point is on any of the edges for the rec, return 0
+	if rec does not contain point (point is outside of the rec) return -1
+	 */
+	private int containsPoint(CoordinateOfPoint p) {
+		switch (this.direction) {
+			case FRONT_BOOTOM:
+				if(p.getX()==this.topLeft.getX()) {
+					if(p.getY()>this.topLeft.getY() && p.getY()<this.downRight.getY() && p.getZ()<this.topLeft.getZ() && p.getZ()>this.downRight.getZ()) {
+						return 1;
+					} else if(p.getY()==this.topLeft.getY() || p.getY()==this.downRight.getY() || p.getZ()==this.topLeft.getZ() || p.getZ()==this.downRight.getZ()) {
+						return 0;
+					}
+				}
+				break;
+			case LEFT_RIGHT:
+				if(p.getY()==this.topLeft.getY()) {
+					if(p.getX()<this.topLeft.getX() && p.getX()>this.downRight.getX() && p.getZ()>this.topLeft.getZ() && p.getZ()>this.downRight.getZ())  {
+						return 1;
+					} else if(p.getX()==this.topLeft.getX() || p.getX()==this.downRight.getX() || p.getZ()==this.topLeft.getZ() || p.getZ()==this.downRight.getZ())  {
+						return 0;
+					}
+				}
+				break;
+			case UP_DOWN:
+				if(p.getZ()==this.topLeft.getZ()) {
+					if(p.getY()>this.topLeft.getY() && p.getY()<this.downRight.getY() && p.getX()>this.topLeft.getX() && p.getX()<this.downRight.getX() ) {
+						return 1;
+					} else if(p.getY()==this.topLeft.getY() || p.getY()==this.downRight.getY() || p.getX()==this.topLeft.getX() || p.getX()==this.downRight.getX()) {
+						return 0;
+					}
+				}
+				break;
+			default:
+				break;
+		}
+		return -1;
+	}
+
+	public static void testContainsPoint() {
+		CoordinateOfPoint t = new CoordinateOfPoint(0,0,0);
+		CoordinateOfPoint d = new CoordinateOfPoint(5,5,0);
+		Rectangle A = new Rectangle(t,d);
+		CoordinateOfPoint p1 = new CoordinateOfPoint(0,2,0);
+		System.out.println("testContainsPoint " + A.containsPoint(p1));
+
+		CoordinateOfPoint t2 = new CoordinateOfPoint(5,0,5);
+		CoordinateOfPoint d2 = new CoordinateOfPoint(0,0,0);
+		Rectangle A2 = new Rectangle(t2,d2);
+		CoordinateOfPoint p2 = new CoordinateOfPoint(2,0,5);
+		System.out.println("testContainsPoint " + A2.containsPoint(p2));
+
+		CoordinateOfPoint t3 = new CoordinateOfPoint(0,0,5);
+		CoordinateOfPoint d3 = new CoordinateOfPoint(0,5,0);
+		Rectangle A3 = new Rectangle(t3,d3);
+		CoordinateOfPoint p3 = new CoordinateOfPoint(0,2,2);
+		System.out.println("testContainsPoint " + A3.containsPoint(p3));
+	}
+
 	public double getIntersectvalue() {
 		double value = 0.0;
 		switch (direction) {
