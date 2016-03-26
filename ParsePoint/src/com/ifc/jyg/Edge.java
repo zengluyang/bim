@@ -95,9 +95,13 @@ public class Edge implements Comparable<Object>{
 	public static ArrayList<Edge> getNewEgdesFromTwoEdges(Edge longer, Edge shorter){
 		ArrayList<Edge> rlt = new ArrayList<>(); 
 		if(longer.direction!=shorter.direction) {
+			rlt.add(longer);
+			rlt.add(shorter);
 			return rlt;
 		}
 		if(!Edge.isOnSameAxis(longer, shorter)) {
+			rlt.add(longer);
+			rlt.add(shorter);
 			return rlt;
 		}
 		CoordinateOfPoint a = longer.first;
@@ -257,6 +261,39 @@ public class Edge implements Comparable<Object>{
 	 
 	public CoordinateOfPoint getSecondPoint() {
 		return second;
+	}
+
+	/*
+		A = [2 3];
+		B = [4 5];
+		plot(A,B,'*')
+		axis([0 10 0 10])
+		hold on
+		line(A,B)
+		hold off
+	 */
+
+//	static  {
+//		testtoMatlab2D();
+//	}
+
+	public static void testtoMatlab2D() {
+
+		CoordinateOfPoint A = new CoordinateOfPoint(0,0,0);
+		CoordinateOfPoint B = new CoordinateOfPoint(20,10,0);
+		Edge ab = new Edge(A,B);
+		System.out.println("testtoMatlab2D "+ab.toMatlab2D(Polygon.UP_DOWN));
+	}
+
+	public String toMatlab2D(int direction) {
+		StringBuilder sb = new StringBuilder();
+		String p1 = this.first.toMatlab2D(direction);
+		String p2 = this.second.toMatlab2D(direction);
+		sb.append(p1).append("\n").append(p2).append("\n");
+		//sb.append(String.format("plot(%s,%s,'*');",this.first.toMatlab2DVarName(),this.second.toMatlab2DVarName())).append("\n");
+		sb.append("hold on").append("\n");
+		sb.append(String.format("line([%s(1),%s(1)],[%s(2),%s(2)]);",this.first.toMatlab2DVarName(),this.second.toMatlab2DVarName(),this.first.toMatlab2DVarName(),this.second.toMatlab2DVarName())).append("\n");
+		return sb.toString();
 	}
 
 //	public static void testgetNewEgdesFromThisAndThatEdges() {

@@ -105,6 +105,45 @@ public class CoordinateOfPoint implements Comparable<Object>{
 		return sb.toString();
 	}
 
+	public String toMatlab() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[").append(x).append(",").append(y).append(",").append(z).append("]");
+		return sb.toString();
+	}
+
+	public String toMatlab2D (int direction) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("point").append(this.hashCode()).append("=");
+		switch (direction) {
+			case Polygon.FRONT_BOOTOM:
+				sb.append("[").append(y).append(",").append(z).append("]");
+				break;
+			case Polygon.LEFT_RIGHT:
+				sb.append("[").append(x).append(",").append(z).append("]");
+				break;
+			case Polygon.UP_DOWN:
+				sb.append("[").append(x).append(",").append(y).append("]");
+				break;
+		}
+		sb.append(";");
+		return sb.toString();
+	}
+
+	public String toMatlab2DVarName() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("point").append(this.hashCode());
+		return sb.toString();
+	}
+
+//	static {
+//		testtoMatlab2D();
+//	}
+
+	public static void testtoMatlab2D() {
+		CoordinateOfPoint point = new CoordinateOfPoint(5,5,5);
+		System.out.println("testtoMatlab2D "+point.toMatlab2D(Polygon.UP_DOWN));
+	}
+
 	@Override
 	public int compareTo(Object o) {
 		

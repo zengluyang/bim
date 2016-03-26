@@ -42,9 +42,30 @@ public class Polygon implements Comparable<Object>{
     }
 
     public Polygon(ArrayList<Edge> edges) {
-        this.direction = UP_DOWN;
         this.setEdgeListAndPointListFromUnorderedEdgeList(edges);
+        boolean isUpDown = true;
+        boolean isLeftRight = true;
+        boolean isFrontBottom = true;
 
+        for(Edge e:this.edgeList) {
+            if(e.getDirection()==Edge.Z_AXIS) {
+                isUpDown = false;
+            } else if(e.getDirection()==Edge.Y_AXIS) {
+                isLeftRight = false;
+            } else if(e.getDirection()==Edge.X_AXIS) {
+                isFrontBottom = false;
+            }
+        }
+
+        if(isUpDown) {
+            this.direction=UP_DOWN;
+        } else if(isLeftRight) {
+            this.direction=LEFT_RIGHT;
+        } else if(isFrontBottom) {
+            this.direction=FRONT_BOOTOM;
+        } else {
+            System.out.println(" Polygon(ArrayList<Edge> edges) direction error!");
+        }
     }
 
     private void setEdgeListAndPointListFromUnorderedEdgeList(ArrayList<Edge> edges) {
@@ -105,6 +126,36 @@ public class Polygon implements Comparable<Object>{
         sb.append("Polygon :\n Edges: \n");
         for(Edge e: edgeList) {
             sb.append("\t").append(e);
+        }
+        sb.append("\n");
+        return sb.toString();
+    }
+//
+//    static {
+//        testtoMatlab2D();
+//    }
+    public static void testtoMatlab2D() {
+        CoordinateOfPoint p1 = new CoordinateOfPoint(0, 0, 0);
+        CoordinateOfPoint p2 = new CoordinateOfPoint(5, 0, 0);
+        CoordinateOfPoint p3 = new CoordinateOfPoint(5, 5, 0);
+        CoordinateOfPoint p4 = new CoordinateOfPoint(0, 5, 0);
+        Edge e12 = new Edge(p1,p2);
+        Edge e34 = new Edge(p3,p4);
+        Edge e14 = new Edge(p1,p4);
+        Edge e23 = new Edge(p2,p3);
+        ArrayList<Edge> es = new ArrayList<Edge>();
+        es.add(e12);
+        es.add(e34);
+        es.add(e14);
+        es.add(e23);
+        Polygon p = new Polygon(es);
+        System.out.print(p.toMatlab2D()+"\n");
+    }
+
+    public String toMatlab2D() {
+        StringBuilder sb = new StringBuilder();
+        for(Edge e : this.edgeList) {
+            sb.append(e.toMatlab2D(this.direction));
         }
         sb.append("\n");
         return sb.toString();
@@ -290,7 +341,7 @@ public class Polygon implements Comparable<Object>{
     		
 		} else if (a.topLeft.getZ() == c.topLeft.getZ() &&
 				a.downRight.getX() == c.downRight.getX() &&
-				a.downRight.getY() == c.downRight.getY()) { //ÎÞÂÛÊÇ FRONT_BOOTOM»¹ÊÇLEFT_RIGHT¶¼ÊÊÓÃ
+				a.downRight.getY() == c.downRight.getY()) { //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ FRONT_BOOTOMï¿½ï¿½ï¿½ï¿½LEFT_RIGHTï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			edges[0] = new Edge(a.topLeft, b.topLeft); 
 			edges[1] = new Edge(b.topLeft, bDownLeft);
 			edges[2] = new Edge(bDownLeft, b.downRight);
