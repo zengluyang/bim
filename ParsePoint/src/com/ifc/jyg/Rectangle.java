@@ -14,10 +14,13 @@ public class Rectangle implements Comparable<Object> {
 	public CoordinateOfPoint downRight;
 	public CoordinateOfPoint topRight;
 	public CoordinateOfPoint downLeft;
-
+	public String Id;
 	private int direction = 0;
 	private double area = 0.0;
-	
+	public Rectangle(CoordinateOfPoint topLeft, CoordinateOfPoint downRight, String Id) {
+		this(topLeft,downRight);
+		this.Id = Id;
+	}
 	public Rectangle(CoordinateOfPoint topLeft, CoordinateOfPoint downRight) {
 		super();
 		this.topLeft = topLeft;
@@ -151,8 +154,32 @@ public class Rectangle implements Comparable<Object> {
 				edges = localEdges;
 			}
 		}
-		Polygon p = new Polygon(new ArrayList<Edge>(edges));
-		rlt.add(p);
+		ArrayList<ArrayList<Edge>> edgeListListRlt = new ArrayList<ArrayList<Edge>> ();
+		for(Edge e:edges) {
+
+			boolean isInsert = false;
+			for(ArrayList<Edge> onePolyEdgeList : edgeListListRlt) {
+				for(Edge onePolyEdge:onePolyEdgeList) {
+					if(Edge.isConnectedByTwoEdges(onePolyEdge,e)) {
+						isInsert = true;
+						break;
+					}
+				}
+				if(isInsert) {
+					onePolyEdgeList.add(e);
+				}
+			}
+			if(!isInsert) {
+				ArrayList<Edge> onePolyEdgeList = new ArrayList<Edge>();
+				onePolyEdgeList.add(e);
+				edgeListListRlt.add(onePolyEdgeList);
+			}
+		}
+		for(ArrayList<Edge> onePolyEdgeList:edgeListListRlt) {
+			Polygon p = new Polygon(onePolyEdgeList,bigRec.Id);
+			rlt.add(p);
+		}
+
 		return rlt;
 	}
 	
@@ -254,10 +281,10 @@ public class Rectangle implements Comparable<Object> {
 	 */
 	public ArrayList<Edge> getEdges() {
 		ArrayList<Edge> listEdges = new ArrayList<Edge>();
-		listEdges.add(new Edge(this.topLeft, this.topRight));
-		listEdges.add(new Edge(this.topRight, this.downRight));
-		listEdges.add(new Edge(this.downRight, this.downLeft));
-		listEdges.add(new Edge(this.downLeft, this.topLeft));
+		listEdges.add(new Edge(this.topLeft, 	this.topRight,	this.Id));
+		listEdges.add(new Edge(this.topRight, 	this.downRight,	this.Id));
+		listEdges.add(new Edge(this.downRight, 	this.downLeft,	this.Id));
+		listEdges.add(new Edge(this.downLeft, 	this.topLeft,	this.Id));
 		return listEdges; 
 	}
 	

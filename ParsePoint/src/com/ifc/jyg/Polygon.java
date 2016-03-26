@@ -13,6 +13,7 @@ public class Polygon implements Comparable<Object>{
     public final static int  UP_DOWN = 2;
     public final static String[] directionString = {"FRONT_BOOTOM","LEFT_RIGHT","UP_DOWN"};
 
+    public String Id;
     private ArrayList<CoordinateOfPoint> pointList = new ArrayList<CoordinateOfPoint>();
     private ArrayList<Edge> edgeList = new ArrayList<Edge>();
     private int direction = 0;
@@ -41,6 +42,11 @@ public class Polygon implements Comparable<Object>{
         return 1;
     }
 
+    public Polygon(ArrayList<Edge> edges,String Id) {
+        this(edges);
+        this.Id = Id;
+    }
+
     public Polygon(ArrayList<Edge> edges) {
         this.setEdgeListAndPointListFromUnorderedEdgeList(edges);
         boolean isUpDown = true;
@@ -66,6 +72,8 @@ public class Polygon implements Comparable<Object>{
         } else {
             System.out.println(" Polygon(ArrayList<Edge> edges) direction error!");
         }
+
+        this.Id = this.edgeList.get(0).Id;
     }
 
     private void setEdgeListAndPointListFromUnorderedEdgeList(ArrayList<Edge> edges) {

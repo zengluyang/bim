@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Polyhedron implements Comparable<Object>{
     private Polygon downPolygon;
     private double height;
+    public String Id;
 
     @Override
     public String toString() {

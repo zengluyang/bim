@@ -16,6 +16,9 @@ public class test {
 		System.out.println("listCuboids: " + listCuboids.size());
 		for (int j = 0; j < listCuboids.size(); j++) {
 			Cuboid cuboid = listCuboids.get(j);
+			if(cuboid.getCuboidID()!=null && cuboid.getCuboidID().equals("COL_____:600_x_600mm:566092")) {
+				cuboid.getPoint();
+			}
 //			/System.out.println("ID: " + cuboid.getCuboidID() + " type : " + cuboid.getType());
 			//if(cuboid.getType() != Cuboid.OTHER) {
 				//System.out.println(cuboid.toString());
@@ -25,6 +28,9 @@ public class test {
 					//System.out.println(neededRecs);
 					for(Rectangle r : neededRecs) {
 						ir.addRectangleTogether(r);
+						if(r.Id!=null && r.Id.equals("COL_____:600_x_600mm:566092")){
+							r.toMatlab2d();
+						}
 						//obtain.addRectangleTogether(r); 
 						//System.out.println(r);
 					}
@@ -50,6 +56,7 @@ public class test {
 		//System.out.println("intersectResult "+intersectResult);
 		System.out.println("intersectResult.size() : " + intersectResult.size());
 		int i=0;
+		int total_cnt=0;
 		for(ArrayList<TreeSet<Rectangle>> recSetList:intersectResult) {
 			for(TreeSet<Rectangle> recSet:recSetList) {
 
@@ -59,15 +66,28 @@ public class test {
 //					System.out.println(r.toMatlab2d());
 //				}
 //				System.out.println("%###############\n");
+				total_cnt++;
 				if(recSet.size()==1) {
-
+					recSet.size();
+					Rectangle rec = recSet.first();
+					if(rec.Id!=null && rec.Id.equals("BEA_____:200_x350mm:736737")) {
+						rec.toMatlab2d();
+					}
+					System.out.println(String.format("figure(%d);\n",i));
+					System.out.println(String.format("title('%s %f %s');\n",Rectangle.directionString[rec.getDirection()],rec.getIntersectvalue(),rec.Id));
+					System.out.println(rec.toMatlab2d());
+					System.out.println("%###############\n");
 				} else {
+					Rectangle rec = recSet.first();
+					if(rec.Id!=null && rec.Id.equals("COL_____:600_x_600mm:566092")) {
+						rec.toMatlab2d();
+					}
 					i++;
 					Rectangle big = recSet.pollFirst();
-					System.out.println(String.format("figure(%d);\n",i));
-					System.out.println(String.format("title('%s %f');\n",Rectangle.directionString[big.getDirection()],big.getIntersectvalue()));
 					ArrayList<Polygon> polygons = Rectangle.contrunctPolygonsUsingBigRectangleAndSmallRectangles(big, new ArrayList<Rectangle>(recSet));
 					for(Polygon p: polygons) {
+						System.out.println(String.format("figure(%d);\n",i));
+						System.out.println(String.format("title('%s %f %s');\n",Rectangle.directionString[big.getDirection()],big.getIntersectvalue(),p.Id));
 						System.out.println(p.toMatlab2D());
 					}
 					System.out.println("%###############\n");
@@ -76,5 +96,6 @@ public class test {
 			}
 			System.out.println("%!!!!!!!!!!!!!!!!!\n");
 		}
+		System.out.println("%total_cnt "+total_cnt);
 	}
 }

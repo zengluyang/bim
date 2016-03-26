@@ -91,7 +91,7 @@ public class ParseObjFile {
 					cuboidNumber = 0;
 					content = line.split(" ");
 					ID = content[1];
-					type = 0;		//Beam 
+					type = 0;		//Beam
 					if (isSlabType && triangleNumber != 0) { 
 						triangleNumberList.add(triangleNumber); 
 						isSlabType = false; 
@@ -134,17 +134,35 @@ public class ParseObjFile {
 					listPoints.add(point); 
 					cuboidNumber++;
 					i++;
-				} else if (line.startsWith("f ")) {	//锟斤拷取锟斤拷应锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷伪锟绞�
-					
-					if (cuboidNumber == 8) {	//not poly Slab   
+				} else if (line.startsWith("usemt")) {
+
+					if (cuboidNumber == 8) {	//not poly Slab
 						Cuboid cuboid = new Cuboid(ID, type);
+						if(ID.equals("COL_____:600_x_600mm:566092")) {
+							System.out.println("");
+						}
 						for (int j = 8; j > 0; j--) {
 							cuboid.addPoint(listPoints.get(i - j));
 							cuboid.setType(type);
-						} 
+						}
 						cuboid.assignPoints();
 						listCuboids.add(cuboid);
-					} else if (cuboidNumber > 8) { 
+					}
+				} else if (line.startsWith("f ")) {	//锟斤拷取锟斤拷应锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷伪锟绞�
+					
+//					if (cuboidNumber == 8) {	//not poly Slab
+//						Cuboid cuboid = new Cuboid(ID, type);
+////						if(ID.equals("COL_____:200_x_200mm:736731")) {
+////							System.out.println("");
+////						}
+//						for (int j = 8; j > 0; j--) {
+//							cuboid.addPoint(listPoints.get(i - j));
+//							cuboid.setType(type);
+//						}
+//						cuboid.assignPoints();
+//						listCuboids.add(cuboid);
+//					} else
+					if (cuboidNumber > 8) {
 						isSlabType = true;
 						String[] location = line.split(" ");
 						int a = Integer.parseInt(location[1].split("//")[0]);
@@ -165,13 +183,13 @@ public class ParseObjFile {
 		}  
 //		System.out.println("triangleNumberList size:" + triangleNumberList.size() + 
 //						" listCuboids size:" + listCuboids.size() );
-		for(CoordinateOfPoint p:listPoints) {
-			System.out.println(String.format("v %f %f %f",p.getX(),p.getY(),p.getZ()));
-		}
+//		for(CoordinateOfPoint p:listPoints) {
+//			System.out.println(String.format("v %f %f %f",p.getX(),p.getY(),p.getZ()));
+//		}
 		return listCuboids;
 	}
 	
-	public Map<Integer, ArrayList<Triangle>> getSlabs() {
+	public Map<String, ArrayList<Triangle>> getSlabs() {
 		
 	 
 		for (int i = 0; i < triangleNumberList.size(); i++) {

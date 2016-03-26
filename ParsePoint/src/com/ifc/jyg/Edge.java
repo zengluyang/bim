@@ -15,6 +15,13 @@ public class Edge implements Comparable<Object>{
 	private CoordinateOfPoint first;
 	private CoordinateOfPoint second;
 	private int direction = 0;
+	public String Id;
+
+	public Edge(CoordinateOfPoint first, CoordinateOfPoint second,String Id) {
+		this(first,second);
+		this.Id = Id;
+	}
+
 	public Edge(CoordinateOfPoint first, CoordinateOfPoint second) {
 		super();
 		if (first.compareTo(second) == 0) {
@@ -53,6 +60,23 @@ public class Edge implements Comparable<Object>{
 			} 
 		}
 		return 1; 
+	}
+
+	/*
+		when return true a is connetec to b
+	 */
+
+	public static boolean compareByConnection (Edge a, Edge b) {
+		if(a.first.compareTo(b.first)==0) {
+			return true;
+		} else if(a.first.compareTo(b.second)==0) {
+			return true;
+		} else if(a.second.compareTo(b.first)==0) {
+			return true;
+		} else if(a.second.compareTo(b.first)==0) {
+			return true;
+		}
+		return false;
 	}
 
 //	static {
