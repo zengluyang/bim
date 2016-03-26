@@ -126,7 +126,15 @@ public class ParseObjFile {
 		} catch (Exception e) {
 			// TODO: handle exception 
 		}  
+<<<<<<< HEAD
 //		System.out.println("listMarkLocations.get(0).getID() :" + listMarkLocations.get(0).getID());
+=======
+//		System.out.println("triangleNumberList size:" + triangleNumberList.size() + 
+//						" listCuboids size:" + listCuboids.size() );
+		for(CoordinateOfPoint p:listPoints) {
+			System.out.println(String.format("v %f %f %f",p.getX(),p.getY(),p.getZ()));
+		}
+>>>>>>> e30560c5ec369d774a40f36160c06821424cb1e1
 		return listCuboids;
 	}
 	
@@ -143,6 +151,15 @@ public class ParseObjFile {
 				int a = markLocation.getA()-1;
 				int b = markLocation.getB()-1;
 				int c = markLocation.getC()-1;
+ 				if(listPoints.get(a).compareTo(listPoints.get(b))==0) {
+					break;
+				}
+				if(listPoints.get(b).compareTo(listPoints.get(c))==0) {
+				 	break;
+				}
+				if(listPoints.get(a).compareTo(listPoints.get(c))==0) {
+					break;
+				}
 				Triangle triangle = new Triangle(listPoints.get(a), listPoints.get(b), listPoints.get(c));
 				listTriangles.add(triangle);
 //				System.out.println("" +( a + 1) + " " + (b+1) + " " + (c+1) + " " + markLocation.getID()); 
@@ -181,9 +198,15 @@ public class ParseObjFile {
 			}
 		}
 		ArrayList<Edge> listNewEdges = new ArrayList<Edge>(); 
+<<<<<<< HEAD
 //		if(dmeMap.size()!=2) {
 //			System.out.println("dmeMap.size()!=2 error!");
 //		}
+=======
+		if(dmeMap.size()!=2) {
+			System.out.println(";dmeMap.size()!=2 error!");
+		}
+>>>>>>> e30560c5ec369d774a40f36160c06821424cb1e1
 		Double lowerZ=0.0;
 		Double higherZ=0.0;
 

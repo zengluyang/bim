@@ -71,7 +71,7 @@ public class IntersectRectangle {
 							}
 							if(
 									biggestContainationRec.compareByConataination(r)==1 ||
-											biggestContainationRec.compareByConataination(r)==0 ||
+											//biggestContainationRec.compareByConataination(r)==0 ||
 											biggestContainationRec.compareByConataination(r)==-1
 									) {
 								recSet.add(r);

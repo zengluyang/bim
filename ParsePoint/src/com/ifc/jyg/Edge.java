@@ -72,7 +72,27 @@ public class Edge implements Comparable<Object>{
 //		}
 //	}
 //
-	
+
+
+	public CoordinateOfPoint getAxisValue() {
+		CoordinateOfPoint rlt = null;
+		switch (this.direction) {
+			case X_AXIS:
+				rlt = new CoordinateOfPoint(this.first.getY(),this.first.getZ(),0);
+				break;
+			case Y_AXIS:
+				rlt = new CoordinateOfPoint(this.first.getX(),this.first.getZ(),0);
+				break;
+			case Z_AXIS:
+				rlt = new CoordinateOfPoint(this.first.getX(),this.first.getY(),0);
+				break;
+			case OTHER:
+			default:
+				System.out.println("ArrayList<Double> getAxisValue error!");
+				break;
+		}
+		return rlt;
+	}
 	
 	public static boolean  isOnSameAxis (Edge a, Edge b) {
 		if(a.direction!=b.direction) {
@@ -154,6 +174,9 @@ public class Edge implements Comparable<Object>{
 		}  else if (D < A) {
 			rlt.add(longer);
 			rlt.add(shorter);
+			return rlt;
+		} else if(A==C && B==D){
+			//rlt.add(longer);
 			return rlt;
 		} else {
 			System.out.println("getNewEgdesFromTwoEdges error! "+longer.getLength()+" "+shorter.getLength());

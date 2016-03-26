@@ -1,8 +1,6 @@
 package com.ifc.jyg;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 public class Rectangle implements Comparable<Object> {
@@ -65,16 +63,96 @@ public class Rectangle implements Comparable<Object> {
 		}
 	}
 
+	static {
+		testcontrunctPolygonsUsingBigRectangleAndSmallRectangles();
+	}
+
+	public static void testcontrunctPolygonsUsingBigRectangleAndSmallRectangles() {
+		CoordinateOfPoint tb = new CoordinateOfPoint(0,0,0);
+		CoordinateOfPoint db = new CoordinateOfPoint(5,5,0);
+		Rectangle Bigger = new Rectangle(tb,db);
+
+		CoordinateOfPoint ts1 = new CoordinateOfPoint(0,3,0);
+		CoordinateOfPoint ds1 = new CoordinateOfPoint(2,5,0);
+		Rectangle Smaller1 = new Rectangle(ts1,ds1);
+		ArrayList<Rectangle> smallRecs = new ArrayList<>();
+		smallRecs.add(Smaller1);
+		System.out.println("contrunctPolygonsUsingBigRectangleAndSmallRectangles(Bigger,Smaller1) " + contrunctPolygonsUsingBigRectangleAndSmallRectangles(Bigger,smallRecs));
+
+		CoordinateOfPoint ta1 = new CoordinateOfPoint(6,6,0);
+		CoordinateOfPoint da1 = new CoordinateOfPoint(7,7,0);
+		Rectangle Away = new Rectangle(ta1,da1);
+	}
+
 	public static ArrayList<Polygon> contrunctPolygonsUsingBigRectangleAndSmallRectangles(Rectangle bigRec, ArrayList<Rectangle> smallRecs) {
 		ArrayList<Polygon> rlt = new ArrayList<Polygon>();
-		ArrayList<Edge> edges;
+		TreeSet<Edge> edges = new TreeSet<Edge>();
 		ArrayList<Edge> bigRecEdges = bigRec.getEdges();
 		Edge A = bigRecEdges.get(0);
 		Edge B = bigRecEdges.get(1);
 		Edge C = bigRecEdges.get(2);
 		Edge D = bigRecEdges.get(3);
 		for(int i=0;i<smallRecs.size();i++) {
+			Rectangle ri = smallRecs.get(i);
+			ArrayList<Edge> esi = ri.getEdges();
+			Edge ai = esi.get(0);
+			Edge bi = esi.get(1);
+			Edge ci = esi.get(2);
+			Edge di = esi.get(3);
+			if(i==0) {
+				ArrayList<Edge> esAai = ai.getNewEgdesFromThisAndThatEdges(A);
+				ArrayList<Edge> esBbi = bi.getNewEgdesFromThisAndThatEdges(B);
+				ArrayList<Edge> esCci = ci.getNewEgdesFromThisAndThatEdges(C);
+				ArrayList<Edge> esDdi = di.getNewEgdesFromThisAndThatEdges(D);
+
+				edges.addAll(esAai);
+				edges.addAll(esBbi);
+				edges.addAll(esCci);
+				edges.addAll(esDdi);
+
+			} else {
+				TreeSet<Edge> localEdges = new TreeSet<Edge>();
+				TreeMap<Integer,TreeMap<CoordinateOfPoint,ArrayList<Edge>>> intDoubleEdgeSet = new TreeMap();
+				intDoubleEdgeSet.put(Edge.X_AXIS,new TreeMap<>());
+				intDoubleEdgeSet.put(Edge.Y_AXIS,new TreeMap<>());
+				intDoubleEdgeSet.put(Edge.Z_AXIS,new TreeMap<>());
+				edges.addAll(ri.getEdges());
+				for(Edge e : edges) {
+					Integer direction  = e.getDirection();
+					TreeMap<CoordinateOfPoint,ArrayList<Edge>> doubleEdgeSet = intDoubleEdgeSet.get(direction);
+					if(direction==null) {
+						//System.out.println("contrunctPolygonsUsingBigRectangleAndSmallRectangles error");
+						break;
+					}
+					CoordinateOfPoint axisValue = e.getAxisValue();
+					if(!doubleEdgeSet.containsKey(axisValue)) {
+						doubleEdgeSet.put(axisValue,new ArrayList<>());
+					}
+					ArrayList<Edge> edgeSet  = doubleEdgeSet.get(axisValue);
+					edgeSet.add(e);
+				}
+
+				for(Integer direction:intDoubleEdgeSet.keySet()) {
+					TreeMap<CoordinateOfPoint,ArrayList<Edge>> doubleEdgeSet = intDoubleEdgeSet.get(direction);
+					for(CoordinateOfPoint axisValue : doubleEdgeSet.keySet()) {
+						ArrayList<Edge> edgeSet  = doubleEdgeSet.get(axisValue);
+						if(edgeSet.size()==1) {
+							localEdges.add(edgeSet.get(0));
+						} else if(edgeSet.size()==2){
+							ArrayList<Edge> es = edgeSet.get(0).getNewEgdesFromThisAndThatEdges(edgeSet.get(1));
+							localEdges.addAll(es);
+						} else {
+							System.out.print("contrunctPolygonsUsingBigRectangleAndSmallRectangles error! not implemented");
+						}
+
+					}
+				}
+
+				edges = localEdges;
+			}
 		}
+		Polygon p = new Polygon(new ArrayList<Edge>(edges));
+		rlt.add(p);
 		return rlt;
 	}
 	
@@ -259,6 +337,12 @@ public class Rectangle implements Comparable<Object> {
 	}
 
 	public int compareByConataination(Rectangle r) {
+		if(this==r) {
+			return 0;
+		}
+		if(this.compareTo(r)==0) {
+			return 0;
+		}
 		if(!this.isIntersectByAnotherRectangle(r)) {
 			return -2;
 		}
@@ -387,10 +471,10 @@ public class Rectangle implements Comparable<Object> {
 					if(p.getY()>this.topLeft.getY() && p.getY()<this.downRight.getY() && p.getZ()<this.topLeft.getZ() && p.getZ()>this.downRight.getZ()) {
 						return 1;
 					} else if(
-						  ( p.getY()==this.topLeft.getY() 	&& p.getZ()<this.topLeft.getZ() && p.getZ()>this.downRight.getZ() )
-						||( p.getY()==this.downRight.getY() && p.getZ()<this.topLeft.getZ() && p.getZ()>this.downRight.getZ() )
-						||( p.getZ()==this.topLeft.getZ() 	&& p.getY()>this.topLeft.getY() && p.getY()<this.downRight.getY() )
-						||( p.getZ()==this.downRight.getZ() && p.getY()>this.topLeft.getY() && p.getY()<this.downRight.getY() )
+						  ( p.getY()==this.topLeft.getY() 	&& p.getZ()<=this.topLeft.getZ() && p.getZ()>=this.downRight.getZ() )
+						||( p.getY()==this.downRight.getY() && p.getZ()<=this.topLeft.getZ() && p.getZ()>=this.downRight.getZ() )
+						||( p.getZ()==this.topLeft.getZ() 	&& p.getY()>=this.topLeft.getY() && p.getY()<=this.downRight.getY() )
+						||( p.getZ()==this.downRight.getZ() && p.getY()>=this.topLeft.getY() && p.getY()<=this.downRight.getY() )
 							){
 						return 0;
 					}
@@ -398,13 +482,13 @@ public class Rectangle implements Comparable<Object> {
 				break;
 			case LEFT_RIGHT:
 				if(p.getY()==this.topLeft.getY()) {
-					if(p.getX()<this.topLeft.getX() && p.getX()>this.downRight.getX() && p.getZ()>this.topLeft.getZ() && p.getZ()>this.downRight.getZ())  {
+					if(p.getX()<this.topLeft.getX() && p.getX()>this.downRight.getX() && p.getZ()<this.topLeft.getZ() && p.getZ()>this.downRight.getZ())  {
 						return 1;
 					} else if(
-						  ( p.getX()==this.topLeft.getX() 	&& p.getZ()>this.topLeft.getZ() && p.getZ()>this.downRight.getZ() )
-						||( p.getX()==this.downRight.getX() && p.getZ()>this.topLeft.getZ() && p.getZ()>this.downRight.getZ() )
-						||( p.getZ()==this.topLeft.getZ() 	&& p.getX()<this.topLeft.getX() && p.getX()>this.downRight.getX())
-						||( p.getZ()==this.downRight.getZ() && p.getX()<this.topLeft.getX() && p.getX()>this.downRight.getX())
+						  ( p.getX()==this.topLeft.getX() 	&& p.getZ()<=this.topLeft.getZ() && p.getZ()>=this.downRight.getZ() )
+						||( p.getX()==this.downRight.getX() && p.getZ()<=this.topLeft.getZ() && p.getZ()>=this.downRight.getZ() )
+						||( p.getZ()==this.topLeft.getZ() 	&& p.getX()<=this.topLeft.getX() && p.getX()>=this.downRight.getX())
+						||( p.getZ()==this.downRight.getZ() && p.getX()<=this.topLeft.getX() && p.getX()>=this.downRight.getX())
 							) {
 						return 0;
 					}
@@ -415,10 +499,10 @@ public class Rectangle implements Comparable<Object> {
 					if(p.getY()>this.topLeft.getY() && p.getY()<this.downRight.getY() && p.getX()>this.topLeft.getX() && p.getX()<this.downRight.getX() ) {
 						return 1;
 					} else if(
-						   ( p.getY()==this.topLeft.getY()		&& p.getX()>this.topLeft.getX() && p.getX()<this.downRight.getX() )
-						|| ( p.getY()==this.downRight.getY()	&& p.getX()>this.topLeft.getX() && p.getX()<this.downRight.getX() )
-						|| ( p.getX()==this.topLeft.getX()		&& p.getY()>this.topLeft.getY() && p.getY()<this.downRight.getY() )
-						|| ( p.getX()==this.downRight.getX()	&& p.getY()>this.topLeft.getY() && p.getY()<this.downRight.getY() )
+						   ( p.getY()==this.topLeft.getY()		&& p.getX()>=this.topLeft.getX() && p.getX()<=this.downRight.getX() )
+						|| ( p.getY()==this.downRight.getY()	&& p.getX()>=this.topLeft.getX() && p.getX()<=this.downRight.getX() )
+						|| ( p.getX()==this.topLeft.getX()		&& p.getY()>=this.topLeft.getY() && p.getY()<=this.downRight.getY() )
+						|| ( p.getX()==this.downRight.getX()	&& p.getY()>=this.topLeft.getY() && p.getY()<=this.downRight.getY() )
 							) {
 						return 0;
 					}

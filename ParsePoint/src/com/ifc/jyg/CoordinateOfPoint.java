@@ -135,9 +135,10 @@ public class CoordinateOfPoint implements Comparable<Object>{
 		return sb.toString();
 	}
 
-//	static {
-//		testtoMatlab2D();
-//	}
+
+	static {
+		//testtoMatlab2D();
+	}
 
 	public static void testtoMatlab2D() {
 		CoordinateOfPoint point = new CoordinateOfPoint(5,5,5);
