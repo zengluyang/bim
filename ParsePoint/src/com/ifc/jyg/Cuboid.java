@@ -31,8 +31,7 @@ public class Cuboid {
 	
 	public void assignPoints() {
 		int i = 0;
-		if(treeSetCop.size() != 8) {
-			//////////////////////
+		if(treeSetCop.size() != 8) { 
 			return ;
 		}
 		
