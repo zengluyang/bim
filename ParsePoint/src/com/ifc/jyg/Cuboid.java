@@ -4,10 +4,11 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class Cuboid {
-	public final static int  BEAM = 0;
-	public final static int  COLUMN = 1;
-	public final static int  SLAB = 2;
-	public final static String[] typeString = {"BEAM","COLUMN","SLAB"};
+	public final static int BEAM = 0;
+	public final static int COLUMN = 1;
+	public final static int CUBOIDSLAB = 2;
+	public final static int POLYSLAB = 3;
+	public final static String[] typeString = {"BEAM","COLUMN","CUBOIDSLAB", "POLYSLAB"};
 	
 	private CoordinateOfPoint topTopLeft;
 	private CoordinateOfPoint topTopRight;
@@ -19,18 +20,18 @@ public class Cuboid {
 	private CoordinateOfPoint downDownRight;
 	
 	private int type; 
-	private int cuboidID;
+	private String cuboidID;
 	
 	private TreeSet<CoordinateOfPoint>  treeSetCop = new TreeSet<CoordinateOfPoint>();
 	
-	public Cuboid(int cuboidID, int type) {
+	public Cuboid(String cuboidID, int type) {
 		this.cuboidID = cuboidID;
 		this.type = type;
 	}
 	
 	public void assignPoints() {
 		int i = 0;
-		if(treeSetCop.size() != 8) {
+		if(treeSetCop.size() != 8) { 
 			return ;
 		}
 		
@@ -75,11 +76,11 @@ public class Cuboid {
 		return treeSetCop;
 	}
 	 
-	public void setCuboidID(int cuboidID) {
+	public void setCuboidID(String cuboidID) {
 		this.cuboidID = cuboidID;
 	}
 	 
-	public int getCuboidID() {
+	public String getCuboidID() {
 		return cuboidID;
 	} 
 	
@@ -106,7 +107,7 @@ public class Cuboid {
 			rlt.add(recLeft);
 			rlt.add(recRight);
 			rlt.add(recDown);
-			rlt.add(recFront);
+			rlt.add(recFront); 
 			break;
 		}
 		case COLUMN:
@@ -120,12 +121,45 @@ public class Cuboid {
 			rlt.add(recBottom);
 			rlt.add(recLeft);
 			rlt.add(recRight);
-			break;
-		}
-		case SLAB:
 			
 			break;
-
+		}
+		case CUBOIDSLAB:
+		{
+			rlt = new TreeSet<Rectangle>();
+			Rectangle rectFront = new Rectangle(this.topDownLeft, this.downDownRight);
+			Rectangle rectBottom = new Rectangle(this.topTopLeft, this.downTopRight);
+			Rectangle rectLeft = new Rectangle(this.topDownLeft, this.downTopLeft);
+			Rectangle rectRight = new Rectangle(this.topDownRight, this.downTopRight);
+			Rectangle rectUp = new Rectangle(topTopLeft, topDownRight);
+			Rectangle rectDown = new Rectangle(downTopLeft, downDownRight);
+			
+			rlt.add(rectFront);
+			rlt.add(rectBottom);
+			rlt.add(rectLeft);
+			rlt.add(rectRight);
+			rlt.add(rectUp);
+			rlt.add(rectDown);
+			break;
+		}
+		case POLYSLAB: 
+		{
+			rlt = new TreeSet<Rectangle>();
+			Rectangle rectFront = new Rectangle(this.topDownLeft, this.downDownRight);
+			Rectangle rectBottom = new Rectangle(this.topTopLeft, this.downTopRight);
+			Rectangle rectLeft = new Rectangle(this.topDownLeft, this.downTopLeft);
+			Rectangle rectRight = new Rectangle(this.topDownRight, this.downTopRight);
+			Rectangle rectUp = new Rectangle(topTopLeft, topDownRight);
+			Rectangle rectDown = new Rectangle(downTopLeft, downDownRight);
+			
+			rlt.add(rectFront);
+			rlt.add(rectBottom);
+			rlt.add(rectLeft);
+			rlt.add(rectRight);
+			rlt.add(rectUp);
+			rlt.add(rectDown);  
+			break;
+		}
 		default:
 			break;
 		}
