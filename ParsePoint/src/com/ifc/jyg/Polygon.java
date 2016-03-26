@@ -376,7 +376,7 @@ public class Polygon implements Comparable<Object>{
         il.add(200);
         il.add(300);
         for (Integer i : il) {
-            System.out.println(i);
+//            System.out.println(i);
             //il.remove(i);
 //            ArrayList<Integer> iil = (ArrayList<Integer>)il.clone();
 //            for (Integer ii : iil) {
@@ -402,7 +402,7 @@ public class Polygon implements Comparable<Object>{
         es.add(e14);
         es.add(e23);
         Polygon p = new Polygon(es);
-        System.out.print(p.getEdgeList()+"\n");
-        System.out.print(p.getPointList());
+//        System.out.print(p.getEdgeList()+"\n");
+//        System.out.print(p.getPointList());
     }
 }

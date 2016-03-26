@@ -1,29 +1,22 @@
 package com.ifc.jyg;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 
 public class test {
-
-	private static BufferedWriter bw = null;
+ 
 	public static void main(String[] args) throws IOException {
-		ParseObjFile parseObjFile = new ParseObjFile("E:\\IFC\\IFCFile\\YD_S_B04_1F.obj");
-		Map<Double, ArrayList<Triangle>> samevalueMap = new HashMap<>();
+		ParseObjFile parseObjFile = new ParseObjFile("E:\\IFC\\IFCFile\\YD_S_B04_1F.obj"); 
 		IntersectRectangle ir = new IntersectRectangle();  
 		ArrayList<Cuboid> listCuboids = parseObjFile.getCuboid(); 
-
+		System.out.println("listCuboids: " + listCuboids.size());
 		for (int j = 0; j < listCuboids.size(); j++) {
 			Cuboid cuboid = listCuboids.get(j);
-			//System.out.println("ID: " + cuboid.getCuboidID() + " type : " + cuboid.getType());
-			if(cuboid.getType()!=Cuboid.SLAB) {
+//			/System.out.println("ID: " + cuboid.getCuboidID() + " type : " + cuboid.getType());
+			//if(cuboid.getType() != Cuboid.OTHER) {
 				//System.out.println(cuboid.toString());
 				Set<Rectangle> neededRecs = cuboid.getNeededRectangels();
 				//System.out.println("neededRecs : " + neededRecs.size());
@@ -35,7 +28,7 @@ public class test {
 						//System.out.println(r);
 					}
 				}
-			}
+			//}
 		}
 
 		ArrayList<Polyhedron> ps = parseObjFile.getSlabPolys();
@@ -59,13 +52,13 @@ public class test {
 					cnt++;
 					Rectangle a = rectangle;
 					Rectangle b = rectMap.get(rectangle);
-					System.out.print(a);
-					System.out.print(b);
-
-					Polygon polygon = new Polygon(a,b);
-					System.out.println(polygon.getEdgeList());
-					System.out.println(polygon.getPointList());
-					System.out.println("###############");
+//					System.out.print(a);
+//					System.out.print(b);
+//
+//					Polygon polygon = new Polygon(a,b);
+//					System.out.println(polygon.getEdgeList());
+//					System.out.println(polygon.getPointList());
+//					System.out.println("###############");
 				}
 
 			}

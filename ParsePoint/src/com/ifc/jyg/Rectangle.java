@@ -263,7 +263,8 @@ public class Rectangle implements Comparable<Object> {
 		CoordinateOfPoint ts1 = new CoordinateOfPoint(0,3,0);
 		CoordinateOfPoint ds1 = new CoordinateOfPoint(2,5,0);
 		Rectangle Smaller1 = new Rectangle(ts1,ds1);
-		System.out.println("Bigger.testIsIntersectByAnotherRectangle(Smaller1) " + Bigger.isIntersectByAnotherRectangle(Smaller1));
+		System.out.println("Bigger.testIsIntersectByAnotherRectangle(Smaller1) " + 
+					Bigger.isIntersectByAnotherRectangle(Smaller1));
 
 	}
 
