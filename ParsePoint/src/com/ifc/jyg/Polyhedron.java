@@ -25,6 +25,10 @@ public class Polyhedron implements Comparable<Object>{
         this.height = height;
     }
 
+    public Polygon getDownPolygon() {
+        return downPolygon;
+    }
+
     public ArrayList<Rectangle> getNeededRectangles() {
         ArrayList<Rectangle> rlt = new ArrayList<Rectangle>();
         for(Edge e : this.downPolygon.getEdgeList()) {

@@ -64,6 +64,19 @@ public class Rectangle implements Comparable<Object> {
 				break;
 		}
 	}
+
+	public static ArrayList<Polygon> contrunctPolygonsUsingBigRectangleAndSmallRectangles(Rectangle bigRec, ArrayList<Rectangle> smallRecs) {
+		ArrayList<Polygon> rlt = new ArrayList<Polygon>();
+		ArrayList<Edge> edges;
+		ArrayList<Edge> bigRecEdges = bigRec.getEdges();
+		Edge A = bigRecEdges.get(0);
+		Edge B = bigRecEdges.get(1);
+		Edge C = bigRecEdges.get(2);
+		Edge D = bigRecEdges.get(3);
+		for(int i=0;i<smallRecs.size();i++) {
+		}
+		return rlt;
+	}
 	
 //
 //	public Rectangle(CoordinateOfPoint topLeft,
@@ -245,8 +258,61 @@ public class Rectangle implements Comparable<Object> {
 		return false;
 	}
 
-	public int compareByConataination() {
-		return 1;
+	public int compareByConataination(Rectangle r) {
+		if(!this.isIntersectByAnotherRectangle(r)) {
+			return -2;
+		}
+		int cnt = this.onEdgeByPointsOfAnotherRectangleCount(r);
+		if(this.getArea()>r.getArea()) {
+
+			if(cnt==0) {
+				return -2;
+			} else if(cnt>=1 && cnt <=3) {
+				return 1;
+			} else if (cnt==4) {
+				if(this.getArea()>r.getArea()) {
+					return 1;
+				} else {
+					return 0;
+				}
+			}
+		} else {
+			if(cnt==0) {
+				return -2;
+			} else if(cnt>=1 && cnt <=3) {
+				return -1;
+			} else if (cnt==4) {
+				if(this.getArea()<r.getArea()) {
+					return -1;
+				} else {
+					return 0;
+				}
+			}
+
+		}
+
+
+		System.out.println("Rectangle.compareByConataination() error!");
+		return -1;
+	}
+
+	public static void testCompareByConataination () {
+		CoordinateOfPoint tb = new CoordinateOfPoint(0,0,0);
+		CoordinateOfPoint db = new CoordinateOfPoint(5,5,0);
+		Rectangle Bigger = new Rectangle(tb,db);
+
+		CoordinateOfPoint ts1 = new CoordinateOfPoint(0,3,0);
+		CoordinateOfPoint ds1 = new CoordinateOfPoint(2,5,0);
+		Rectangle Smaller1 = new Rectangle(ts1,ds1);
+		System.out.println("Bigger.testcCompareByConataination(Smaller1) " + Bigger.compareByConataination(Smaller1));
+
+		CoordinateOfPoint ta1 = new CoordinateOfPoint(6,6,0);
+		CoordinateOfPoint da1 = new CoordinateOfPoint(7,7,0);
+		Rectangle Away = new Rectangle(ta1,da1);
+		System.out.println("Smaller1.testcCompareByConataination(Bigger) " + Smaller1.compareByConataination(Bigger));
+		System.out.println("Bigger.testcCompareByConataination(Away) " + Bigger.compareByConataination(Away));
+		System.out.println("Away.testcCompareByConataination(Bigger) " + Away.compareByConataination(Bigger));
+
 	}
 
 	public static ArrayList<Polygon> generateFormBiggerAndSmallers (Rectangle bigger, ArrayList<Rectangle> smallers) {
@@ -290,6 +356,7 @@ public class Rectangle implements Comparable<Object> {
 //		testContainsPoint();
 		testOnEdgeByPointsOfAnotherRectangleCount();
 		testIsIntersectByAnotherRectangle();
+		testCompareByConataination();
 	}
 
 
@@ -318,7 +385,12 @@ public class Rectangle implements Comparable<Object> {
 				if(p.getX()==this.topLeft.getX()) {
 					if(p.getY()>this.topLeft.getY() && p.getY()<this.downRight.getY() && p.getZ()<this.topLeft.getZ() && p.getZ()>this.downRight.getZ()) {
 						return 1;
-					} else if(p.getY()==this.topLeft.getY() || p.getY()==this.downRight.getY() || p.getZ()==this.topLeft.getZ() || p.getZ()==this.downRight.getZ()) {
+					} else if(
+						  ( p.getY()==this.topLeft.getY() 	&& p.getZ()<this.topLeft.getZ() && p.getZ()>this.downRight.getZ() )
+						||( p.getY()==this.downRight.getY() && p.getZ()<this.topLeft.getZ() && p.getZ()>this.downRight.getZ() )
+						||( p.getZ()==this.topLeft.getZ() 	&& p.getY()>this.topLeft.getY() && p.getY()<this.downRight.getY() )
+						||( p.getZ()==this.downRight.getZ() && p.getY()>this.topLeft.getY() && p.getY()<this.downRight.getY() )
+							){
 						return 0;
 					}
 				}
@@ -327,7 +399,12 @@ public class Rectangle implements Comparable<Object> {
 				if(p.getY()==this.topLeft.getY()) {
 					if(p.getX()<this.topLeft.getX() && p.getX()>this.downRight.getX() && p.getZ()>this.topLeft.getZ() && p.getZ()>this.downRight.getZ())  {
 						return 1;
-					} else if(p.getX()==this.topLeft.getX() || p.getX()==this.downRight.getX() || p.getZ()==this.topLeft.getZ() || p.getZ()==this.downRight.getZ())  {
+					} else if(
+						  ( p.getX()==this.topLeft.getX() 	&& p.getZ()>this.topLeft.getZ() && p.getZ()>this.downRight.getZ() )
+						||( p.getX()==this.downRight.getX() && p.getZ()>this.topLeft.getZ() && p.getZ()>this.downRight.getZ() )
+						||( p.getZ()==this.topLeft.getZ() 	&& p.getX()<this.topLeft.getX() && p.getX()>this.downRight.getX())
+						||( p.getZ()==this.downRight.getZ() && p.getX()<this.topLeft.getX() && p.getX()>this.downRight.getX())
+							) {
 						return 0;
 					}
 				}
@@ -336,7 +413,12 @@ public class Rectangle implements Comparable<Object> {
 				if(p.getZ()==this.topLeft.getZ()) {
 					if(p.getY()>this.topLeft.getY() && p.getY()<this.downRight.getY() && p.getX()>this.topLeft.getX() && p.getX()<this.downRight.getX() ) {
 						return 1;
-					} else if(p.getY()==this.topLeft.getY() || p.getY()==this.downRight.getY() || p.getX()==this.topLeft.getX() || p.getX()==this.downRight.getX()) {
+					} else if(
+						   ( p.getY()==this.topLeft.getY()		&& p.getX()>this.topLeft.getX() && p.getX()<this.downRight.getX() )
+						|| ( p.getY()==this.downRight.getY()	&& p.getX()>this.topLeft.getX() && p.getX()<this.downRight.getX() )
+						|| ( p.getX()==this.topLeft.getX()		&& p.getY()>this.topLeft.getY() && p.getY()<this.downRight.getY() )
+						|| ( p.getX()==this.downRight.getX()	&& p.getY()>this.topLeft.getY() && p.getY()<this.downRight.getY() )
+							) {
 						return 0;
 					}
 				}
@@ -415,9 +497,25 @@ public class Rectangle implements Comparable<Object> {
  		return sb.toString();
 	}
 
+	static {
+		testtoMatlab2d();
+	}
+	public static void testtoMatlab2d() {
+
+		CoordinateOfPoint t = new CoordinateOfPoint(0,0,0);
+		CoordinateOfPoint d = new CoordinateOfPoint(5,5,0);
+		Rectangle A = new Rectangle(t,d);
+		System.out.println("testtoMatlab2d "+A.toMatlab2d());
+	}
+
+	public String toMatlab2d() {
+		Polygon p = new Polygon(this.getEdges());
+		return p.toMatlab2D();
+	}
+
 	public static void testGetEdges () {
-		CoordinateOfPoint t = new CoordinateOfPoint(5,0,5);
-		CoordinateOfPoint d = new CoordinateOfPoint(0,0,0);
+		CoordinateOfPoint t = new CoordinateOfPoint(0,0,0);
+		CoordinateOfPoint d = new CoordinateOfPoint(5,5,0);
 		Rectangle A = new Rectangle(t,d);
 		ArrayList<Edge> edges = A.getEdges();
 		System.out.println("testGetEdges "+edges);
