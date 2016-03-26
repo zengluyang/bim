@@ -14,8 +14,8 @@ public class Rectangle implements Comparable<Object> {
 	
 	public CoordinateOfPoint topLeft;
 	public CoordinateOfPoint downRight;
-	private CoordinateOfPoint topRight;
-	private CoordinateOfPoint downLeft;
+	public CoordinateOfPoint topRight;
+	public CoordinateOfPoint downLeft;
 
 	private int direction = 0;
 	private double area = 0.0;
@@ -170,21 +170,24 @@ public class Rectangle implements Comparable<Object> {
 		return listEdges; 
 	}
 	
-	public CoordinateOfPoint getPoint() {
-		//ArrayList<CoordinateOfPoint> points = new ArrayList<CoordinateOfPoint>();
-		//CoordinateOfPoint topRight = new CoordinateOfPoint();
+	public ArrayList<CoordinateOfPoint> getPoint() {
+		ArrayList<CoordinateOfPoint> points = new ArrayList<CoordinateOfPoint>();
+		CoordinateOfPoint topRight = new CoordinateOfPoint();
 		CoordinateOfPoint DownLeft = new CoordinateOfPoint();
 		switch (direction) {
 		case 0:
-//			topRight.setX(this.topLeft.getX());
-//			topRight.setY(this.downRight.getY());
-//			topRight.setZ(this.topLeft.getZ());
+
+			topRight.setX(this.topLeft.getX());
+			topRight.setY(this.downRight.getY());
+			topRight.setZ(this.topLeft.getZ());				
 			DownLeft.setX(this.topLeft.getX());
 			DownLeft.setY(this.topLeft.getY());
 			DownLeft.setZ(this.downRight.getZ());
 			break;
 		case 1:
-
+			topRight.setX(this.downRight.getX());
+			topRight.setY(this.topLeft.getY());
+			topRight.setZ(this.topLeft.getZ());
 			DownLeft.setX(this.topLeft.getX());
 			DownLeft.setY(this.topLeft.getY());
 			DownLeft.setZ(this.downRight.getZ());
@@ -192,7 +195,9 @@ public class Rectangle implements Comparable<Object> {
 		default:
 			break;
 		}
-		return DownLeft;
+		points.add(DownLeft);
+		points.add(topRight);
+		return points;
 	}
 	
 	public boolean isAtTopContainedByBigger (Rectangle bigger) {
