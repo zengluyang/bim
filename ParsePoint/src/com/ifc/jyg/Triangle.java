@@ -94,8 +94,7 @@ public class Triangle implements Comparable<Object>{
 	}
 
 
-	public void setDirection(int direction) {
-		
+	public void setDirection(int direction) { 
 		 
 		this.direction = direction;
 	}

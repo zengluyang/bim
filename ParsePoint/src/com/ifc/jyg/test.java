@@ -1,5 +1,7 @@
 package com.ifc.jyg;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -11,6 +13,7 @@ public class test {
  
 	public static void main(String[] args) throws IOException {
 		ParseObjFile parseObjFile = new ParseObjFile("E:\\IFC\\IFCFile\\YD_S_B04_1F.obj"); 
+		BufferedWriter br = new BufferedWriter(new FileWriter("E:\\IFC\\IFCFile\\YD_S_B04_1F_out.txt"));
 		IntersectRectangle ir = new IntersectRectangle();  
 		ArrayList<Cuboid> listCuboids = parseObjFile.getCuboid(); 
 		System.out.println("listCuboids: " + listCuboids.size());
@@ -46,22 +49,29 @@ public class test {
 		}
 
 
-		ArrayList<ArrayList<TreeSet<Rectangle>>> intersectResult = ir.getPartitionResult();
-		//System.out.println("intersectResult "+intersectResult);
-		System.out.println("intersectResult.size() : " + intersectResult.size());
-		int i=0;
-		for(ArrayList<TreeSet<Rectangle>> recSetList:intersectResult) {
-			for(TreeSet<Rectangle> recSet:recSetList) {
-				i++;
-				System.out.println(String.format("figure(%d);\n",i));
-				System.out.println(String.format("title('%s %f');\n",Rectangle.directionString[recSet.first().getDirection()],recSet.first().getIntersectvalue()));
-				for(Rectangle r:recSet) {
-					System.out.println(r.toMatlab2d());
-
-				}
-				System.out.println("%###############\n");
-			}
-			System.out.println("%!!!!!!!!!!!!!!!!!\n");
-		}
+//		ArrayList<ArrayList<TreeSet<Rectangle>>> intersectResult = ir.getPartitionResult();
+//		//System.out.println("intersectResult "+intersectResult);
+//		System.out.println("intersectResult.size() : " + intersectResult.size());
+//		int i=0;
+//		for(ArrayList<TreeSet<Rectangle>> recSetList:intersectResult) {
+//			for(TreeSet<Rectangle> recSet:recSetList) {
+//				i++;
+//				System.out.println(String.format("figure(%d);\n",i));
+//				System.out.println(String.format("title('%s %f');\n",Rectangle.directionString[recSet.first().getDirection()],recSet.first().getIntersectvalue()));
+//				br.write(String.format("figure(%d);\n",i));
+//				br.newLine();
+//				br.write(String.format("title('%s %f');\n",Rectangle.directionString[recSet.first().getDirection()],recSet.first().getIntersectvalue()));
+//				br.newLine();
+//				for(Rectangle r:recSet) {
+//					System.out.println(r.toMatlab2d());
+//
+//				}
+//				System.out.println("%###############\n");
+//			}
+//			System.out.println("%!!!!!!!!!!!!!!!!!\n");
+//		}
+//		//System.out.println("test i : " + i);
+//		br.flush();
+//		br.close();
 	}
 }

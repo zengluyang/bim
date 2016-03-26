@@ -5,11 +5,13 @@ public class MarkLocation {
 	private int a;
 	private int b;
 	private int c;
+	private String ID;
 	
-	public MarkLocation(int a, int b, int c) {
+	public MarkLocation(int a, int b, int c, String ID) {
 		this.setA(a);
 		this.setB(b);
 		this.setC(c);
+		this.ID = ID;
 	}
 
 	public int getA() {
@@ -34,5 +36,13 @@ public class MarkLocation {
 
 	public void setC(int c) {
 		this.c = c;
+	}
+
+	public String getID() {
+		return ID;
+	}
+
+	public void setID(String iD) {
+		this.ID = iD;
 	}
 }

@@ -149,14 +149,14 @@ public class Cuboid {
 			Rectangle rectBottom = new Rectangle(this.topTopLeft, this.downTopRight);
 			Rectangle rectLeft = new Rectangle(this.topDownLeft, this.downTopLeft);
 			Rectangle rectRight = new Rectangle(this.topDownRight, this.downTopRight);
-			Rectangle rectUp = new Rectangle(topTopLeft, topDownRight);
+			//Rectangle rectUp = new Rectangle(topTopLeft, topDownRight);
 			Rectangle rectDown = new Rectangle(downTopLeft, downDownRight);
 			
 			rlt.add(rectFront);
 			rlt.add(rectBottom);
 			rlt.add(rectLeft);
 			rlt.add(rectRight);
-			rlt.add(rectUp);
+			//rlt.add(rectUp);
 			rlt.add(rectDown);  
 			break;
 		}
