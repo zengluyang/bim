@@ -145,18 +145,19 @@ public class Cuboid {
 		case POLYSLAB: 
 		{
 			rlt = new TreeSet<Rectangle>();
-			Rectangle rectFront 	= new Rectangle(this.topDownLeft, 	this.downDownRight);
-			Rectangle rectBottom 	= new Rectangle(this.topTopLeft, 	this.downTopRight);
-			Rectangle rectLeft		= new Rectangle(this.topDownLeft, 	this.downTopLeft);
-			Rectangle rectRight 	= new Rectangle(this.topDownRight, 	this.downTopRight);
-			Rectangle rectUp 		= new Rectangle(topTopLeft, 		topDownRight);
-			Rectangle rectDown		= new Rectangle(downTopLeft, 		downDownRight);
-			
+
+			Rectangle rectFront 	= new Rectangle(this.topDownLeft, 	this.downDownRight,	this.cuboidID);
+			Rectangle rectBottom 	= new Rectangle(this.topTopLeft, 	this.downTopRight,	this.cuboidID);
+			Rectangle rectLeft		= new Rectangle(this.topDownLeft, 	this.downTopLeft,	this.cuboidID);
+			Rectangle rectRight 	= new Rectangle(this.topDownRight, 	this.downTopRight,	this.cuboidID);
+			Rectangle rectUp 		= new Rectangle(topTopLeft, 		topDownRight,		this.cuboidID);
+			Rectangle rectDown		= new Rectangle(downTopLeft, 		downDownRight,		this.cuboidID);
+
 			rlt.add(rectFront);
 			rlt.add(rectBottom);
 			rlt.add(rectLeft);
 			rlt.add(rectRight);
-			rlt.add(rectUp);
+			//rlt.add(rectUp);
 			rlt.add(rectDown);  
 			break;
 		}

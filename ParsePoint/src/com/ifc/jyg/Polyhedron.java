@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class Polyhedron implements Comparable<Object>{
     private Polygon downPolygon;
-    private double height;
+    public  double height;
     public String Id;
 
     @Override
@@ -51,7 +51,7 @@ public class Polyhedron implements Comparable<Object>{
                     System.out.println("Polyhedron getNeededRectangles error!");
                     break;
             }
-            rlt.add(new Rectangle(topLeft,downRight));
+            rlt.add(new Rectangle(topLeft,downRight,this.Id));
         }
         return rlt;
     }

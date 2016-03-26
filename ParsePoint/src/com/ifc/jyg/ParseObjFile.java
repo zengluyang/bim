@@ -11,14 +11,13 @@ import java.util.TreeMap;
 
 public class ParseObjFile {
 
-	private String fileName; 
-	private int triangleNumber = 0;
+	private String fileName;
  
 	
 	private ArrayList<CoordinateOfPoint> listPoints =  new ArrayList<CoordinateOfPoint>();;
 	private ArrayList<Cuboid> listCuboids = new ArrayList<Cuboid>(); 
-	private Map<Integer, ArrayList<Triangle>> slabMap = new HashMap<Integer, ArrayList<Triangle>>();
-	private ArrayList<MarkLocation> listMarkLocations = new ArrayList<MarkLocation>(); 
+	private Map<String, ArrayList<Triangle>> slabMap = new HashMap<String, ArrayList<Triangle>>();
+	private ArrayList<MarkLocation> listMarkLocations = new ArrayList<MarkLocation>();  
 	private BufferedReader br;
 	private ArrayList<Integer> triangleNumberList = new ArrayList<>();
 	public ParseObjFile(String fileName) {
@@ -33,47 +32,11 @@ public class ParseObjFile {
 		__:_____-_			cuboid slab
 
 	 */
-//	private void initObjParameter() {
-//		File file = new File(fileName);
-//		try {
-//			FileInputStream fin = new FileInputStream(file);
-//			InputStreamReader isr = new InputStreamReader(fin);
-//			br = new BufferedReader(isr);
-//			String content = null;
-//			while ((content = br.readLine()) != null) {
-//				if (content.startsWith("g COL_____")) {	//Column number
-//					columnNumber++;
-//				} else if (content.startsWith("g BEA_____")) { //Beam Number
-//					beamNumber++;
-//				} else if (content.startsWith("g __:_____-_")) {	//cuboid slab
-//					cuboidSlabNumber++;
-//				} else if (content.startsWith("g __:___")) { 	//Slab Number 
-//					slabNumber++;
-//				} else if (content.startsWith("v ")) {	//统锟狡碉拷母锟斤拷锟�
-//					pointNumber++;
-//				} else if (content.startsWith("f ")) {	//统锟斤拷Slab锟侥革拷锟斤拷
-//					triangleNumber++;
-//				} 
-//			}
-//		} catch (IOException e) { 
-//			e.printStackTrace();
-//		} 
-//		 
-//		listPoints = new ArrayList<CoordinateOfPoint>(pointNumber);
-//		listCuboids = new ArrayList<Cuboid>();
-//		listSlabs = new ArrayList<Slab>(slabNumber);
-//		listMarkLocations = new ArrayList<MarkLocation>();
-//		//triNumber = new int[slabNumber];  
-//		slabMap = new HashMap<Integer, ArrayList<Triangle>>();
-//		System.out.println( " beamNumber: " + beamNumber + 
-//							" cuboidSlabNumber: " + cuboidSlabNumber +
-//							" columnNumber: " + columnNumber +
-//							" slabNumber: " + slabNumber);
-//	}
-//	
+
 	
 	public ArrayList<Cuboid> getCuboid() {
 		//initObjParameter();
+		int triangleNumber = 0;
 		try {
 			String line = null;
 			String ID = null;			
@@ -92,9 +55,11 @@ public class ParseObjFile {
 					content = line.split(" ");
 					ID = content[1];
 					type = 0;		//Beam
-					if (isSlabType && triangleNumber != 0) { 
+					if (triangleNumber != 0) {
 						triangleNumberList.add(triangleNumber); 
-						isSlabType = false; 
+						isSlabType = false;
+						triangleNumber = 0;
+
 					}
 					
 				} else if (line.startsWith("g COL_____")) {
@@ -102,9 +67,11 @@ public class ParseObjFile {
 					content = line.split(" ");
 					ID = content[1];
 					type = 1;		//Column 
-					if (isSlabType && triangleNumber != 0) {  
+					if (triangleNumber != 0) {
 						triangleNumberList.add(triangleNumber);
-						isSlabType = false; 
+						isSlabType = false;
+						triangleNumber = 0;
+
 					}
 					
 				} else if (line.startsWith("g __:_____-_")) {	//cuboid slab
@@ -112,18 +79,20 @@ public class ParseObjFile {
 					content = line.split(" ");
 					ID = content[1];
 					type = 2; 
-					if (isSlabType && triangleNumber != 0) {  
+					if (triangleNumber != 0) {
 						triangleNumberList.add(triangleNumber);
-						isSlabType = false; 
+						isSlabType = false;
+						triangleNumber = 0;
 					} 
-				} else if (line.startsWith("g __:___")) { //poly slab  
+				} else if (line.startsWith("g __:___")) {
 					cuboidNumber = 0;
 					content = line.split(" ");
 					ID = content[1];
 					type = 3;	 
-					if (isSlabType && triangleNumber != 0) {  
-						triangleNumberList.add(triangleNumber);
-						isSlabType = false; 
+					if (triangleNumber != 0) {
+						triangleNumberList.add(triangleNumber); 
+						isSlabType = false;
+						triangleNumber = 0;
 					} 
 				} else if(line.startsWith("v ")) {
 					String[] coordinate = line.split(" "); 
@@ -149,74 +118,66 @@ public class ParseObjFile {
 						listCuboids.add(cuboid);
 					}
 				} else if (line.startsWith("f ")) {	//锟斤拷取锟斤拷应锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷伪锟绞�
-					
-//					if (cuboidNumber == 8) {	//not poly Slab
-//						Cuboid cuboid = new Cuboid(ID, type);
-////						if(ID.equals("COL_____:200_x_200mm:736731")) {
-////							System.out.println("");
-////						}
-//						for (int j = 8; j > 0; j--) {
-//							cuboid.addPoint(listPoints.get(i - j));
-//							cuboid.setType(type);
-//						}
-//						cuboid.assignPoints();
-//						listCuboids.add(cuboid);
-//					} else
 					if (cuboidNumber > 8) {
 						isSlabType = true;
 						String[] location = line.split(" ");
 						int a = Integer.parseInt(location[1].split("//")[0]);
 						int b = Integer.parseInt(location[2].split("//")[0]);
-						int c = Integer.parseInt(location[3].split("//")[0]); 
-						MarkLocation markLocation = new MarkLocation(a, b, c);  
+						int c = Integer.parseInt(location[3].split("//")[0]);
+						MarkLocation markLocation = new MarkLocation(a, b, c, ID);  
+						//System.out.println("test ID : " + ID);
+						if(ID!=null && ID.equals("__:___-_120mm:699191:65")) {
+							System.out.println("test ID : " + ID);
+						}
 						listMarkLocations.add(markLocation);	  				
 						triangleNumber++;  
 					}   
 				}
 			} 
-			if (isSlabType) {
-				System.out.println("errrrrrrrrrrrrr");
+			if (isSlabType) { 
 				triangleNumberList.add(triangleNumber);
 			}  
 		} catch (Exception e) {
 			// TODO: handle exception 
-		}  
-//		System.out.println("triangleNumberList size:" + triangleNumberList.size() + 
-//						" listCuboids size:" + listCuboids.size() );
-//		for(CoordinateOfPoint p:listPoints) {
-//			System.out.println(String.format("v %f %f %f",p.getX(),p.getY(),p.getZ()));
-//		}
+		}
 		return listCuboids;
 	}
 	
 	public Map<String, ArrayList<Triangle>> getSlabs() {
 		
-	 
+		String ID = null;
 		for (int i = 0; i < triangleNumberList.size(); i++) {
+
 			ArrayList<Triangle> listTriangles = new ArrayList<Triangle>();
 			//System.out.println("test triangleNumberList.get(i):" + triangleNumberList.get(i));
 			 for (int j = 0; j < triangleNumberList.get(i); j++) {
-				MarkLocation markLocation = listMarkLocations.get(j);
+				MarkLocation markLocation = listMarkLocations.get(j); 
+				ID = markLocation.getID();
+				 if(ID!=null && ID.equals("__:___-_120mm:699191:65")) {
+					 ID.charAt(0);
+				 }
 				int a = markLocation.getA()-1;
 				int b = markLocation.getB()-1;
 				int c = markLocation.getC()-1;
  				if(listPoints.get(a).compareTo(listPoints.get(b))==0) {
-					break;
+					continue;
 				}
 				if(listPoints.get(b).compareTo(listPoints.get(c))==0) {
-				 	break;
+					continue;
 				}
 				if(listPoints.get(a).compareTo(listPoints.get(c))==0) {
-					break;
+					continue;
 				}
 				Triangle triangle = new Triangle(listPoints.get(a), listPoints.get(b), listPoints.get(c));
 				listTriangles.add(triangle);
-//				System.out.println("" +( a + 1) + " " + (b+1) + " " + (c+1)); 
+//				System.out.println("" +( a + 1) + " " + (b+1) + " " + (c+1) + " " + markLocation.getID()); 
 //				System.out.println(listPoints.get(a).toString() + listPoints.get(b ).toString() + listPoints.get(c).toString());
 //				System.out.println();
+
 			 }
 //			 System.out.println("test listTriangles.size()" + listTriangles.size());
-			 slabMap.put(i, listTriangles);
+			 slabMap.put(ID, listTriangles);
+			 //System.out.println("getSlabs id : " + ID);
 		}
 		return slabMap;
 	}
@@ -246,6 +207,7 @@ public class ParseObjFile {
 			}
 		}
 		ArrayList<Edge> listNewEdges = new ArrayList<Edge>(); 
+
 		if(dmeMap.size()!=2) {
 			System.out.println(";dmeMap.size()!=2 error!");
 		}
@@ -275,11 +237,15 @@ public class ParseObjFile {
 
 	public ArrayList<Polyhedron> getSlabPolys() {
 		ArrayList<Polyhedron> rlt = new ArrayList<Polyhedron>();
-		Map<Integer, ArrayList<Triangle>> slabMap = this.getSlabs();	//integer 锟斤拷示slab锟斤拷锟斤拷锟叫碉拷triangle锟侥革拷锟斤拷
+		Map<String, ArrayList<Triangle>> slabMap = this.getSlabs();	//integer 锟斤拷示slab锟斤拷锟斤拷锟叫碉拷triangle锟侥革拷锟斤拷
 		//System.out.println("listSlabs size:" + slabMap.size());
-		for (int number : slabMap.keySet()) {
-			ArrayList<Triangle> listTriangles = slabMap.get(number);
+		for (String id : slabMap.keySet()) {
+			ArrayList<Triangle> listTriangles = slabMap.get(id);
+			if(id.equals("__:___-_120mm:699191:65")) {
+				id.charAt(0);
+			}
 			Polyhedron p = this.constructFromTrianglesOfOneSlab(listTriangles);
+			p.Id = id;
 			rlt.add(p);
 		}
 		return rlt;

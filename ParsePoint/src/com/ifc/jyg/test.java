@@ -1,5 +1,7 @@
 package com.ifc.jyg;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -11,6 +13,7 @@ public class test {
  
 	public static void main(String[] args) throws IOException {
 		ParseObjFile parseObjFile = new ParseObjFile("E:\\IFC\\IFCFile\\YD_S_B04_1F.obj"); 
+		BufferedWriter br = new BufferedWriter(new FileWriter("E:\\IFC\\IFCFile\\YD_S_B04_1F_out.txt"));
 		IntersectRectangle ir = new IntersectRectangle();  
 		ArrayList<Cuboid> listCuboids = parseObjFile.getCuboid(); 
 		System.out.println("listCuboids: " + listCuboids.size());
@@ -28,7 +31,7 @@ public class test {
 					//System.out.println(neededRecs);
 					for(Rectangle r : neededRecs) {
 						ir.addRectangleTogether(r);
-						if(r.Id!=null && r.Id.equals("COL_____:600_x_600mm:566092")){
+						if(r.Id!=null && r.Id.equals("__:___-_120mm:699191:65")){
 							r.toMatlab2d();
 						}
 						//obtain.addRectangleTogether(r); 
@@ -40,11 +43,24 @@ public class test {
 
 		ArrayList<Polyhedron> ps = parseObjFile.getSlabPolys();
 		int slabNeededRecCnt = 0;
+		int i=0;
 		for (Polyhedron p:ps) {
+			i++;
+			if(p.Id!=null && p.Id.equals("__:___-_120mm:699191:65")) {
+				p.toString();
+			}
+			System.out.println(String.format("figure(%d);\n",i));
+			System.out.println(String.format("title('%s %f %s');\n",Rectangle.directionString[p.getDownPolygon().getDirection()],p.height,p.Id));
+			System.out.println(p.getDownPolygon().toMatlab2D());
+			System.out.println("%###############\n");
 			String matlab = p.getDownPolygon().toMatlab2D();
 			//System.out.println(matlab);
 			ArrayList<Rectangle> recs = p.getNeededRectangles();
+
 			for(Rectangle r:recs) {
+				if(r.Id!=null && r.Id.equals("__:___-_120mm:699191:65")) {
+					r.toMatlab2d();
+				}
 				ir.addRectangleTogether(r);
 				slabNeededRecCnt++;
 			}
@@ -52,10 +68,10 @@ public class test {
 		}
 
 
+
 		ArrayList<ArrayList<TreeSet<Rectangle>>> intersectResult = ir.getPartitionResult();
 		//System.out.println("intersectResult "+intersectResult);
 		System.out.println("intersectResult.size() : " + intersectResult.size());
-		int i=0;
 		int total_cnt=0;
 		for(ArrayList<TreeSet<Rectangle>> recSetList:intersectResult) {
 			for(TreeSet<Rectangle> recSet:recSetList) {

@@ -372,18 +372,7 @@ public class Polygon implements Comparable<Object>{
     	CoordinateOfPoint aDownLeft = a.getPoint().get(0);  
     	CoordinateOfPoint bDownLeft = b.getPoint().get(0);  
     	CoordinateOfPoint cDownLeft = c.getPoint().get(0); 
-    	CoordinateOfPoint dDownLeft = d.getPoint().get(0);
-    	
-    	switch (a.getDirection()) {
-		case 0:
-			
-			break;
-		case 1:
-			
-			break;
-		default:
-			break;
-		}
+    	CoordinateOfPoint dDownLeft = d.getPoint().get(0); 
     	
     	Edge edge1 = new Edge(cDownLeft, c.downRight);
     	Edge edge2 = new Edge(c.downRight, bDownLeft);
