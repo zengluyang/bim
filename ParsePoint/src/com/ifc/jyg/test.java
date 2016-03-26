@@ -58,13 +58,26 @@ public class test {
 		int i=0;
 		for(ArrayList<TreeSet<Rectangle>> recSetList:intersectResult) {
 			for(TreeSet<Rectangle> recSet:recSetList) {
-				i++;
-				System.out.println(String.format("figure(%d);\n",i));
-				System.out.println(String.format("title('%s %f');\n",Rectangle.directionString[recSet.first().getDirection()],recSet.first().getIntersectvalue()));
-				for(Rectangle r:recSet) {
-					System.out.println(r.toMatlab2d());
+
+//				System.out.println(String.format("figure(%d);\n",i));
+//				System.out.println(String.format("title('%s %f');\n",Rectangle.directionString[recSet.first().getDirection()],recSet.first().getIntersectvalue()));
+//				for(Rectangle r:recSet) {
+//					System.out.println(r.toMatlab2d());
+//				}
+//				System.out.println("%###############\n");
+				if(recSet.size()==1) {
+
+				} else {
+					i++;
+					Rectangle big = recSet.pollFirst();
+					System.out.println(String.format("figure(%d);\n",i));
+					System.out.println(String.format("title('%s %f');\n",Rectangle.directionString[big.getDirection()],big.getIntersectvalue()));
+					ArrayList<Polygon> polygons = Rectangle.contrunctPolygonsUsingBigRectangleAndSmallRectangles(big, new ArrayList<Rectangle>(recSet));
+					for(Polygon p: polygons) {
+						System.out.println(p.toMatlab2D());
+					}
+					System.out.println("%###############\n");
 				}
-				System.out.println("%###############\n");
 			}
 			System.out.println("%!!!!!!!!!!!!!!!!!\n");
 		}
