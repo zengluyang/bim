@@ -241,7 +241,7 @@ public class ParseObjFile {
 		ArrayList<Edge> listNewEdges = new ArrayList<Edge>(); 
 
 		if(dmeMap.size()!=2) {
-			System.out.println(";dmeMap.size()!=2 error!");
+//			System.out.println(";dmeMap.size()!=2 error!");
 		}
 		Double lowerZ=0.0;
 		Double higherZ=0.0;
@@ -277,10 +277,7 @@ public class ParseObjFile {
 		//System.out.println("listSlabs size:" + slabMap.size());
 		for (String id : slabMap.keySet()) {
 			ArrayList<Triangle> listTriangles = slabMap.get(id);
-			if(id != null && id.equals("__:___-_120mm:699191:65")) {
-				id.charAt(0);
-				System.out.println("AAAAAAAAAAAAAAAA");
-			}
+
 			Polyhedron p = this.constructFromTrianglesOfOneSlab(listTriangles);
 			p.Id = id;
 			rlt.add(p);

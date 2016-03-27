@@ -1,10 +1,7 @@
 package com.ifc.jyg;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 class StreamGobbler extends Thread
 {
@@ -34,12 +31,13 @@ class StreamGobbler extends Thread
 }
 
 public class test {
- 
+
 	public static void main(String[] args) throws IOException {
 		String ifcConvertExeName = "E:\\cygwin64\\home\\ZLY\\IfcConvert.exe";
 		String inputIfcFileName = "E:\\IFC\\IFCFile\\YD_S_B04_1F.ifc";
 		String outputObjFileName = "E:\\IFC\\IFCFile\\YD_S_B04_1F.obj";
-
+		String finalResultFile = inputIfcFileName+"_final_result.txt";
+		String finalMatlabFile = inputIfcFileName+"_final_Matlab_file.m";
 		File inputIfcFile = new File(inputIfcFileName);
 		File outputObjFile = new File(outputObjFileName);
 		if(outputObjFile.lastModified()<inputIfcFile.lastModified()) {
@@ -70,32 +68,24 @@ public class test {
 			System.out.println("Objfile up-to-date.");
 		}
 		ParseObjFile parseObjFile = new ParseObjFile(outputObjFileName);
-		BufferedWriter br = new BufferedWriter(new FileWriter("E:\\IFC\\IFCFile\\YD_S_B04_1F_out.txt"));
-		IntersectRectangle ir = new IntersectRectangle();  
-		ArrayList<Cuboid> listCuboids = parseObjFile.getCuboid(); 
-//		System.out.println(";listCuboids: " + listCuboids.size());
+		BufferedWriter brMatlab = new BufferedWriter(new FileWriter(finalMatlabFile));
+		PrintWriter outMatlab = new PrintWriter (brMatlab);
+
+
+		BufferedWriter brFinalResult = new BufferedWriter(new FileWriter(finalResultFile));
+		PrintWriter outFinalResult = new PrintWriter (brFinalResult);
+
+		IntersectRectangle ir = new IntersectRectangle();
+		ArrayList<Cuboid> listCuboids = parseObjFile.getCuboid();
 		ArrayList<Rectangle> recRlt = new ArrayList<Rectangle>();
 		ArrayList<Polygon> polyRlt = new ArrayList<Polygon>();
 
 		for (int j = 0; j < listCuboids.size(); j++) {
 			Cuboid cuboid = listCuboids.get(j);
-			if(cuboid.getCuboidID()!=null && cuboid.getCuboidID().equals("COL_____:600_x_600mm:566092")) {
-				cuboid.getPoint();
-			}
-//			/System.out.println("ID: " + cuboid.getCuboidID() + " type : " + cuboid.getType());
-			//if(cuboid.getType() != Cuboid.OTHER) {
-				//System.out.println(cuboid.toString());
 				Set<Rectangle> neededRecs = cuboid.getNeededRectangels();
-				//System.out.println("neededRecs : " + neededRecs.size());
 				if(neededRecs!=null) {
-					//System.out.println(neededRecs);
 					for(Rectangle r : neededRecs) {
 						ir.addRectangleTogether(r);
-						if(r.Id!=null && r.Id.equals("__:___-_120mm:699191:65")){
-							r.toMatlab2d();
-						}
-						//obtain.addRectangleTogether(r); 
-						//System.out.println(r);
 					}
 				}
 			//}
@@ -106,22 +96,16 @@ public class test {
 		int i=0;
 		for (Polyhedron p:ps) {
 			i++;
-			if(p.Id!=null && p.Id.equals("__:___-_120mm:699191:65")) {
-				p.toString();
-			}
+
 			polyRlt.add(p.getDownPolygon());
-			System.out.println(String.format("figure(%d);\n",i));
-			System.out.println(String.format("title('%s %f %s');\n",Rectangle.directionString[p.getDownPolygon().getDirection()],p.height,p.Id));
-			System.out.println(p.getDownPolygon().toMatlab2D());
-			System.out.println("%###############\n");
-			String matlab = p.getDownPolygon().toMatlab2D();
-			//System.out.println(matlab);
+			outMatlab.println(String.format("figure(%d);\n",i));
+			outMatlab.println(String.format("title('%s %f %s');\n",Rectangle.directionString[p.getDownPolygon().getDirection()],p.height,p.Id));
+			outMatlab.println(p.getDownPolygon().toMatlab2D());
+			outMatlab.println("%###############\n");
 			ArrayList<Rectangle> recs = p.getNeededRectangles();
 
 			for(Rectangle r:recs) {
-				if(r.Id!=null && r.Id.equals("__:___-_120mm:699191:65")) {
-					r.toMatlab2d();
-				}
+
 				ir.addRectangleTogether(r);
 				slabNeededRecCnt++;
 			}
@@ -131,18 +115,9 @@ public class test {
 
 
 		ArrayList<ArrayList<TreeSet<Rectangle>>> intersectResult = ir.getPartitionResult();
-		//System.out.println("intersectResult "+intersectResult);
-		System.out.println("intersectResult.size() : " + intersectResult.size());
 		int total_cnt=0;
 		for(ArrayList<TreeSet<Rectangle>> recSetList:intersectResult) {
 			for(TreeSet<Rectangle> recSet:recSetList) {
-
-//				System.out.println(String.format("figure(%d);\n",i));
-//				System.out.println(String.format("title('%s %f');\n",Rectangle.directionString[recSet.first().getDirection()],recSet.first().getIntersectvalue()));
-//				for(Rectangle r:recSet) {
-//					System.out.println(r.toMatlab2d());
-//				}
-//				System.out.println("%###############\n");
 				if(recSet.size()==1) {
 					i++;
 					recSet.size();
@@ -151,10 +126,10 @@ public class test {
 					if(rec.Id!=null && rec.Id.equals("BEA_____:200_x350mm:736737")) {
 						rec.toMatlab2d();
 					}
-					System.out.println(String.format("figure(%d);\n",i));
-					System.out.println(String.format("title('%s %f %s');\n",Rectangle.directionString[rec.getDirection()],rec.getIntersectvalue(),rec.Id));
-					System.out.println(rec.toMatlab2d());
-					System.out.println("%###############\n");
+					outMatlab.println(String.format("figure(%d);\n",i));
+					outMatlab.println(String.format("title('%s %f %s');\n",Rectangle.directionString[rec.getDirection()],rec.getIntersectvalue(),rec.Id));
+					outMatlab.println(rec.toMatlab2d());
+					outMatlab.println("%###############\n");
 				} else {
 					Rectangle rec = recSet.first();
 					if(rec.Id!=null && rec.Id.equals("COL_____:600_x_600mm:566092")) {
@@ -165,16 +140,42 @@ public class test {
 					for(Polygon p: polygons) {
 						i++;
 						polyRlt.add(p);
-						System.out.println(String.format("figure(%d);\n",i));
-						System.out.println(String.format("title('%s %f %s');\n",Rectangle.directionString[big.getDirection()],big.getIntersectvalue(),p.Id));
-						System.out.println(p.toMatlab2D());
+						outMatlab.println(String.format("figure(%d);\n",i));
+						outMatlab.println(String.format("title('%s %f %s');\n",Rectangle.directionString[big.getDirection()],big.getIntersectvalue(),p.Id));
+						outMatlab.println(p.toMatlab2D());
 					}
-					System.out.println("%###############\n");
+					outMatlab.println("%###############\n");
 
 				}
 			}
-			System.out.println("%!!!!!!!!!!!!!!!!!\n");
+			outMatlab.println("%!!!!!!!!!!!!!!!!!\n");
 		}
-		System.out.println("%i "+i);
+		outMatlab.println("%i "+i);
+
+		outFinalResult.println("############ Generated by IfcSCBModler at "+new Date().toString()+"############");
+		outFinalResult.println("############ "+recRlt.size()+" Rectangles");
+		outFinalResult.println("############ "+polyRlt.size()+" Polygons");
+		for(Rectangle r:recRlt) {
+			outFinalResult.println(String.format("REC %s",r.Id));
+			outFinalResult.println(String.format("V %f %f %f",r.topLeft.getX(),r.topLeft.getX(),r.topLeft.getZ()));
+			outFinalResult.println(String.format("V %f %f %f",r.topRight.getX(),r.topRight.getX(),r.topRight.getZ()));
+			outFinalResult.println(String.format("V %f %f %f",r.downRight.getX(),r.downRight.getX(),r.downRight.getZ()));
+			outFinalResult.println(String.format("V %f %f %f",r.downLeft.getX(),r.downLeft.getX(),r.downLeft.getZ()));
+		}
+		for(Polygon p:polyRlt) {
+			outFinalResult.println(String.format("POL %s",p.Id));
+			for(CoordinateOfPoint cop:p.getPointList()) {
+				if(cop!=null)
+					outFinalResult.println(String.format("V %f %f %f",cop.getX(),cop.getX(),cop.getZ()));
+			}
+			for(Edge e:p.getEdgeList()) {
+				outFinalResult.println(String.format("E %f %f %f %f %f %f",
+						e.getFirst().getX(),e.getFirst().getX(),e.getFirst().getZ(),
+						e.getSecond().getX(),e.getSecond().getX(),e.getSecond().getZ()
+				));
+			}
+		}
+
+		System.out.println("Created results at: "+finalMatlabFile+" and "+finalResultFile);
 	}
 }

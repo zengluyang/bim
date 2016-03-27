@@ -171,7 +171,7 @@ public class Rectangle implements Comparable<Object> {
 							if(edgeSet.size()>=4) {
 								System.out.print("");
 							}
-							System.out.print("contrunctPolygonsUsingBigRectangleAndSmallRectangles error! not implemented");
+//							System.out.print("contrunctPolygonsUsingBigRectangleAndSmallRectangles error! not implemented");
 						}
 
 					}
