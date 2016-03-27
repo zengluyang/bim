@@ -15,6 +15,9 @@ public class Triangle implements Comparable<Object>{
 	private Edge third;
 	private int direction = 0;
 	
+	private CoordinateOfPoint a;
+	private CoordinateOfPoint b;
+	private CoordinateOfPoint c;
 	ArrayList<Edge> edgeList;
 	
 	
@@ -22,7 +25,9 @@ public class Triangle implements Comparable<Object>{
 	public Triangle(CoordinateOfPoint a, CoordinateOfPoint b, CoordinateOfPoint c) {
 		TreeSet<Edge> edges = new TreeSet<>();
 		edgeList = new ArrayList<Edge>();
-		
+		this.a = a;
+		this.b = b;
+		this.c = c;
 		if (a.getZ() == b.getZ() && a.getZ() == b.getZ() && b.getZ() == c.getZ()) {
 			direction = UP_DOWN;
 		}
@@ -98,4 +103,14 @@ public class Triangle implements Comparable<Object>{
 		 
 		this.direction = direction;
 	}
+
+	@Override
+	public String toString() { 
+		System.out.println(a.getX() + " " + a.getY() + " " + a.getZ());
+		System.out.println(b.getX() + " " + b.getY() + " " + b.getZ());
+		System.out.println(c.getX() + " " + c.getY() + " " + c.getZ());
+		return super.toString();
+	}
+	
+	 
 }

@@ -115,10 +115,10 @@ public class Rectangle implements Comparable<Object> {
 
 			} else {
 				TreeSet<Edge> localEdges = new TreeSet<Edge>();
-				TreeMap<Integer,TreeMap<CoordinateOfPoint,ArrayList<Edge>>> intDoubleEdgeSet = new TreeMap();
-				intDoubleEdgeSet.put(Edge.X_AXIS,new TreeMap<>());
-				intDoubleEdgeSet.put(Edge.Y_AXIS,new TreeMap<>());
-				intDoubleEdgeSet.put(Edge.Z_AXIS,new TreeMap<>());
+				TreeMap<Integer,TreeMap<CoordinateOfPoint,ArrayList<Edge>>> intDoubleEdgeSet = new TreeMap<Integer,TreeMap<CoordinateOfPoint,ArrayList<Edge>>>();
+				intDoubleEdgeSet.put(Edge.X_AXIS,new TreeMap<CoordinateOfPoint,ArrayList<Edge>>());
+				intDoubleEdgeSet.put(Edge.Y_AXIS,new TreeMap<CoordinateOfPoint,ArrayList<Edge>>());
+				intDoubleEdgeSet.put(Edge.Z_AXIS,new TreeMap<CoordinateOfPoint,ArrayList<Edge>>());
 				edges.addAll(ri.getEdges());
 				for(Edge e : edges) {
 					Integer direction  = e.getDirection();
@@ -129,7 +129,7 @@ public class Rectangle implements Comparable<Object> {
 					}
 					CoordinateOfPoint axisValue = e.getAxisValue();
 					if(!doubleEdgeSet.containsKey(axisValue)) {
-						doubleEdgeSet.put(axisValue,new ArrayList<>());
+						doubleEdgeSet.put(axisValue,new ArrayList<Edge>());
 					}
 					ArrayList<Edge> edgeSet  = doubleEdgeSet.get(axisValue);
 					edgeSet.add(e);
