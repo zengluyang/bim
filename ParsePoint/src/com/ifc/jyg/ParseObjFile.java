@@ -52,8 +52,10 @@ public class ParseObjFile {
 			File file = new File(fileName);
 			FileInputStream fin = new FileInputStream(file);
 			InputStreamReader isr = new InputStreamReader(fin);
-			br = new BufferedReader(isr); 
+			br = new BufferedReader(isr);
+			int lineNumber = 0;
 			while ((line = br.readLine()) != null) {
+				lineNumber++;
 				if (line.startsWith("g BEA_____")) {
 					
 					if (triangleNumber != 0) {
@@ -136,7 +138,11 @@ public class ParseObjFile {
 						CoordinateOfPoint pa = listPoints.get(a-1); 
 						CoordinateOfPoint pb = listPoints.get(b-1); 
 						CoordinateOfPoint pc = listPoints.get(c-1);
-						
+
+						if (ID != null && ID.equals("__:___-_120mm:716955:28")) {
+							System.out.print("");
+						}
+
 						if (pa.compareTo(pb) == 0) {
 							continue;
 						}
@@ -147,21 +153,16 @@ public class ParseObjFile {
 							continue;
 						}
 						Triangle triangle = new Triangle(pa, pb, pc);
-						listTriangles.add(triangle);  
 						if(!idTriangleList.containsKey(ID)) {
 							ArrayList<Triangle> triList = new ArrayList<Triangle>();
 							triList.add(triangle);
 							idTriangleList.put(ID, triList);
+						} else  {
+							ArrayList<Triangle> triList = idTriangleList.get(ID);
+							triList.add(triangle);
+							idTriangleList.put(ID, triList);
 						}
-						if (ID != null && ID.equals("BEA_____:200_x400mm:742663")) {
-							System.out.print(' ');
-						}
-						ArrayList<Triangle> triList = idTriangleList.get(ID);
-						triList.add(triangle);
-						idTriangleList.put(ID, triList);
-//						MarkLocation markLocation = new MarkLocation(a, b, c, ID);  
-//						listMarkLocations.add(markLocation);	  				
-						triangleNumber++;  
+						triangleNumber++;
 					}   
 				}
 			} 
@@ -172,13 +173,13 @@ public class ParseObjFile {
 			// TODO: handle exception 
 		}
 		
-		for (String ID : idNumberMap.keySet()) { 
-			System.out.println("id : "  +ID);
-		}
-		for (int j = 0; j < listTriangles.size(); j++) {
-			System.out.println(listTriangles.get(j).toString());
-		}
-		System.out.println("test listTriangles.zise : " + listTriangles.size());
+//		for (String ID : idNumberMap.keySet()) {
+//			System.out.println("id : "  +ID);
+//		}
+//		for (int j = 0; j < listTriangles.size(); j++) {
+//			System.out.println(listTriangles.get(j).toString());
+//		}
+//		System.out.println("test listTriangles.zise : " + listTriangles.size());
 		return listCuboids;
 	}
 	

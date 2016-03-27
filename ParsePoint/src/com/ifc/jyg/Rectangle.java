@@ -67,7 +67,7 @@ public class Rectangle implements Comparable<Object> {
 	}
 
 	static {
-		testcontrunctPolygonsUsingBigRectangleAndSmallRectangles();
+//		testcontrunctPolygonsUsingBigRectangleAndSmallRectangles();
 	}
 
 	public static void testcontrunctPolygonsUsingBigRectangleAndSmallRectangles() {
@@ -95,23 +95,46 @@ public class Rectangle implements Comparable<Object> {
 		Edge B = bigRecEdges.get(1);
 		Edge C = bigRecEdges.get(2);
 		Edge D = bigRecEdges.get(3);
+
+		ArrayList<Polygon> holes = new ArrayList<Polygon>();
+
 		for(int i=0;i<smallRecs.size();i++) {
 			Rectangle ri = smallRecs.get(i);
+
 			ArrayList<Edge> esi = ri.getEdges();
 			Edge ai = esi.get(0);
 			Edge bi = esi.get(1);
 			Edge ci = esi.get(2);
 			Edge di = esi.get(3);
+
 			if(i==0) {
 				ArrayList<Edge> esAai = ai.getNewEgdesFromThisAndThatEdges(A);
 				ArrayList<Edge> esBbi = bi.getNewEgdesFromThisAndThatEdges(B);
 				ArrayList<Edge> esCci = ci.getNewEgdesFromThisAndThatEdges(C);
 				ArrayList<Edge> esDdi = di.getNewEgdesFromThisAndThatEdges(D);
 
-				edges.addAll(esAai);
-				edges.addAll(esBbi);
-				edges.addAll(esCci);
-				edges.addAll(esDdi);
+
+				if(A.getAxisValue().compareTo(ci.getAxisValue())==0 || C.getAxisValue().compareTo(ai.getAxisValue())==0) {
+					ArrayList<Edge> esAci = ci.getNewEgdesFromThisAndThatEdges(A);
+					ArrayList<Edge> esCai = ai.getNewEgdesFromThisAndThatEdges(C);
+
+					edges.addAll(esAci);
+					edges.addAll(esCai);
+				} else {
+					edges.addAll(esAai);
+					edges.addAll(esCci);
+				}
+
+				if(B.getAxisValue().compareTo(di.getAxisValue())==0 || D.getAxisValue().compareTo(bi.getAxisValue())==0) {
+					ArrayList<Edge> esBdi = di.getNewEgdesFromThisAndThatEdges(B);
+					ArrayList<Edge> esDbi = bi.getNewEgdesFromThisAndThatEdges(D);
+					edges.addAll(esBdi);
+					edges.addAll(esDbi);
+				} else {
+					edges.addAll(esBbi);
+					edges.addAll(esDdi);
+				}
+
 
 			} else {
 				TreeSet<Edge> localEdges = new TreeSet<Edge>();
@@ -145,6 +168,9 @@ public class Rectangle implements Comparable<Object> {
 							ArrayList<Edge> es = edgeSet.get(0).getNewEgdesFromThisAndThatEdges(edgeSet.get(1));
 							localEdges.addAll(es);
 						} else {
+							if(edgeSet.size()>=4) {
+								System.out.print("");
+							}
 							System.out.print("contrunctPolygonsUsingBigRectangleAndSmallRectangles error! not implemented");
 						}
 
@@ -176,8 +202,13 @@ public class Rectangle implements Comparable<Object> {
 			}
 		}
 		for(ArrayList<Edge> onePolyEdgeList:edgeListListRlt) {
-			Polygon p = new Polygon(onePolyEdgeList,bigRec.Id);
-			rlt.add(p);
+			if(holes.size()==0) {
+				Polygon p = new Polygon(onePolyEdgeList,bigRec.Id);
+				rlt.add(p);
+			} else {
+				PolygonWithHoles pwh = new PolygonWithHoles(onePolyEdgeList,bigRec.Id,holes);
+				rlt.add(pwh);
+			}
 		}
 
 		return rlt;
@@ -363,6 +394,19 @@ public class Rectangle implements Comparable<Object> {
 		return false;
 	}
 
+	public boolean containsAnotherRectangleCompletely(Rectangle rec) {
+		return Rectangle.biggerContainsSmallerCompletely(this,rec);
+	}
+
+	public static boolean biggerContainsSmallerCompletely(Rectangle bigger, Rectangle smaller) {
+		int cnt = bigger.insideEdgeByPointsOfAnotherRectangleCount(smaller);
+		if(cnt==4) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public int compareByConataination(Rectangle r) {
 		if(this==r) {
 			return 0;
@@ -373,6 +417,10 @@ public class Rectangle implements Comparable<Object> {
 		if(!this.isIntersectByAnotherRectangle(r)) {
 			return -2;
 		}
+		if(this.containsAnotherRectangleCompletely(r)) {
+			return 2;
+		}
+
 		int cnt = this.onEdgeByPointsOfAnotherRectangleCount(r);
 		if(this.getArea()>r.getArea()) {
 
@@ -462,13 +510,36 @@ public class Rectangle implements Comparable<Object> {
 		return rlt;
 	}
 
+	/*
+		returns the cnt of points of r that is inside this
+	 */
+
+	private int insideEdgeByPointsOfAnotherRectangleCount (Rectangle r) {
+		int rlt = 0;
+		if(this.containsPoint(r.topLeft)==1) {
+			rlt++;
+		}
+		if(this.containsPoint(r.topRight)==1) {
+			rlt++;
+		}
+		if(this.containsPoint(r.downLeft)==1) {
+			rlt++;
+		}
+		if(this.containsPoint(r.downRight)==1) {
+			rlt++;
+		}
+		return rlt;
+	}
+
+
+
 
 
 	static {
 //		testContainsPoint();
-		testOnEdgeByPointsOfAnotherRectangleCount();
-		testIsIntersectByAnotherRectangle();
-		testCompareByConataination();
+//		testOnEdgeByPointsOfAnotherRectangleCount();
+//		testIsIntersectByAnotherRectangle();
+//		testCompareByConataination();
 	}
 
 
@@ -610,7 +681,7 @@ public class Rectangle implements Comparable<Object> {
 	}
 
 	static {
-		testtoMatlab2d();
+//		testtoMatlab2d();
 	}
 	public static void testtoMatlab2d() {
 
