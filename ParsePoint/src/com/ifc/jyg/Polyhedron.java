@@ -39,10 +39,12 @@ public class Polyhedron implements Comparable<Object>{
                 case Edge.X_AXIS:
                     downRight = e.getFirst();
                     topLeft = new CoordinateOfPoint(e.getSecond().getX(),e.getSecond().getY(),e.getSecond().getZ()+height);
+                    rlt.add(new Rectangle(topLeft,downRight,this.Id));
                     break;
                 case Edge.Y_AXIS:
                     downRight = e.getSecond();
                     topLeft = new CoordinateOfPoint(e.getFirst().getX(),e.getFirst().getY(),e.getFirst().getZ()+height);
+                    rlt.add(new Rectangle(topLeft,downRight,this.Id));
                     break;
                 case Edge.Z_AXIS:
                     System.out.println("Polyhedron getNeededRectangles error!");
@@ -51,7 +53,7 @@ public class Polyhedron implements Comparable<Object>{
                     System.out.println("Polyhedron getNeededRectangles error!");
                     break;
             }
-            rlt.add(new Rectangle(topLeft,downRight,this.Id));
+
         }
         return rlt;
     }

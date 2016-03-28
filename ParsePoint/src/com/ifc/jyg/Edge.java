@@ -112,6 +112,7 @@ public class Edge implements Comparable<Object>{
 				break;
 			case OTHER:
 			default:
+				rlt = new CoordinateOfPoint(0,0,0);
 				System.out.println("ArrayList<Double> getAxisValue error!");
 				break;
 		}

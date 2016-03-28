@@ -9,7 +9,7 @@ public class Cuboid {
 	public final static int CUBOIDSLAB = 2;
 	public final static int POLYSLAB = 3;
 	public final static String[] typeString = {"BEAM","COLUMN","CUBOIDSLAB", "POLYSLAB"};
-	
+	public final static String[] typeIfcString = {"IfcBeam","IfcColumn","IfcSlab", "IfcSlab"};
 	private CoordinateOfPoint topTopLeft;
 	private CoordinateOfPoint topTopRight;
 	private CoordinateOfPoint topDownLeft;

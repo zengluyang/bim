@@ -84,7 +84,7 @@ public class IfcExtrator {
     public IfcExtrator() throws IOException {
         this.ifcConvertExeName = ".\\IfcConvert.exe";
         this.inputIfcFileName = ".\\YD_S_B04_1F.ifc";
-        this.finalResultFile = inputIfcFileName+"_final_result.txt";
+        this.finalResultFile = inputIfcFileName+""+"_final_result.txt";
         this.finalMatlabFile = inputIfcFileName+"_final_Matlab_file.m";
         BufferedWriter brMatlab = new BufferedWriter(new FileWriter(finalMatlabFile));
         outMatlab = new PrintWriter (brMatlab);
