@@ -38,8 +38,7 @@ class NewFrame extends JFrame{
         this.getContentPane().setLayout(new BoxLayout(getContentPane(),BoxLayout.Y_AXIS));//设置布局控制器
 
 
-//        this.add(this.getBox(),null);//添加下拉列表框
-        this.setTitle("Hello World!");//设置窗口标题exeFileChooser = new JFileChooser();
+        this.setTitle("IFC提取");//设置窗口标题exeFileChooser = new JFileChooser();
         JButton button = new JButton("选择EXE");
         button.setBounds(103,110,71,27);
         button.setText("选择EXE");
@@ -56,20 +55,25 @@ class NewFrame extends JFrame{
         button2.setBounds(103,110,71,27);
         button2.setText("选择IFC");
         button2.setToolTipText("选择IFC");
-        this.add(button2);
+
         button2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 inputFileChooser.showOpenDialog(null);
             }
         });
-        this.add(button);        this.add(this.getButton());//添加按钮
-        this.add(this.getLabel());//添加标签
+        this.add(button,0);
+        this.add(button2,1);
+        this.add(this.getButton(),2);//添加按钮
+        this.add(this.getLabel(),3);//添加标签
+        this.add(this.getBox(),4);//添加下拉列表框
+
 
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         int width = 500;
         int height = 500;
         this.setBounds((d.width - width) / 2, (d.height - height) / 2, width, height);
+
         this.setSize(1000,200);
 
     }
@@ -114,9 +118,9 @@ class NewFrame extends JFrame{
         if(box==null){
             box = new JComboBox();
             box.setBounds(103,140,71,27);
-            box.addItem("1");
-            box.addItem("2");
-            box.addActionListener(new comboxListener());//为下拉列表框添加监听器类
+//            box.addItem("1");
+//            box.addItem("2");
+//            box.addActionListener(new comboxListener());//为下拉列表框添加监听器类
 
         }
         return box;

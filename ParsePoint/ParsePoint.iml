@@ -7,5 +7,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="jmathplot" level="project" />
+    <orderEntry type="library" name="main" level="project" />
+    <orderEntry type="library" name="gpcj-2.2.0-full" level="project" />
   </component>
 </module>

@@ -135,6 +135,30 @@ public class CoordinateOfPoint implements Comparable<Object>{
 		return sb.toString();
 	}
 
+	public double getX2d(int direction) {
+		switch (direction) {
+			case Polygon.FRONT_BOOTOM:
+				return this.y;
+			case Polygon.LEFT_RIGHT:
+				return this.x;
+			case Polygon.UP_DOWN:
+				return this.x;
+		}
+		return 0.0;
+	}
+
+	public double getY2d(int direction) {
+		switch (direction) {
+			case Polygon.FRONT_BOOTOM:
+				return this.z;
+			case Polygon.LEFT_RIGHT:
+				return this.z;
+			case Polygon.UP_DOWN:
+				return this.y;
+		}
+		return 0.0;
+	}
+
 
 	static {
 		//testtoMatlab2D();

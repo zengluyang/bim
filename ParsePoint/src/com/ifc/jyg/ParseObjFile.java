@@ -149,7 +149,7 @@ public class ParseObjFile {
 		return slabMap;
 	}
 
-	private static Polyhedron constructFromTrianglesOfOneSlab (ArrayList<Triangle> listTriangles) {
+	private static Polyhedron constructFromTrianglesOfOneSlab (ArrayList<Triangle> listTriangles,String id) {
 		Map<Double, Map<Edge, Integer>> dmeMap = new TreeMap<Double, Map<Edge,Integer>>();	//double 锟斤拷示z值 锟斤拷 Map<Edge,int>锟斤拷示锟竭和讹拷应锟斤拷锟斤拷目
  		for (Triangle triangle : listTriangles) {
 			if (triangle.getDirection() == Triangle.UP_DOWN) {
@@ -201,9 +201,9 @@ public class ParseObjFile {
 				listNewEdges.add(edge);
 			}
 		}
-		Polygon polygon = new Polygon(listNewEdges);
+		Polygon polygon = new Polygon(listNewEdges,id);
 		double height = higherZ-lowerZ;
-		Polyhedron polyhedron = new Polyhedron(polygon,height);
+		Polyhedron polyhedron = new Polyhedron(polygon,height,id);
 		return polyhedron;
 	}
 
@@ -214,7 +214,7 @@ public class ParseObjFile {
 		for (String id : slabMap.keySet()) {
 			ArrayList<Triangle> listTriangles = slabMap.get(id);
 
-			Polyhedron p = this.constructFromTrianglesOfOneSlab(listTriangles);
+			Polyhedron p = this.constructFromTrianglesOfOneSlab(listTriangles,id);
 			if(p!=null) {
 				p.Id = id;
 				rlt.add(p);

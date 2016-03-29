@@ -1,5 +1,7 @@
 package com.ifc.jyg;
 
+import com.seisw.util.geom.PolyDefault;
+
 import java.util.ArrayList;
 
 /**
@@ -14,8 +16,8 @@ public class Polygon implements Comparable<Object>{
     public final static String[] directionString = {"FRONT_BOOTOM","LEFT_RIGHT","UP_DOWN"};
 
     public String Id;
-    private ArrayList<CoordinateOfPoint> pointList = new ArrayList<CoordinateOfPoint>();
-    private ArrayList<Edge> edgeList = new ArrayList<Edge>();
+    protected ArrayList<CoordinateOfPoint> pointList;
+    protected ArrayList<Edge> edgeList;
     private int direction = 0;
 
     @Override
@@ -40,6 +42,10 @@ public class Polygon implements Comparable<Object>{
         }
 
         return 1;
+    }
+
+    protected Polygon() {
+
     }
 
     public Polygon(ArrayList<Edge> edges,String Id) {
@@ -77,6 +83,8 @@ public class Polygon implements Comparable<Object>{
     }
 
     private void setEdgeListAndPointListFromUnorderedEdgeList(ArrayList<Edge> edges) {
+        pointList = new ArrayList<CoordinateOfPoint>();
+        edgeList = new ArrayList<Edge>();
         if(edges.size()==0) {
             System.out.println("setEdgeListAndPointListFromUnorderedEdgeList error!");
             return;
@@ -95,6 +103,7 @@ public class Polygon implements Comparable<Object>{
         //System.out.println(edgeList);
         for(int i=0;i<edgeList.size()-1;i++) {
             Edge edge =edgeList.get(i);
+            Edge nextEdge = edgeList.get(i+1);
             if(i==0) {
                 pointList.add(edge.getFirst());
                 pointList.add(edge.getSecond());
@@ -108,13 +117,17 @@ public class Polygon implements Comparable<Object>{
 //                boolean test =edge.getSecond()==pLastLast;
 //                System.out.println("edge.getSecond()==pLastLast "+ test);
                 CoordinateOfPoint pToAdd = null;
-                if(pLast==edge.getFirst()) {
+                if(pLast.compareTo(edge.getFirst())==0) {
                     pToAdd = edge.getSecond();
-                } else if(pLast==edge.getSecond()) {
+                } else if(pLast.compareTo(edge.getSecond())==0) {
                     pToAdd = edge.getFirst();
-                } else if(pLastLast==edge.getFirst()) {
+                } else if(pLastLast.compareTo(edge.getFirst())==0) {
+                    pointList.set((i+1)-1,pLastLast);
+                    pointList.set((i+1)-2,pLast);
                     pToAdd = edge.getSecond();
-                } else if(pLastLast==edge.getSecond()){
+                } else if(pLastLast.compareTo(edge.getSecond())==0){
+                    pointList.set((i+1)-1,pLastLast);
+                    pointList.set((i+1)-2,pLast);
                     pToAdd = edge.getFirst();
                 } else {
                     System.out.println("Polygon(ArrayList<Edge> edges) error!");
@@ -122,6 +135,11 @@ public class Polygon implements Comparable<Object>{
                 pointList.add(pToAdd);
             }
         }
+    }
+
+    private static boolean isPointOnEdgeEnd(CoordinateOfPoint point, Edge edge) {
+        return point.compareTo(edge.getFirst())==0
+                || point.compareTo(edge.getSecond())==0;
     }
 
     @Override
@@ -418,6 +436,58 @@ public class Polygon implements Comparable<Object>{
         return direction;
     }
 
+
+
+
+    public static PolyDefault convertToGpcjPoly(Polygon p) {
+        PolyDefault gpcjPoly = new PolyDefault();
+        for(CoordinateOfPoint point:p.getPointList()) {
+            gpcjPoly.add(point.getX2d(p.getDirection()),point.getY2d(p.getDirection()));
+        }
+        return gpcjPoly;
+    }
+
+    public static Polygon convertFromGpcjPoly(PolyDefault poly,double intersectValue,int type) {
+        Polygon p = new Polygon();
+        int n = poly.getNumPoints();
+        p.edgeList = new ArrayList<Edge>(n);
+        p.pointList = new ArrayList<CoordinateOfPoint>(n);
+        for(int i=0;i<n;i++) {
+            double x;
+            double y;
+            double z;
+            switch (type) {
+                case Polygon.FRONT_BOOTOM:
+                    x=intersectValue;
+                    y=poly.getX(i);
+                    z=poly.getY(i);
+                    break;
+                case Polygon.LEFT_RIGHT:
+                    x=poly.getX(i);
+                    y=intersectValue;
+                    z=poly.getY(i);
+                    break;
+                case Polygon.UP_DOWN:
+                    x=poly.getX(i);
+                    y=poly.getY(i);
+                    z=intersectValue;
+                    break;
+                default:
+                    x=0;
+                    y=0;
+                    z=0;
+                    break;
+            }
+            p.pointList.add(new CoordinateOfPoint(x,y,z));
+            p.direction=type;
+        }
+        for(int i=0;i<n-1;i++) {
+            p.edgeList.add(new Edge(p.pointList.get(i),p.pointList.get(i+1)));
+        }
+        p.edgeList.add(new Edge(p.pointList.get(n-1),p.pointList.get(0)));
+        return p;
+    }
+
     public static void testArrayList() {
         ArrayList<Integer> il = new ArrayList<Integer>();
         il.add(100);
@@ -452,5 +522,17 @@ public class Polygon implements Comparable<Object>{
         Polygon p = new Polygon(es);
 //        System.out.print(p.getEdgeList()+"\n");
 //        System.out.print(p.getPointList());
+    }
+
+    public double getIntersectValue() {
+        switch (direction) {
+            case Polygon.FRONT_BOOTOM:
+                return this.pointList.get(0).getX();
+            case Polygon.LEFT_RIGHT:
+                return this.pointList.get(0).getY();
+            case Polygon.UP_DOWN:
+                return this.pointList.get(0).getZ();
+        }
+        return 0.0;
     }
 }

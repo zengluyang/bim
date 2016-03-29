@@ -202,12 +202,12 @@ public class IfcExtrator {
             outFinalResult.println(String.format("POL %s",p.Id));
             for(CoordinateOfPoint cop:p.getPointList()) {
                 if(cop!=null)
-                    outFinalResult.println(String.format("V %f %f %f",cop.getX(),cop.getX(),cop.getZ()));
+                    outFinalResult.println(String.format("V %f %f %f",cop.getX(),cop.getY(),cop.getZ()));
             }
             for(Edge e:p.getEdgeList()) {
                 outFinalResult.println(String.format("E %f %f %f %f %f %f",
-                        e.getFirst().getX(),e.getFirst().getX(),e.getFirst().getZ(),
-                        e.getSecond().getX(),e.getSecond().getX(),e.getSecond().getZ()
+                        e.getFirst().getX(),e.getFirst().getY(),e.getFirst().getZ(),
+                        e.getSecond().getX(),e.getSecond().getY(),e.getSecond().getZ()
                 ));
             }
         }

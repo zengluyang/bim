@@ -3,25 +3,23 @@ package com.ifc.jyg;
 import java.util.*;
 
 
-public class Rectangle implements Comparable<Object> {
+public class Rectangle extends Polygon implements Comparable<Object> {
 	
 	public final static int  FRONT_BOOTOM = 0;
 	public final static int  LEFT_RIGHT = 1;
 	public final static int  UP_DOWN = 2;
-	public final static String[] directionString = {"FRONT_BOOTOM","LEFT_RIGHT","UP_DOWN"}; 
-	
+
 	public CoordinateOfPoint topLeft;
 	public CoordinateOfPoint downRight;
 	public CoordinateOfPoint topRight;
 	public CoordinateOfPoint downLeft;
-	public String Id;
 	private int direction = 0;
 	private double area = 0.0;
 	public Rectangle(CoordinateOfPoint topLeft, CoordinateOfPoint downRight, String Id) {
 		this(topLeft,downRight);
 		this.Id = Id;
 	}
-	public Rectangle(CoordinateOfPoint topLeft, CoordinateOfPoint downRight) {
+	private Rectangle(CoordinateOfPoint topLeft, CoordinateOfPoint downRight) {
 		super();
 		this.topLeft = topLeft;
 		this.downRight = downRight;
@@ -64,6 +62,20 @@ public class Rectangle implements Comparable<Object> {
 			default:
 				break;
 		}
+
+		ArrayList<Edge> listEdges = new ArrayList<Edge>();
+		listEdges.add(new Edge(this.topLeft, 	this.topRight,	this.Id));
+		listEdges.add(new Edge(this.topRight, 	this.downRight,	this.Id));
+		listEdges.add(new Edge(this.downRight, 	this.downLeft,	this.Id));
+		listEdges.add(new Edge(this.downLeft, 	this.topLeft,	this.Id));
+		this.edgeList = listEdges;
+
+		ArrayList<CoordinateOfPoint> listPoints = new ArrayList<CoordinateOfPoint>();
+		listPoints.add(this.topLeft);
+		listPoints.add(this.topRight);
+		listPoints.add(this.downRight);
+		listPoints.add(this.downLeft);
+		this.pointList = listPoints;
 	}
 
 	static {
@@ -171,7 +183,7 @@ public class Rectangle implements Comparable<Object> {
 							if(edgeSet.size()>=4) {
 								System.out.print("");
 							}
-//							System.out.print("contrunctPolygonsUsingBigRectangleAndSmallRectangles error! not implemented");
+							System.out.println("contrunctPolygonsUsingBigRectangleAndSmallRectangles error! not implemented "+bigRec.Id);
 						}
 
 					}
@@ -311,12 +323,7 @@ public class Rectangle implements Comparable<Object> {
 
 	 */
 	public ArrayList<Edge> getEdges() {
-		ArrayList<Edge> listEdges = new ArrayList<Edge>();
-		listEdges.add(new Edge(this.topLeft, 	this.topRight,	this.Id));
-		listEdges.add(new Edge(this.topRight, 	this.downRight,	this.Id));
-		listEdges.add(new Edge(this.downRight, 	this.downLeft,	this.Id));
-		listEdges.add(new Edge(this.downLeft, 	this.topLeft,	this.Id));
-		return listEdges; 
+		return this.edgeList;
 	}
 	
 	public ArrayList<CoordinateOfPoint> getPoint() {
@@ -692,8 +699,7 @@ public class Rectangle implements Comparable<Object> {
 	}
 
 	public String toMatlab2d() {
-		Polygon p = new Polygon(this.getEdges());
-		return p.toMatlab2D();
+		return super.toMatlab2D();
 	}
 
 	public static void testGetEdges () {

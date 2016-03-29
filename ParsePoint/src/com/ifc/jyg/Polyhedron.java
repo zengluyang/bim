@@ -18,12 +18,13 @@ public class Polyhedron implements Comparable<Object>{
         return sb.toString();
     }
 
-    public Polyhedron(Polygon downPolygon, double height) {
+    public Polyhedron(Polygon downPolygon, double height,String id) {
         if(downPolygon.getDirection()!=Polygon.UP_DOWN) {
             System.out.println("Polyhedron(Polygon downPolygon, double height) error!");
         }
         this.downPolygon = downPolygon;
         this.height = height;
+        this.Id=id;
     }
 
     public Polygon getDownPolygon() {
