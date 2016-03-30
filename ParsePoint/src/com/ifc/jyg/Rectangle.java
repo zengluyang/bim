@@ -81,26 +81,49 @@ public class Rectangle extends Polygon implements Comparable<Object> {
 		this.pointList = listPoints;
 	}
 
-	static {
+//	static {
 //		testcontrunctPolygonsUsingBigRectangleAndSmallRectangles();
-	}
+//	}
 
 	public static void testcontrunctPolygonsUsingBigRectangleAndSmallRectangles() {
-		CoordinateOfPoint tb = new CoordinateOfPoint(0,0,0);
-		CoordinateOfPoint db = new CoordinateOfPoint(5,5,0);
-		Rectangle Bigger = new Rectangle(tb,db);
+		
+		CoordinateOfPoint tl = new CoordinateOfPoint(0,0,0);
+		CoordinateOfPoint dr = new CoordinateOfPoint(5,5,0);
+		Rectangle Bigger = new Rectangle(tl,dr);
 
-		CoordinateOfPoint ts1 = new CoordinateOfPoint(0,3,0);
-		CoordinateOfPoint ds1 = new CoordinateOfPoint(2,5,0);
-		Rectangle Smaller1 = new Rectangle(ts1,ds1);
+		CoordinateOfPoint tl1 = new CoordinateOfPoint(0,0,0);
+		CoordinateOfPoint dr1 = new CoordinateOfPoint(1,1,0);
+		Rectangle Smaller1 = new Rectangle(tl1,dr1);
+		
+		CoordinateOfPoint t1 = new CoordinateOfPoint(0,4,0);
+		CoordinateOfPoint d1 = new CoordinateOfPoint(1,5,0);
+		Rectangle Smaller2 = new Rectangle(t1,d1);
+		
+		Poly Smaller1gpc = Polygon.convertToGpcjPoly(Smaller1);
+		Poly Smaller2gpc = Polygon.convertToGpcjPoly(Smaller2);
+		
+		Poly polyUnionGpc = Smaller1gpc.union(Smaller2gpc); 
+		Poly bigGpc = Polygon.convertToGpcjPoly(Bigger);
+		Poly rltGpc = bigGpc.xor(polyUnionGpc); 
+		
+		CoordinateOfPoint t2 = new CoordinateOfPoint(1,1,0);
+		CoordinateOfPoint d2 = new CoordinateOfPoint(4,4,0);
+		Rectangle Away2 = new Rectangle(t2,d2);
+		
+		Poly poly2 = Polygon.convertToGpcjPoly(Away2);
+		
+		Poly finalPoly  = rltGpc.xor(poly2);
+		
+		System.out.println(polyUnionGpc);
+		
 		ArrayList<Rectangle> smallRecs = new ArrayList<>();
 		smallRecs.add(Smaller1);
-		System.out.println("contrunctPolygonsUsingBigRectangleAndSmallRectangles(Bigger,Smaller1) " + contrunctPolygonsUsingBigRectangleAndSmallRectangles(Bigger,smallRecs));
+ 
+//		System.out.println("contrunctPolygonsUsingBigRectangleAndSmallRectangles(Bigger,Smaller1) " + contrunctPolygonsUsingBigRectangleAndSmallRectangles(Bigger,smallRecs));
 
-		CoordinateOfPoint ta1 = new CoordinateOfPoint(6,6,0);
-		CoordinateOfPoint da1 = new CoordinateOfPoint(7,7,0);
-		Rectangle Away = new Rectangle(ta1,da1);
+		
 	}
+	
 	public static ArrayList<Polygon> contrunctPolygonsUsingBigRectangleAndSmallRectangles(Rectangle bigRec, ArrayList<Rectangle> smallRecs) {
 		ArrayList<Polygon> rlt = new ArrayList<Polygon>();
 		if(smallRecs.size()==1) {
@@ -187,6 +210,10 @@ public class Rectangle extends Polygon implements Comparable<Object> {
 			rlt.add(bigRec);
 		}
 		return rlt;
+	}
+	
+	public static void testcontrunctPolygonsUsingBigRectangleAndSmallRectangles1() {
+		
 	}
 
 	public static ArrayList<Polygon> contrunctPolygonsUsingBigRectangleAndSmallRectangles2(Rectangle bigRec, ArrayList<Rectangle> smallRecs) {

@@ -2,6 +2,8 @@ package com.ifc.jyg;
 
 import java.util.ArrayList;
 
+import org.omg.CORBA.PUBLIC_MEMBER;
+
 /**
  * Created by ZLY on 16/3/25.
  */
@@ -31,6 +33,18 @@ public class Polyhedron implements Comparable<Object>{
         return downPolygon;
     }
 
+//    public static void testgetNeededRectangles() {
+//    	ArrayList<Edge> rlt = new ArrayList<Edge>();
+//    	Edge edge1 = new Edge(new CoordinateOfPoint(0, 0, 0), new CoordinateOfPoint(1, 0, 0),"X_AXIS"); 
+//    	Edge edge2 = new Edge(new CoordinateOfPoint(1, 0, 0), new CoordinateOfPoint(1, 1, 0),"Y_AXIS");  
+//    	Edge edge3 = new Edge(new CoordinateOfPoint(0, 1, 0), new CoordinateOfPoint(1, 1, 0),"X_AXIS");
+//    	Edge edge4 = new Edge(new CoordinateOfPoint(0, 0, 0), new CoordinateOfPoint(0, 1, 0),"Y_AXIS");
+//    	rlt.add(edge1);
+//    	rlt.add(edge2);
+//    	rlt.add(edge3);
+//    	rlt.add(edge4);
+//    }
+    
     public ArrayList<Rectangle> getNeededRectangles() {
         ArrayList<Rectangle> rlt = new ArrayList<Rectangle>();
         for(Edge e : this.downPolygon.getEdgeList()) {

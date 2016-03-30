@@ -15,10 +15,11 @@ import java.util.concurrent.Exchanger;
 public class test {
 
 	public static void main(String[] args) throws IOException {
+		Rectangle.testcontrunctPolygonsUsingBigRectangleAndSmallRectangles();
 		showGUI();
 	}
-
-
+	
+ 
 	private static PolyDefault converToGpcjPoly(Polygon p) {
 		PolyDefault gpcjPoly = new PolyDefault();
 		for(CoordinateOfPoint point:p.getPointList()) {
@@ -28,17 +29,17 @@ public class test {
 	}
 
 	private static void showGUI () throws IOException{
-		NewFrame frame1 = new NewFrame();
-		frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//一定要设置关闭
+		final NewFrame frame1 = new NewFrame();
+		frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//涓�瀹氳璁剧疆鍏抽棴
 		frame1.setVisible(true);
 		JButton button = frame1.getButton();
-		IfcExtrator ifcExtrator = new IfcExtrator();
+		final IfcExtrator ifcExtrator = new IfcExtrator();
 
 
-		JButton button3 = new JButton("画图");
+		JButton button3 = new JButton("鐢诲浘");
 		button3.setBounds(103,110,71,27);
-		button3.setText("画图");
-		button3.setToolTipText("画图");
+		button3.setText("鐢诲浘");
+		button3.setToolTipText("鐢诲浘");
 		frame1.add(button3);
 
 		button3.addActionListener(new ActionListener() {
