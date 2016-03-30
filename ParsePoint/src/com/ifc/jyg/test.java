@@ -46,9 +46,9 @@ public class test {
 			public void actionPerformed(ActionEvent e) {
 				int i = frame1.getBox().getSelectedIndex();
 				plotPoly(ifcExtrator.getPolyRlt().get(i));
-				PolyDefault pd = Polygon.convertToGpcjPoly(ifcExtrator.getPolyRlt().get(i));
-				Polygon p = Polygon.convertFromGpcjPoly(pd,ifcExtrator.getPolyRlt().get(i).getIntersectValue(),ifcExtrator.getPolyRlt().get(i).getDirection());
-				p.toMatlab2D();
+//				PolyDefault pd = Polygon.convertToGpcjPoly(ifcExtrator.getPolyRlt().get(i));
+//				Polygon p = Polygon.convertFromGpcjPoly(pd,ifcExtrator.getPolyRlt().get(i).getIntersectValue(),ifcExtrator.getPolyRlt().get(i).getDirection());
+//				p.toMatlab2D();
 			}
 		});
 

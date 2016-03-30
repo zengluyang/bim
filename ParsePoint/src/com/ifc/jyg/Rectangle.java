@@ -1,5 +1,8 @@
 package com.ifc.jyg;
 
+import com.seisw.util.geom.Poly;
+import com.seisw.util.geom.PolyDefault;
+
 import java.util.*;
 
 
@@ -98,8 +101,95 @@ public class Rectangle extends Polygon implements Comparable<Object> {
 		CoordinateOfPoint da1 = new CoordinateOfPoint(7,7,0);
 		Rectangle Away = new Rectangle(ta1,da1);
 	}
-
 	public static ArrayList<Polygon> contrunctPolygonsUsingBigRectangleAndSmallRectangles(Rectangle bigRec, ArrayList<Rectangle> smallRecs) {
+		ArrayList<Polygon> rlt = new ArrayList<Polygon>();
+		if(smallRecs.size()==1) {
+			TreeSet<Edge> edges = new TreeSet<Edge>();
+			ArrayList<Edge> bigRecEdges = bigRec.getEdges();
+			Edge A = bigRecEdges.get(0);
+			Edge B = bigRecEdges.get(1);
+			Edge C = bigRecEdges.get(2);
+			Edge D = bigRecEdges.get(3);
+
+			Rectangle ri = smallRecs.get(0);
+			ArrayList<Edge> esi = ri.getEdges();
+			Edge ai = esi.get(0);
+			Edge bi = esi.get(1);
+			Edge ci = esi.get(2);
+			Edge di = esi.get(3);
+			ArrayList<Edge> esAai = ai.getNewEgdesFromThisAndThatEdges(A);
+			ArrayList<Edge> esBbi = bi.getNewEgdesFromThisAndThatEdges(B);
+			ArrayList<Edge> esCci = ci.getNewEgdesFromThisAndThatEdges(C);
+			ArrayList<Edge> esDdi = di.getNewEgdesFromThisAndThatEdges(D);
+
+
+			if(A.getAxisValue().compareTo(ci.getAxisValue())==0 || C.getAxisValue().compareTo(ai.getAxisValue())==0) {
+				ArrayList<Edge> esAci = ci.getNewEgdesFromThisAndThatEdges(A);
+				ArrayList<Edge> esCai = ai.getNewEgdesFromThisAndThatEdges(C);
+
+				edges.addAll(esAci);
+				edges.addAll(esCai);
+			} else {
+				edges.addAll(esAai);
+				edges.addAll(esCci);
+			}
+
+			if(B.getAxisValue().compareTo(di.getAxisValue())==0 || D.getAxisValue().compareTo(bi.getAxisValue())==0) {
+				ArrayList<Edge> esBdi = di.getNewEgdesFromThisAndThatEdges(B);
+				ArrayList<Edge> esDbi = bi.getNewEgdesFromThisAndThatEdges(D);
+				edges.addAll(esBdi);
+				edges.addAll(esDbi);
+			} else {
+				edges.addAll(esBbi);
+				edges.addAll(esDdi);
+			}
+
+			ArrayList<ArrayList<Edge>> edgeListListRlt = new ArrayList<ArrayList<Edge>> ();
+			for(Edge e:edges) {
+
+				boolean isInsert = false;
+				for(ArrayList<Edge> onePolyEdgeList : edgeListListRlt) {
+					for(Edge onePolyEdge:onePolyEdgeList) {
+						if(Edge.isConnectedByTwoEdges(onePolyEdge,e)) {
+							isInsert = true;
+							break;
+						}
+					}
+					if(isInsert) {
+						onePolyEdgeList.add(e);
+					}
+				}
+				if(!isInsert) {
+					ArrayList<Edge> onePolyEdgeList = new ArrayList<Edge>();
+					onePolyEdgeList.add(e);
+					edgeListListRlt.add(onePolyEdgeList);
+				}
+			}
+			for(ArrayList<Edge> onePolyEdgeList:edgeListListRlt) {
+				Polygon p = new Polygon(onePolyEdgeList,bigRec.Id);
+				rlt.add(p);
+			}
+		} else if(smallRecs.size()>=1){
+			Rectangle small0 = smallRecs.get(0);
+			Rectangle small1 = smallRecs.get(1);
+			Poly small0gpc = Polygon.convertToGpcjPoly(small0);
+			Poly small1gpc = Polygon.convertToGpcjPoly(small1);
+			Poly polyUnionGpc = small0gpc.union(small1gpc);
+			for(int i=1;i<smallRecs.size();i++) {
+				Poly smalligpc = Polygon.convertToGpcjPoly(smallRecs.get(i));
+				polyUnionGpc = polyUnionGpc.union(smalligpc);
+			}
+
+			Poly bigGpc = Polygon.convertToGpcjPoly(bigRec);
+			Poly rltGpc = bigGpc.xor(polyUnionGpc);
+			rlt.add(Polygon.convertFromGpcjPoly(rltGpc,bigRec.getIntersectValue(),bigRec.getDirection(),bigRec.Id));
+		} else {
+			rlt.add(bigRec);
+		}
+		return rlt;
+	}
+
+	public static ArrayList<Polygon> contrunctPolygonsUsingBigRectangleAndSmallRectangles2(Rectangle bigRec, ArrayList<Rectangle> smallRecs) {
 		ArrayList<Polygon> rlt = new ArrayList<Polygon>();
 		TreeSet<Edge> edges = new TreeSet<Edge>();
 		ArrayList<Edge> bigRecEdges = bigRec.getEdges();

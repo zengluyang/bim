@@ -1,5 +1,6 @@
 package com.ifc.jyg;
 
+import com.seisw.util.geom.Poly;
 import com.seisw.util.geom.PolyDefault;
 
 import java.util.ArrayList;
@@ -447,7 +448,7 @@ public class Polygon implements Comparable<Object>{
         return gpcjPoly;
     }
 
-    public static Polygon convertFromGpcjPoly(PolyDefault poly,double intersectValue,int type) {
+    public static Polygon convertFromGpcjPoly(Poly poly, double intersectValue, int type, String id) {
         Polygon p = new Polygon();
         int n = poly.getNumPoints();
         p.edgeList = new ArrayList<Edge>(n);
@@ -485,6 +486,7 @@ public class Polygon implements Comparable<Object>{
             p.edgeList.add(new Edge(p.pointList.get(i),p.pointList.get(i+1)));
         }
         p.edgeList.add(new Edge(p.pointList.get(n-1),p.pointList.get(0)));
+        p.Id = id;
         return p;
     }
 
