@@ -36,10 +36,10 @@ public class test {
 		final IfcExtrator ifcExtrator = new IfcExtrator();
 
 
-		JButton button3 = new JButton("鐢诲浘");
+		JButton button3 = new JButton("draw");
 		button3.setBounds(103,110,71,27);
-		button3.setText("鐢诲浘");
-		button3.setToolTipText("鐢诲浘");
+		button3.setText("draw");
+		button3.setToolTipText("draw");
 		frame1.add(button3);
 
 		button3.addActionListener(new ActionListener() {

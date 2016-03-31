@@ -88,11 +88,11 @@ public class Rectangle extends Polygon implements Comparable<Object> {
 	public static void testcontrunctPolygonsUsingBigRectangleAndSmallRectangles() {
 		
 		CoordinateOfPoint tl = new CoordinateOfPoint(0,0,0);
-		CoordinateOfPoint dr = new CoordinateOfPoint(5,5,0);
+		CoordinateOfPoint dr = new CoordinateOfPoint(50,50,0);
 		Rectangle Bigger = new Rectangle(tl,dr);
 
-		CoordinateOfPoint tl1 = new CoordinateOfPoint(0,0,0);
-		CoordinateOfPoint dr1 = new CoordinateOfPoint(1,1,0);
+		CoordinateOfPoint tl1 = new CoordinateOfPoint(1,1,0);
+		CoordinateOfPoint dr1 = new CoordinateOfPoint(5,5,0);
 		Rectangle Smaller1 = new Rectangle(tl1,dr1);
 		
 		CoordinateOfPoint t1 = new CoordinateOfPoint(0,4,0);
@@ -112,7 +112,7 @@ public class Rectangle extends Polygon implements Comparable<Object> {
 		
 		Poly poly2 = Polygon.convertToGpcjPoly(Away2);
 		
-		Poly finalPoly  = rltGpc.xor(poly2);
+		Poly finalPoly  = bigGpc.xor(Smaller1gpc);
 		
 		System.out.println(polyUnionGpc);
 		
@@ -205,7 +205,7 @@ public class Rectangle extends Polygon implements Comparable<Object> {
 
 			Poly bigGpc = Polygon.convertToGpcjPoly(bigRec);
 			Poly rltGpc = bigGpc.xor(polyUnionGpc);
-			rlt.add(Polygon.convertFromGpcjPoly(rltGpc,bigRec.getIntersectValue(),bigRec.getDirection(),bigRec.Id));
+			rlt.addAll(Polygon.convertFromGpcjPoly(rltGpc,bigRec.getIntersectValue(),bigRec.getDirection(),bigRec.Id));
 		} else {
 			rlt.add(bigRec);
 		}

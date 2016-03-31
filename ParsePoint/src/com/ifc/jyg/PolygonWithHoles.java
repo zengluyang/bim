@@ -12,6 +12,13 @@ public class PolygonWithHoles extends Polygon {
         this.holes=holes;
     }
 
+    PolygonWithHoles(Polygon outter,String id, ArrayList<Polygon> holes) {
+        this.edgeList = outter.edgeList;
+        this.pointList = outter.pointList;
+        this.holes=holes;
+        this.Id=id;
+    }
+
     @Override
     public String toString() {
         return "PolygonWithHoles{" +

@@ -38,6 +38,8 @@ public class IfcExtrator {
 
     public void setInputIfcFileName(String inputIfcFileName) {
         this.inputIfcFileName = inputIfcFileName;
+        this.finalResultFile = inputIfcFileName+""+"_final_result.txt";
+        this.finalMatlabFile = inputIfcFileName+"_final_Matlab_file.m";
     }
 
     public void setIfcConvertExeName(String ifcConvertExeName) {

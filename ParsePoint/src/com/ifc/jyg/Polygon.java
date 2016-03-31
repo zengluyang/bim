@@ -2,6 +2,7 @@ package com.ifc.jyg;
 
 import com.seisw.util.geom.Poly;
 import com.seisw.util.geom.PolyDefault;
+import com.seisw.util.geom.PolySimple;
 
 import java.util.ArrayList;
 
@@ -448,7 +449,7 @@ public class Polygon implements Comparable<Object>{
         return gpcjPoly;
     }
 
-    public static Polygon convertFromGpcjPoly(Poly poly, double intersectValue, int type, String id) {
+    private static Polygon convertFromGpcjPolySimple (PolySimple poly, double intersectValue, int type, String id) {
         Polygon p = new Polygon();
         int n = poly.getNumPoints();
         p.edgeList = new ArrayList<Edge>(n);
@@ -488,6 +489,61 @@ public class Polygon implements Comparable<Object>{
         p.edgeList.add(new Edge(p.pointList.get(n-1),p.pointList.get(0)));
         p.Id = id;
         return p;
+    }
+
+
+    public static ArrayList<Polygon> convertFromGpcjPoly(Poly poly, double intersectValue, int type, String id) {
+        ArrayList<Polygon>  rlt = new ArrayList<Polygon>();
+        if(poly instanceof PolySimple) {
+            PolySimple polySimple = (PolySimple) poly;
+            Polygon p = Polygon.convertFromGpcjPolySimple(polySimple,intersectValue,type,id);
+            rlt.add(p);
+        } else if(poly instanceof  PolyDefault) {
+            PolyDefault polyDefault = (PolyDefault) poly;
+            int n = polyDefault.getNumInnerPoly();
+            ArrayList<Polygon> holes = new ArrayList<Polygon>();
+            ArrayList<Polygon> outter = new ArrayList<Polygon>();
+
+            for(int i=0;i<n;i++) {
+                Poly p=polyDefault.getInnerPoly(i);
+                if(p instanceof  PolyDefault) {
+                    PolyDefault pd = (PolyDefault)p;
+                    Polygon polygon = null;
+                    if(p.getNumInnerPoly()==1) {
+                        Poly p0 = p.getInnerPoly(0);
+                        if(p0 instanceof PolySimple) {
+                            PolySimple p0s = (PolySimple) p0;
+                            polygon = Polygon.convertFromGpcjPolySimple(p0s,intersectValue,type,id);
+
+                        } else {
+                            System.out.println("p0 not instanceof PolySimple");
+                        }
+                    }
+                    if(pd.isHole()) {
+                        holes.add(polygon);
+                    } else {
+                        outter.add(polygon);
+                    }
+
+                } else if(p instanceof PolySimple) {
+                    PolySimple ps = (PolySimple)p;
+                    Polygon polygon = Polygon.convertFromGpcjPolySimple(ps,intersectValue,type,id);
+                    rlt.add(polygon);
+                }
+            }
+            if(holes.size()>=1) {
+                if(outter.size()==1) {
+                    PolygonWithHoles pwh = new PolygonWithHoles(outter.get(0),id,holes);
+                    rlt.add(pwh);
+                }else {
+                    System.out.println("convertFromGpcjPoly error outter.size()!=1");
+                }
+            }
+
+
+        }
+
+        return rlt;
     }
 
     public static void testArrayList() {
