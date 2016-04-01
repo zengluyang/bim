@@ -491,6 +491,20 @@ public class Polygon implements Comparable<Object>{
         return p;
     }
 
+    public static String testPolyDefautToMatlab(PolyDefault pd) {
+        StringBuilder sb = new StringBuilder();
+        for(int i=0;i<pd.getNumInnerPoly();i++) {
+            Poly p = pd.getInnerPoly(i);
+            if(p instanceof PolySimple) {
+                PolySimple ps = (PolySimple) p;
+                sb.append(Polygon.convertFromGpcjPolySimple(ps,0,0,"").toMatlab2D());
+            } else if(p instanceof PolyDefault) {
+                PolyDefault pdi = (PolyDefault)p;
+                sb.append(Polygon.testPolyDefautToMatlab(pdi));
+            }
+        }
+        return sb.toString();
+    }
 
     public static ArrayList<Polygon> convertFromGpcjPoly(Poly poly, double intersectValue, int type, String id) {
         ArrayList<Polygon>  rlt = new ArrayList<Polygon>();
@@ -593,4 +607,5 @@ public class Polygon implements Comparable<Object>{
         }
         return 0.0;
     }
+
 }
