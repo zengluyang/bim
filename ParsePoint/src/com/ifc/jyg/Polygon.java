@@ -449,7 +449,7 @@ public class Polygon implements Comparable<Object>{
         return gpcjPoly;
     }
 
-    private static Polygon convertFromGpcjPolySimple (PolySimple poly, double intersectValue, int type, String id) {
+    public static Polygon convertFromGpcjPolySimple (PolySimple poly, double intersectValue, int type, String id) {
         Polygon p = new Polygon();
         int n = poly.getNumPoints();
         p.edgeList = new ArrayList<Edge>(n);

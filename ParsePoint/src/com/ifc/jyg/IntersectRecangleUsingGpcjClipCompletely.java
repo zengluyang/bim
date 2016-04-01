@@ -7,7 +7,20 @@ import java.util.*;
 
 
 public class IntersectRecangleUsingGpcjClipCompletely {
+    class PloyGpcjResult {
+        public Poly polyGpcj;
+        public int direction;
+        public double intersectValue;
+        public ArrayList<String> idList = new ArrayList<String>();
+        public ArrayList<Rectangle> rawRectangleList = new ArrayList<Rectangle>();
+        PloyGpcjResult() {
 
+        }
+
+        public String getIds() {
+            return String.join(",",this.idList);
+        }
+    }
     private Map<Integer, Map<Double,  ArrayList<Rectangle>>> directionDoubleMap;
     private Map<Integer, ArrayList<Rectangle>> directionMap = new HashMap<Integer, ArrayList<Rectangle>>();
     private ArrayList<TreeSet<Rectangle>> recSetList = new ArrayList<>();
@@ -40,14 +53,19 @@ public class IntersectRecangleUsingGpcjClipCompletely {
     }
 
 
-    public ArrayList<Poly> doClip() {
-        ArrayList<Poly> rlt= new ArrayList<Poly>();
+    public ArrayList<PloyGpcjResult> doClip() {
+        ArrayList<PloyGpcjResult> rlt= new ArrayList<PloyGpcjResult>();
         ArrayList<ArrayList<Rectangle>> recListList = this.doPart();
         for(ArrayList<Rectangle> recList:recListList) {
             ArrayList<Poly> intersectionRltGpcjList = new ArrayList<Poly>();
             Poly unionRltGpcj = new PolyDefault();
+            PloyGpcjResult ployGpcjResult = new PloyGpcjResult();
+            ployGpcjResult.direction = recList.get(0).getDirection();
+            ployGpcjResult.intersectValue = recList.get(0).getIntersectValue();
+            ployGpcjResult.rawRectangleList = recList;
             for(int i=0;i<recList.size();i++) {
                 Rectangle ri = recList.get(i);
+                ployGpcjResult.idList.add(ri.Id);
                 unionRltGpcj=unionRltGpcj.union(Polygon.convertToGpcjPoly(ri));
                 for(int j=recList.size()-1;j>i;j--) {
                     Rectangle rj = recList.get(j);
@@ -62,11 +80,12 @@ public class IntersectRecangleUsingGpcjClipCompletely {
             if(rltLocal instanceof PolyDefault) {
                 PolyDefault rltLocalPd = (PolyDefault) rltLocal;
                 if(rltLocal.getNumInnerPoly()>=2) {
-                    System.out.println(Polygon.testPolyDefautToMatlab(rltLocalPd));
-                    System.out.print('\n');
+//                    System.out.println(Polygon.testPolyDefautToMatlab(rltLocalPd));
+//                    System.out.print('\n');
                 }
             }
-            rlt.add(rltLocal);
+            ployGpcjResult.polyGpcj = rltLocal;
+            rlt.add(ployGpcjResult);
         }
         return rlt;
     }

@@ -19,7 +19,7 @@ public class IfcExtrator {
     private PrintWriter outMatlab;
     private PrintWriter outFinalResult;
     public String successMessage;
-
+    public ArrayList<IntersectRecangleUsingGpcjClipCompletely.PloyGpcjResult> ployGpcjResultList;
     public String getIfcConvertExeName() {
         return ifcConvertExeName;
     }
@@ -101,6 +101,7 @@ public class IfcExtrator {
         ParseObjFile parseSlabObjFile = this.generateObjFileAndGetPaser(inputIfcFileName,Cuboid.POLYSLAB);
 
         IntersectRectangle ir = new IntersectRectangle();
+        IntersectRecangleUsingGpcjClipCompletely irupcc = new IntersectRecangleUsingGpcjClipCompletely();
         ArrayList<Cuboid> listCuboidsBeam = parseBeamObjFile.getCuboid();
         ArrayList<Cuboid> listCuboidsColumn = parseColumnObjFile.getCuboid();
         ArrayList<Cuboid> listCuboidsSlab = parseSlabObjFile.getCuboid();
@@ -116,6 +117,7 @@ public class IfcExtrator {
             if(neededRecs!=null) {
                 for(Rectangle r : neededRecs) {
                     ir.addRectangleTogether(r);
+                    irupcc.addRectangleTogether(r);
                 }
             }
             //}
@@ -138,6 +140,7 @@ public class IfcExtrator {
             for(Rectangle r:recs) {
 
                 ir.addRectangleTogether(r);
+                irupcc.addRectangleTogether(r);
                 slabNeededRecCnt++;
             }
 
@@ -146,6 +149,7 @@ public class IfcExtrator {
 
 
         ArrayList<ArrayList<TreeSet<Rectangle>>> intersectResult = ir.getPartitionResult();
+        this.ployGpcjResultList = irupcc.doClip();
         int total_cnt=0;
         for(ArrayList<TreeSet<Rectangle>> recSetList:intersectResult) {
             for(TreeSet<Rectangle> recSet:recSetList) {
