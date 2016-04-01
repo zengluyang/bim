@@ -54,12 +54,12 @@ public class test {
 
 
 				Plot2DPanel plot2DPanel = ployPolyDeafult(pd, intersectValue, direction, ids);
-				File png = new File("png\\"+ids.replace(':',' ').trim()+".png");
-				try {
-					plot2DPanel;
-				} catch (IOException ee) {
-					ee.printStackTrace();
-				}
+//				File png = new File("png\\"+ids.replace(':',' ').trim()+".png");
+//				try {
+//					plot2DPanel;
+//				} catch (IOException ee) {
+//					ee.printStackTrace();
+//				}
 
 //				PolyDefault pd = Polygon.convertToGpcjPoly(ifcExtrator.getPolyRlt().get(i));
 //				Polygon p = Polygon.convertFromGpcjPoly(pd,ifcExtrator.getPolyRlt().get(i).getIntersectValue(),ifcExtrator.getPolyRlt().get(i).getDirection());
@@ -74,6 +74,7 @@ public class test {
 					@Override
 					public void run() {
 						frame1.getLabel().setText("Extrating!");
+						frame1.getBox().removeAllItems();
 						try {
 							File exeFile = frame1.exeFileChooser.getSelectedFile();
 							File ifcFile = frame1.inputFileChooser.getSelectedFile();
@@ -104,7 +105,7 @@ public class test {
 			}
 		});
 
-		button.doClick();
+		//button.doClick();
 
 	}
 

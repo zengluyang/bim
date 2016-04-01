@@ -44,12 +44,14 @@ public class IfcExtrator {
 
     public void setIfcConvertExeName(String ifcConvertExeName) {
         this.ifcConvertExeName = ifcConvertExeName;
+        this.finalResultFile = inputIfcFileName+""+"_final_result.txt";
+        this.finalMatlabFile = inputIfcFileName+"_final_Matlab_file.m";
     }
 
     private ParseObjFile generateObjFileAndGetPaser(String inputIfcFileName, int type) {
         String ifcType = Cuboid.typeIfcString[type];
         File inputIfcFile = new File(inputIfcFileName);
-        String outputObjFileName = inputIfcFile.getName() + "_" + ifcType + ".obj";
+        String outputObjFileName = inputIfcFile.getAbsolutePath() + "_" + ifcType + ".obj";
         File outputObjFile = new File(outputObjFileName);
         if (outputObjFile.lastModified() < inputIfcFile.lastModified()) {
             System.out.println("Objfile " + outputObjFileName + " out-of-date, converting using " + ifcConvertExeName);
@@ -88,13 +90,13 @@ public class IfcExtrator {
         this.inputIfcFileName = ".\\YD_S_B04_1F.ifc";
         this.finalResultFile = inputIfcFileName+""+"_final_result.txt";
         this.finalMatlabFile = inputIfcFileName+"_final_Matlab_file.m";
+    }
+
+    public void extract() throws IOException {
         BufferedWriter brMatlab = new BufferedWriter(new FileWriter(finalMatlabFile));
         outMatlab = new PrintWriter (brMatlab);
         BufferedWriter brFinalResult = new BufferedWriter(new FileWriter(finalResultFile));
         outFinalResult = new PrintWriter (brFinalResult);
-    }
-
-    public void extract() throws IOException {
 
         ParseObjFile parseBeamObjFile = this.generateObjFileAndGetPaser(inputIfcFileName,Cuboid.BEAM);
         ParseObjFile parseColumnObjFile = this.generateObjFileAndGetPaser(inputIfcFileName,Cuboid.COLUMN);
@@ -226,6 +228,8 @@ public class IfcExtrator {
                 ));
             }
         }
+        outFinalResult.flush();
+        outMatlab.flush();
         successMessage = "Created results at: "+finalMatlabFile+" and "+finalResultFile;
         System.out.println(successMessage);
 
