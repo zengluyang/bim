@@ -5,22 +5,23 @@ import com.seisw.util.geom.PolyDefault;
 
 import java.util.*;
 
+class PloyGpcjResult {
+    public Poly polyGpcj;
+    public int direction;
+    public double intersectValue;
+    public ArrayList<String> idList = new ArrayList<String>();
+    public ArrayList<Rectangle> rawRectangleList = new ArrayList<Rectangle>();
+    PloyGpcjResult() {
+
+    }
+
+    public String getIds() {
+        return String.join(",",this.idList);
+    }
+}
 
 public class IntersectRecangleUsingGpcjClipCompletely {
-    class PloyGpcjResult {
-        public Poly polyGpcj;
-        public int direction;
-        public double intersectValue;
-        public ArrayList<String> idList = new ArrayList<String>();
-        public ArrayList<Rectangle> rawRectangleList = new ArrayList<Rectangle>();
-        PloyGpcjResult() {
 
-        }
-
-        public String getIds() {
-            return String.join(",",this.idList);
-        }
-    }
     private Map<Integer, Map<Double,  ArrayList<Rectangle>>> directionDoubleMap;
     private Map<Integer, ArrayList<Rectangle>> directionMap = new HashMap<Integer, ArrayList<Rectangle>>();
     private ArrayList<TreeSet<Rectangle>> recSetList = new ArrayList<>();

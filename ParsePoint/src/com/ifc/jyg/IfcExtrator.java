@@ -19,7 +19,7 @@ public class IfcExtrator {
     private PrintWriter outMatlab;
     private PrintWriter outFinalResult;
     public String successMessage;
-    public ArrayList<IntersectRecangleUsingGpcjClipCompletely.PloyGpcjResult> ployGpcjResultList;
+    public ArrayList<PloyGpcjResult> ployGpcjResultList;
     public String getIfcConvertExeName() {
         return ifcConvertExeName;
     }
@@ -150,6 +150,15 @@ public class IfcExtrator {
 
         ArrayList<ArrayList<TreeSet<Rectangle>>> intersectResult = ir.getPartitionResult();
         this.ployGpcjResultList = irupcc.doClip();
+
+        for(Polyhedron p:ps) {
+            PloyGpcjResult ployGpcjResult = new PloyGpcjResult();
+            ployGpcjResult.polyGpcj = Polygon.convertToGpcjPoly(p.getDownPolygon());
+            ployGpcjResult.idList.add(p.Id);
+            ployGpcjResult.direction=p.getDownPolygon().getDirection();
+            ployGpcjResult.intersectValue=p.getDownPolygon().getIntersectValue();
+            this.ployGpcjResultList.add(ployGpcjResult);
+        }
         int total_cnt=0;
         for(ArrayList<TreeSet<Rectangle>> recSetList:intersectResult) {
             for(TreeSet<Rectangle> recSet:recSetList) {

@@ -3,15 +3,14 @@ package com.ifc.jyg;
 import com.seisw.util.geom.Poly;
 import com.seisw.util.geom.PolyDefault;
 import com.seisw.util.geom.PolySimple;
+import com.seisw.util.geom.Rectangle2D;
 import org.math.plot.Plot2DPanel;
-import org.math.plot.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.*;
-import java.util.concurrent.Exchanger;
 
 public class test {
 
@@ -47,12 +46,21 @@ public class test {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int i = frame1.getBox().getSelectedIndex();
-				IntersectRecangleUsingGpcjClipCompletely.PloyGpcjResult ployGpcjResult = ifcExtrator.ployGpcjResultList.get(i);
+				PloyGpcjResult ployGpcjResult = ifcExtrator.ployGpcjResultList.get(i);
 				PolyDefault pd =  (PolyDefault)ployGpcjResult.polyGpcj;
 				double intersectValue = ployGpcjResult.intersectValue;
 				int direction  =ployGpcjResult.direction;
 				String ids =  ployGpcjResult.getIds();
-				ployPolyDeafult( pd, intersectValue,  direction,  ids);
+
+
+				Plot2DPanel plot2DPanel = ployPolyDeafult(pd, intersectValue, direction, ids);
+				File png = new File("png\\"+ids.replace(':',' ').trim()+".png");
+				try {
+					plot2DPanel;
+				} catch (IOException ee) {
+					ee.printStackTrace();
+				}
+
 //				PolyDefault pd = Polygon.convertToGpcjPoly(ifcExtrator.getPolyRlt().get(i));
 //				Polygon p = Polygon.convertFromGpcjPoly(pd,ifcExtrator.getPolyRlt().get(i).getIntersectValue(),ifcExtrator.getPolyRlt().get(i).getDirection());
 //				p.toMatlab2D();
@@ -78,11 +86,11 @@ public class test {
 							}
 							ifcExtrator.extract();
 							ifcExtrator.printResultToFile();
-							frame1.getLabel().setText("Extrated"+ifcExtrator.successMessage);
+							frame1.getLabel().setText("Extrated "+ ifcExtrator.ployGpcjResultList.size()+" results.");
 							for(Polygon p:ifcExtrator.getPolyRlt()) {
 								//frame1.getBox().addItem(p.Id+" "+Polygon.directionString[p.getDirection()]);
 							}
-							for(IntersectRecangleUsingGpcjClipCompletely.PloyGpcjResult polyGpcjRlt:ifcExtrator.ployGpcjResultList) {
+							for(PloyGpcjResult polyGpcjRlt:ifcExtrator.ployGpcjResultList) {
 								frame1.getBox().addItem(polyGpcjRlt.getIds()+" "+Polygon.directionString[polyGpcjRlt.direction]);
 							}
 							// create your PlotPanel (you can use it as a JPanel)
@@ -100,18 +108,27 @@ public class test {
 
 	}
 
-	private static void ployPolyDeafult(PolyDefault pd,double intersectValue, int type, String id) {
+	private static Plot2DPanel ployPolyDeafult(PolyDefault pd, double intersectValue, int type, String id) {
 		Plot2DPanel plot = new Plot2DPanel();
+
 		addLineFromPloyDeafult(plot,pd,intersectValue,type,id);
 		JFrame frame = new JFrame(id+" "+Polygon.directionString[type]);
 		frame.setContentPane(plot);
 		frame.setVisible(true);
 
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		Rectangle2D bounds = pd.getBounds();
+		double bh = bounds.getHeight();
+		double bw = bounds.getWidth();
 		int width = 500;
 		int height = 500;
+
+
 		frame.setBounds((d.width - width) / 2, (d.height - height) / 2, width, height);
-		frame.setSize(500,500);
+		frame.setSize(width,height);
+		plot.setBounds((d.width - width) / 2, (d.height - height) / 2, width, height);
+		plot.setSize(width,height);
+		return plot;
 	}
 
 	private static void addLineFromPloyDeafult(Plot2DPanel plot, PolyDefault pd,double intersectValue, int type, String id) {
