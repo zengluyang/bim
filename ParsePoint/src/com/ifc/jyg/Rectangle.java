@@ -87,43 +87,72 @@ public class Rectangle extends Polygon implements Comparable<Object> {
 
 	public static void testcontrunctPolygonsUsingBigRectangleAndSmallRectangles() {
 		
+		
+//		CoordinateOfPoint tl = new CoordinateOfPoint(0,0,0);
+//		CoordinateOfPoint dr = new CoordinateOfPoint(5,5,0);
+//		Rectangle Bigger = new Rectangle(tl,dr);
+//
+//		CoordinateOfPoint tl1 = new CoordinateOfPoint(1,1,0);
+//		CoordinateOfPoint dr1 = new CoordinateOfPoint(4,4,0);
+//		Rectangle Smaller1 = new Rectangle(tl1,dr1);
+//		
+//		Poly bigGpc = Polygon.convertToGpcjPoly(Bigger);
+//		Poly Smaller1gpc = Polygon.convertToGpcjPoly(Smaller1);
+//		Poly rltGpc = bigGpc.xor(Smaller1gpc); 
+//		System.out.println();
+		
+//		CoordinateOfPoint tl = new CoordinateOfPoint(0,0,0);
+//		CoordinateOfPoint dr = new CoordinateOfPoint(5,5,0);
+//		Rectangle Bigger = new Rectangle(tl,dr);
+//
+//		CoordinateOfPoint tl1 = new CoordinateOfPoint(0,0,0);
+//		CoordinateOfPoint dr1 = new CoordinateOfPoint(1,2,0);
+//		Rectangle Smaller1 = new Rectangle(tl1,dr1);
+//		
+//		CoordinateOfPoint t1 = new CoordinateOfPoint(0,3,0);
+//		CoordinateOfPoint d1 = new CoordinateOfPoint(1,5,0);
+//		Rectangle Smaller2 = new Rectangle(t1,d1);
+//		
+//		Poly Smaller1gpc = Polygon.convertToGpcjPoly(Smaller1);
+//		Poly Smaller2gpc = Polygon.convertToGpcjPoly(Smaller2);
+//		
+//		Poly polyUnionGpc = Smaller1gpc.union(Smaller2gpc); 
+//		Poly bigGpc = Polygon.convertToGpcjPoly(Bigger);
+//		Poly rltGpc = bigGpc.xor(polyUnionGpc); 
+//		
+//		CoordinateOfPoint t2 = new CoordinateOfPoint(1,1,0);
+//		CoordinateOfPoint d2 = new CoordinateOfPoint(4,4,0);
+//		Rectangle Away2 = new Rectangle(t2,d2);
+//		
+//		Poly poly2 = Polygon.convertToGpcjPoly(Away2);
+//		
+//		Poly finalPoly  = rltGpc.xor(poly2);
+//		System.out.println(finalPoly);
+		
 		CoordinateOfPoint tl = new CoordinateOfPoint(0,0,0);
 		CoordinateOfPoint dr = new CoordinateOfPoint(5,5,0);
 		Rectangle Bigger = new Rectangle(tl,dr);
 
-		CoordinateOfPoint tl1 = new CoordinateOfPoint(0,0,0);
-		CoordinateOfPoint dr1 = new CoordinateOfPoint(1,1,0);
+		CoordinateOfPoint tl1 = new CoordinateOfPoint(1,0,0);
+		CoordinateOfPoint dr1 = new CoordinateOfPoint(4,5,0);
 		Rectangle Smaller1 = new Rectangle(tl1,dr1);
 		
-		CoordinateOfPoint t1 = new CoordinateOfPoint(0,4,0);
-		CoordinateOfPoint d1 = new CoordinateOfPoint(1,5,0);
-		Rectangle Smaller2 = new Rectangle(t1,d1);
-		
-		Poly Smaller1gpc = Polygon.convertToGpcjPoly(Smaller1);
-		Poly Smaller2gpc = Polygon.convertToGpcjPoly(Smaller2);
-		
-		Poly polyUnionGpc = Smaller1gpc.union(Smaller2gpc); 
 		Poly bigGpc = Polygon.convertToGpcjPoly(Bigger);
-		Poly rltGpc = bigGpc.xor(polyUnionGpc); 
-		
-		CoordinateOfPoint t2 = new CoordinateOfPoint(1,1,0);
-		CoordinateOfPoint d2 = new CoordinateOfPoint(4,4,0);
-		Rectangle Away2 = new Rectangle(t2,d2);
-		
-		Poly poly2 = Polygon.convertToGpcjPoly(Away2);
-		
-		Poly finalPoly  = rltGpc.xor(poly2);
-		
-		System.out.println(polyUnionGpc);
-		
-		ArrayList<Rectangle> smallRecs = new ArrayList<>();
-		smallRecs.add(Smaller1);
+		Poly Smaller1gpc = Polygon.convertToGpcjPoly(Smaller1);
+		Poly rltGpc = bigGpc.xor(Smaller1gpc); 
+		System.out.println(rltGpc);
+//		
+//		System.out.println(polyUnionGpc);
+//		
+//		ArrayList<Rectangle> smallRecs = new ArrayList<>();
+//		smallRecs.add(Smaller1);
  
 //		System.out.println("contrunctPolygonsUsingBigRectangleAndSmallRectangles(Bigger,Smaller1) " + contrunctPolygonsUsingBigRectangleAndSmallRectangles(Bigger,smallRecs));
 
 		
 	}
 	
+	 
 	public static ArrayList<Polygon> contrunctPolygonsUsingBigRectangleAndSmallRectangles(Rectangle bigRec, ArrayList<Rectangle> smallRecs) {
 		ArrayList<Polygon> rlt = new ArrayList<Polygon>();
 		if(smallRecs.size()==1) {
