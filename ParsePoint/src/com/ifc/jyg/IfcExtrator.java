@@ -19,7 +19,7 @@ public class IfcExtrator {
     private PrintWriter outMatlab;
     private PrintWriter outFinalResult;
     public String successMessage;
-
+    public ArrayList<PloyGpcjResult> ployGpcjResultList;
     public String getIfcConvertExeName() {
         return ifcConvertExeName;
     }
@@ -38,16 +38,20 @@ public class IfcExtrator {
 
     public void setInputIfcFileName(String inputIfcFileName) {
         this.inputIfcFileName = inputIfcFileName;
+        this.finalResultFile = inputIfcFileName+""+"_final_result.txt";
+        this.finalMatlabFile = inputIfcFileName+"_final_Matlab_file.m";
     }
 
     public void setIfcConvertExeName(String ifcConvertExeName) {
         this.ifcConvertExeName = ifcConvertExeName;
+        this.finalResultFile = inputIfcFileName+""+"_final_result.txt";
+        this.finalMatlabFile = inputIfcFileName+"_final_Matlab_file.m";
     }
 
     private ParseObjFile generateObjFileAndGetPaser(String inputIfcFileName, int type) {
         String ifcType = Cuboid.typeIfcString[type];
         File inputIfcFile = new File(inputIfcFileName);
-        String outputObjFileName = inputIfcFile.getName() + "_" + ifcType + ".obj";
+        String outputObjFileName = inputIfcFile.getAbsolutePath() + "_" + ifcType + ".obj";
         File outputObjFile = new File(outputObjFileName);
         if (outputObjFile.lastModified() < inputIfcFile.lastModified()) {
             System.out.println("Objfile " + outputObjFileName + " out-of-date, converting using " + ifcConvertExeName);
@@ -86,19 +90,20 @@ public class IfcExtrator {
         this.inputIfcFileName = ".\\YD_S_B04_1F.ifc";
         this.finalResultFile = inputIfcFileName+""+"_final_result.txt";
         this.finalMatlabFile = inputIfcFileName+"_final_Matlab_file.m";
+    }
+
+    public void extract() throws IOException {
         BufferedWriter brMatlab = new BufferedWriter(new FileWriter(finalMatlabFile));
         outMatlab = new PrintWriter (brMatlab);
         BufferedWriter brFinalResult = new BufferedWriter(new FileWriter(finalResultFile));
         outFinalResult = new PrintWriter (brFinalResult);
-    }
-
-    public void extract() throws IOException {
 
         ParseObjFile parseBeamObjFile = this.generateObjFileAndGetPaser(inputIfcFileName,Cuboid.BEAM);
         ParseObjFile parseColumnObjFile = this.generateObjFileAndGetPaser(inputIfcFileName,Cuboid.COLUMN);
         ParseObjFile parseSlabObjFile = this.generateObjFileAndGetPaser(inputIfcFileName,Cuboid.POLYSLAB);
 
         IntersectRectangle ir = new IntersectRectangle();
+        IntersectRecangleUsingGpcjClipCompletely irupcc = new IntersectRecangleUsingGpcjClipCompletely();
         ArrayList<Cuboid> listCuboidsBeam = parseBeamObjFile.getCuboid();
         ArrayList<Cuboid> listCuboidsColumn = parseColumnObjFile.getCuboid();
         ArrayList<Cuboid> listCuboidsSlab = parseSlabObjFile.getCuboid();
@@ -114,6 +119,7 @@ public class IfcExtrator {
             if(neededRecs!=null) {
                 for(Rectangle r : neededRecs) {
                     ir.addRectangleTogether(r);
+                    irupcc.addRectangleTogether(r);
                 }
             }
             //}
@@ -136,6 +142,7 @@ public class IfcExtrator {
             for(Rectangle r:recs) {
 
                 ir.addRectangleTogether(r);
+                irupcc.addRectangleTogether(r);
                 slabNeededRecCnt++;
             }
 
@@ -144,6 +151,16 @@ public class IfcExtrator {
 
 
         ArrayList<ArrayList<TreeSet<Rectangle>>> intersectResult = ir.getPartitionResult();
+        this.ployGpcjResultList = irupcc.doClip();
+
+        for(Polyhedron p:ps) {
+            PloyGpcjResult ployGpcjResult = new PloyGpcjResult();
+            ployGpcjResult.polyGpcj = Polygon.convertToGpcjPoly(p.getDownPolygon());
+            ployGpcjResult.idList.add(p.Id);
+            ployGpcjResult.direction=p.getDownPolygon().getDirection();
+            ployGpcjResult.intersectValue=p.getDownPolygon().getIntersectValue();
+            this.ployGpcjResultList.add(ployGpcjResult);
+        }
         int total_cnt=0;
         for(ArrayList<TreeSet<Rectangle>> recSetList:intersectResult) {
             for(TreeSet<Rectangle> recSet:recSetList) {
@@ -211,6 +228,8 @@ public class IfcExtrator {
                 ));
             }
         }
+        outFinalResult.flush();
+        outMatlab.flush();
         successMessage = "Created results at: "+finalMatlabFile+" and "+finalResultFile;
         System.out.println(successMessage);
 

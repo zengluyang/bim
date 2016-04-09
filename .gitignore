@@ -32,4 +32,4 @@ phpunit.phar
 ####
 *.class
 
-/PaserPoint/bin
+./ParsePoint/*.txt

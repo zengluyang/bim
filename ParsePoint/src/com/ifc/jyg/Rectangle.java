@@ -128,25 +128,47 @@ public class Rectangle extends Polygon implements Comparable<Object> {
 //		
 //		Poly finalPoly  = rltGpc.xor(poly2);
 //		System.out.println(finalPoly);
-		
-		CoordinateOfPoint tl = new CoordinateOfPoint(0,0,0);
-		CoordinateOfPoint dr = new CoordinateOfPoint(5,5,0);
-		Rectangle Bigger = new Rectangle(tl,dr);
-
-		CoordinateOfPoint tl1 = new CoordinateOfPoint(1,0,0);
-		CoordinateOfPoint dr1 = new CoordinateOfPoint(4,5,0);
-		Rectangle Smaller1 = new Rectangle(tl1,dr1);
-		
-		Poly bigGpc = Polygon.convertToGpcjPoly(Bigger);
-		Poly Smaller1gpc = Polygon.convertToGpcjPoly(Smaller1);
-		Poly rltGpc = bigGpc.xor(Smaller1gpc); 
-		System.out.println(rltGpc);
+//		
+//		CoordinateOfPoint tl = new CoordinateOfPoint(0,0,0);
+//		CoordinateOfPoint dr = new CoordinateOfPoint(50,50,0);
+//		Rectangle Bigger = new Rectangle(tl,dr);
+//
+// 
+//		CoordinateOfPoint tl1 = new CoordinateOfPoint(1,0,0);
+//		CoordinateOfPoint dr1 = new CoordinateOfPoint(4,5,0);
+// 
+//		CoordinateOfPoint tl1 = new CoordinateOfPoint(1,1,0);
+//		CoordinateOfPoint dr1 = new CoordinateOfPoint(5,5,0);
+// 
+//		Rectangle Smaller1 = new Rectangle(tl1,dr1);
+//		
+//		Poly bigGpc = Polygon.convertToGpcjPoly(Bigger);
+// 
+//		Poly Smaller1gpc = Polygon.convertToGpcjPoly(Smaller1);
+//		Poly rltGpc = bigGpc.xor(Smaller1gpc); 
+//		System.out.println(rltGpc);
+////		
+////		System.out.println(polyUnionGpc);
+////		
+////		ArrayList<Rectangle> smallRecs = new ArrayList<>();
+////		smallRecs.add(Smaller1);
+// 
+//		Poly rltGpc = bigGpc.xor(polyUnionGpc); 
+//		
+//		CoordinateOfPoint t2 = new CoordinateOfPoint(1,1,0);
+//		CoordinateOfPoint d2 = new CoordinateOfPoint(4,4,0);
+//		Rectangle Away2 = new Rectangle(t2,d2);
+//		
+//		Poly poly2 = Polygon.convertToGpcjPoly(Away2);
+//		
+//		Poly finalPoly  = bigGpc.xor(Smaller1gpc);
 //		
 //		System.out.println(polyUnionGpc);
 //		
 //		ArrayList<Rectangle> smallRecs = new ArrayList<>();
 //		smallRecs.add(Smaller1);
- 
+// 
+// 
 //		System.out.println("contrunctPolygonsUsingBigRectangleAndSmallRectangles(Bigger,Smaller1) " + contrunctPolygonsUsingBigRectangleAndSmallRectangles(Bigger,smallRecs));
 
 		
@@ -234,16 +256,14 @@ public class Rectangle extends Polygon implements Comparable<Object> {
 
 			Poly bigGpc = Polygon.convertToGpcjPoly(bigRec);
 			Poly rltGpc = bigGpc.xor(polyUnionGpc);
-			rlt.add(Polygon.convertFromGpcjPoly(rltGpc,bigRec.getIntersectValue(),bigRec.getDirection(),bigRec.Id));
+			rlt.addAll(Polygon.convertFromGpcjPoly(rltGpc,bigRec.getIntersectValue(),bigRec.getDirection(),bigRec.Id));
 		} else {
 			rlt.add(bigRec);
 		}
 		return rlt;
 	}
 	
-	public static void testcontrunctPolygonsUsingBigRectangleAndSmallRectangles1() {
-		
-	}
+	 
 
 	public static ArrayList<Polygon> contrunctPolygonsUsingBigRectangleAndSmallRectangles2(Rectangle bigRec, ArrayList<Rectangle> smallRecs) {
 		ArrayList<Polygon> rlt = new ArrayList<Polygon>();
