@@ -16,16 +16,16 @@ public class Decomposition {
 	private double smallTotalWidth;
 //	private double smallRemainingWidth;
 	
-	private ArrayList<Edge> biggerRectangleEdgeList = new ArrayList<Edge>();
-	private ArrayList<Edge> smallerRectangleEdgeList = new ArrayList<Edge>();
-	private ArrayList<Edge> newPolygonEdges = new ArrayList<Edge>();
+//	private ArrayList<Edge> biggerRectangleEdgeList = new ArrayList<Edge>();
+//	private ArrayList<Edge> smallerRectangleEdgeList = new ArrayList<Edge>();
+//	private ArrayList<Edge> newPolygonEdges = new ArrayList<Edge>();
 	private ArrayList<CoordinateOfPoint> newPolygonPoints = new ArrayList<CoordinateOfPoint>();
 	
 	public Decomposition(Rectangle bigger, Rectangle smaller) {
 		this.bigger = bigger;
 		this.smaller = smaller;
-		this.biggerRectangleEdgeList = bigger.getEdges();
-		this.smallerRectangleEdgeList = smaller.getEdges();
+//		this.biggerRectangleEdgeList = bigger.getEdges();
+//		this.smallerRectangleEdgeList = smaller.getEdges();
 	}
 	 
 	private boolean compareLength() {
@@ -43,16 +43,16 @@ public class Decomposition {
 		} 
 	}
 	
-	private boolean compareBigWidthToSmallLength() {
-		bigTotalLength = biggerRectangleEdgeList.get(0).getLength();
-		bigTotalWidth = biggerRectangleEdgeList.get(1).getLength();
-		smallTotalLength = smallerRectangleEdgeList.get(0).getLength();
-		smallTotalWidth = smallerRectangleEdgeList.get(1).getLength();
-		if (smallTotalLength > bigTotalWidth) {
-			return true;
-		}
-		return false;
-	}
+//	private boolean compareBigWidthToSmallLength() {
+//		bigTotalLength = biggerRectangleEdgeList.get(0).getLength();
+//		bigTotalWidth = biggerRectangleEdgeList.get(1).getLength();
+//		smallTotalLength = smallerRectangleEdgeList.get(0).getLength();
+//		smallTotalWidth = smallerRectangleEdgeList.get(1).getLength();
+//		if (smallTotalLength > bigTotalWidth) {
+//			return true;
+//		}
+//		return false;
+//	}
 	
 	public ArrayList<CoordinateOfPoint> getNewPolygonPoints(int smallerNumbe) {
 		int rowPlacedNumber = 0;

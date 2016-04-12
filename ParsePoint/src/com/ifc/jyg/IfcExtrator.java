@@ -210,10 +210,10 @@ public class IfcExtrator {
 
         for(Rectangle r:recRlt) {
             outFinalResult.println(String.format("REC %s",r.Id));
-            outFinalResult.println(String.format("V %f %f %f",r.topLeft.getX(),r.topLeft.getX(),r.topLeft.getZ()));
-            outFinalResult.println(String.format("V %f %f %f",r.topRight.getX(),r.topRight.getX(),r.topRight.getZ()));
-            outFinalResult.println(String.format("V %f %f %f",r.downRight.getX(),r.downRight.getX(),r.downRight.getZ()));
-            outFinalResult.println(String.format("V %f %f %f",r.downLeft.getX(),r.downLeft.getX(),r.downLeft.getZ()));
+            outFinalResult.println(String.format("V %f %f %f",r.topLeft.getX(),r.topLeft.getY(),r.topLeft.getZ()));
+            outFinalResult.println(String.format("V %f %f %f",r.topRight.getX(),r.topRight.getY(),r.topRight.getZ()));
+            outFinalResult.println(String.format("V %f %f %f",r.downRight.getX(),r.downRight.getY(),r.downRight.getZ()));
+            outFinalResult.println(String.format("V %f %f %f",r.downLeft.getX(),r.downLeft.getY(),r.downLeft.getZ()));
         }
         for(Polygon p:polyRlt) {
             outFinalResult.println(String.format("POL %s",p.Id));

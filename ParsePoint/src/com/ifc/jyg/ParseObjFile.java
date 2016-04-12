@@ -173,6 +173,7 @@ public class ParseObjFile {
 				} 
 			}
 		}
+ 		
 		ArrayList<Edge> listNewEdges = new ArrayList<Edge>(); 
 
 		if(dmeMap.size()!=2) {
