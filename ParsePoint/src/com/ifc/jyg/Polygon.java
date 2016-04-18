@@ -5,6 +5,7 @@ import com.seisw.util.geom.PolyDefault;
 import com.seisw.util.geom.PolySimple;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by ZLY on 2016/3/24.
@@ -519,6 +520,55 @@ public class Polygon implements Comparable<Object>{
             } else if(p instanceof PolyDefault) {
                 PolyDefault pdi = (PolyDefault)p;
                 ArrayList<Polygon> rltl = Polygon.convertFromGpcjPolyRecursively(pdi,intersectValue,type,id);
+                rlt.addAll(rltl);
+            }
+        }
+        return rlt;
+    }
+
+
+    //rlt[0] width
+    //rlt[1] height
+    public static double[] getBoundsFromtFromGpcjPolyDefault(PolyDefault pd) {
+        double[]rlt = new double[2];        ArrayList<CoordinateOfPoint> points=Polygon.getAllPointsFromGpcjPolyDefault(pd);
+        double maxX = Double.NEGATIVE_INFINITY;
+        double maxY = Double.NEGATIVE_INFINITY;
+        double minX = Double.POSITIVE_INFINITY;
+        double minY = Double.POSITIVE_INFINITY;
+        for(CoordinateOfPoint p:points) {
+            double x = p.getX();
+            double y = p.getY();
+            if(x>maxX) {
+                maxX=x;
+            }
+            if(y>maxY) {
+                maxY=y;
+            }
+            if(x<minX) {
+                minX=x;
+            }
+            if(y<minY) {
+                minY=y;
+            }
+        }
+        rlt[0] = maxX-minX;
+        rlt[1] = maxY-maxY;
+        return rlt;
+    }
+
+
+
+    public static ArrayList<CoordinateOfPoint> getAllPointsFromGpcjPolyDefault(PolyDefault pd) {
+        ArrayList<CoordinateOfPoint>  rlt = new ArrayList<CoordinateOfPoint>();
+        for(int i=0;i<pd.getNumInnerPoly();i++) {
+            Poly p = pd.getInnerPoly(i);
+            if(p instanceof PolySimple) {
+                PolySimple ps = (PolySimple) p;
+                Polygon pp = Polygon.convertFromGpcjPolySimple(ps,0.0,Polygon.UP_DOWN,"temp");
+                rlt.addAll(pp.getPointList());
+            } else if(p instanceof PolyDefault) {
+                PolyDefault pdi = (PolyDefault)p;
+                ArrayList<CoordinateOfPoint> rltl = Polygon.getAllPointsFromGpcjPolyDefault(pdi);
                 rlt.addAll(rltl);
             }
         }

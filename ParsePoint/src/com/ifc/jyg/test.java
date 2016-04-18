@@ -12,6 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class test {
 
 	public static void main(String[] args) throws IOException {
@@ -118,12 +121,64 @@ public class test {
 		frame.setContentPane(plot);
 		frame.setVisible(true);
 
-		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		Rectangle2D bounds = pd.getBounds();
-		double bh = bounds.getHeight();
-		double bw = bounds.getWidth();
 		int width = 500;
 		int height = 500;
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		double bw;
+		double bh;
+		try {
+			Rectangle2D bounds = pd.getBounds();
+			bw = bounds.getWidth();
+			bh = bounds.getHeight();
+
+		} catch (UnsupportedOperationException e) {
+			//e.printStackTrace();
+			double[] widthHeight = Polygon.getBoundsFromtFromGpcjPolyDefault(pd);
+			bw = widthHeight[0];
+			bh = widthHeight[1];
+		}
+
+		double scalew = d.width/bw;
+		double scaleh = d.height/bh;
+		double scale;
+		if(scalew>1&&scalew>1) {
+			scale=min(scalew,scaleh);
+		} else if(scalew<1&&scalew<1) {
+			scale=max(scalew,scaleh);
+		} else {
+			scale = 1.0;
+		}
+
+//		if(bh>bw) {
+//			scale = d.height/bh;
+//		} else {
+//			scale = d.width/bw;
+//		}
+
+		if(scale>1) {
+			scale*=0.8;
+			height= (int) (bh*scale);
+			width= (int) (bw*scale);
+		} else {
+			scale*=0.8;
+			height= (int) (bh/scale);
+			width= (int) (bw/scale);
+		}
+
+
+		if(height<10 || width<10) {
+			System.out.println("warning:plot too small,height<10 || width<10!");
+			if(height<10) {
+				height=100;
+			} else if(width<10) {
+				width=100;
+			}
+			if(height==0) {
+				height=50;
+			} else if(width==0){
+				width=50;
+			}
+		}
 
 
 		frame.setBounds((d.width - width) / 2, (d.height - height) / 2, width, height);
