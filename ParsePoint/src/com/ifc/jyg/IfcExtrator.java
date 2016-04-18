@@ -255,11 +255,11 @@ public class IfcExtrator {
             String ids = pgr.getIds();
             ArrayList<Polygon>  pps = Polygon.convertFromGpcjPolyRecursively(pd,pgr.intersectValue,pgr.direction,ids);
             if(pps.size()>1) {
-                System.out.println("pps.size() "+pps.size());
+                //System.out.println("pps.size() "+pps.size());
             }
             for(Polygon p:pps) {
 
-                outFinalResult2.println(String.format("POL %s",p.Id));
+                outFinalResult2.println(String.format("POL %s %d %f",p.Id,p.getDirection(),p.getIntersectValue()));
                 for(CoordinateOfPoint cop:p.getPointList()) {
                     if(cop!=null)
                         outFinalResult2.println(String.format("V %f %f %f",cop.getX(),cop.getY(),cop.getZ()));
