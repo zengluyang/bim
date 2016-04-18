@@ -506,6 +506,27 @@ public class Polygon implements Comparable<Object>{
         return sb.toString();
     }
 
+
+
+    public static ArrayList<Polygon> convertFromGpcjPolyRecursively(PolyDefault pd, double intersectValue, int type, String id) {
+        ArrayList<Polygon>  rlt = new ArrayList<Polygon>();
+        for(int i=0;i<pd.getNumInnerPoly();i++) {
+            Poly p = pd.getInnerPoly(i);
+            if(p instanceof PolySimple) {
+                PolySimple ps = (PolySimple) p;
+                Polygon pp = Polygon.convertFromGpcjPolySimple(ps,intersectValue,type,id);
+                rlt.add(pp);
+            } else if(p instanceof PolyDefault) {
+                PolyDefault pdi = (PolyDefault)p;
+                ArrayList<Polygon> rltl = Polygon.convertFromGpcjPolyRecursively(pdi,intersectValue,type,id);
+                rlt.addAll(rltl);
+            }
+        }
+        return rlt;
+    }
+
+
+
     public static ArrayList<Polygon> convertFromGpcjPoly(Poly poly, double intersectValue, int type, String id) {
         ArrayList<Polygon>  rlt = new ArrayList<Polygon>();
         if(poly instanceof PolySimple) {

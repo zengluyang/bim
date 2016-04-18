@@ -87,6 +87,7 @@ public class test {
 							}
 							ifcExtrator.extract();
 							ifcExtrator.printResultToFile();
+							ifcExtrator.printResultToFile2();
 							frame1.getLabel().setText("Extrated "+ ifcExtrator.ployGpcjResultList.size()+" results.");
 							for(Polygon p:ifcExtrator.getPolyRlt()) {
 								//frame1.getBox().addItem(p.Id+" "+Polygon.directionString[p.getDirection()]);
