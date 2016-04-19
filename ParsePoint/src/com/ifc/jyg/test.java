@@ -5,6 +5,7 @@ import com.seisw.util.geom.PolyDefault;
 import com.seisw.util.geom.PolySimple;
 import com.seisw.util.geom.Rectangle2D;
 import org.math.plot.Plot2DPanel;
+import org.math.plot.canvas.Plot2DCanvas;
 
 import javax.swing.*;
 import java.awt.*;
@@ -185,6 +186,10 @@ public class test {
 		frame.setSize(width,height);
 		plot.setBounds((d.width - width) / 2, (d.height - height) / 2, width, height);
 		plot.setSize(width,height);
+		double [][] XY = {{0,bw},{0,bw}};
+		Plot2DCanvas plot2DCanvas = (Plot2DCanvas) plot.plotCanvas;
+		plot2DCanvas.addPlot(new TextPlot("",Color.blue,XY,"test",bw/2,bh/2));
+
 		return plot;
 	}
 
