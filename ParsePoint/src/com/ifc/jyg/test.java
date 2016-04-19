@@ -188,7 +188,7 @@ public class test {
 		plot.setSize(width,height);
 		double [][] XY = {{0,bw},{0,bw}};
 		Plot2DCanvas plot2DCanvas = (Plot2DCanvas) plot.plotCanvas;
-		plot2DCanvas.addPlot(new TextPlot("",Color.blue,XY,"test",bw/2,bh/2));
+		//plot2DCanvas.addPlot(new TextPlot("",Color.blue,XY,"test",bw/2,bh/2));
 
 		return plot;
 	}
