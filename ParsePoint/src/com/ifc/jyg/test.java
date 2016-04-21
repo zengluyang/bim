@@ -102,7 +102,7 @@ public class test {
 								//frame1.getBox().addItem(p.Id+" "+Polygon.directionString[p.getDirection()]);
 							}
 							for(PloyGpcjResult polyGpcjRlt:ifcExtrator.ployGpcjResultList) {
-								frame1.getBox().addItem(polyGpcjRlt.getIds()+" "+Polygon.directionString[polyGpcjRlt.direction]);
+								frame1.getBox().addItem(polyGpcjRlt.getIds()+" "+" "+polyGpcjRlt.direction+" "+polyGpcjRlt.intersectValue);
 							}
 							// create your PlotPanel (you can use it as a JPanel)
 						} catch (Exception e) {
