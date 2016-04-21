@@ -67,6 +67,7 @@ class NewFrame extends JFrame{
         this.add(this.getButton(),2);//添加按钮
         this.add(this.getLabel(),3);//添加标签
         this.add(this.getBox(),4);//添加下拉列表框
+        this.add(this.getTextField(),5);
 
 
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();

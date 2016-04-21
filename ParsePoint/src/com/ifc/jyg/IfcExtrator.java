@@ -22,6 +22,7 @@ public class IfcExtrator {
     private PrintWriter outFinalResult2;
     public String successMessage;
     public ArrayList<PloyGpcjResult> ployGpcjResultList;
+    public HashMap<String,PloyGpcjResult> ployGpcjResultHashMap = new HashMap<String,PloyGpcjResult>();
     public Map<Integer, Map<String, ArrayList<CoordinateOfPoint>>> rectangleIDAndPointsMap;
     public String getIfcConvertExeName() {
         return ifcConvertExeName;
@@ -160,6 +161,9 @@ public class IfcExtrator {
 
         ArrayList<ArrayList<TreeSet<Rectangle>>> intersectResult = ir.getPartitionResult();
         this.ployGpcjResultList = irupcc.doClip();
+        for(PloyGpcjResult rlt:ployGpcjResultList) {
+            this.ployGpcjResultHashMap.put(rlt.getIds()+" "+rlt.direction+" "+rlt.intersectValue,rlt);
+        }
 
         for(Polyhedron p:ps) {
             PloyGpcjResult ployGpcjResult = new PloyGpcjResult();
@@ -168,6 +172,7 @@ public class IfcExtrator {
             ployGpcjResult.direction=p.getDownPolygon().getDirection();
             ployGpcjResult.intersectValue=p.getDownPolygon().getIntersectValue();
             this.ployGpcjResultList.add(ployGpcjResult);
+            this.ployGpcjResultHashMap.put(ployGpcjResult.getIds()+" "+ployGpcjResult.direction+" "+ployGpcjResult.intersectValue,ployGpcjResult);
         }
         int total_cnt=0;
         for(ArrayList<TreeSet<Rectangle>> recSetList:intersectResult) {

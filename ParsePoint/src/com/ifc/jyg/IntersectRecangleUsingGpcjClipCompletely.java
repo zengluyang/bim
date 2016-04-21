@@ -103,15 +103,22 @@ public class IntersectRecangleUsingGpcjClipCompletely {
                     for(ArrayList<Rectangle>recSet :localRecSetList) {
 
                         for(Rectangle rr:recSet) {
-                            if(
-                                    rr.compareByConataination(r)==1
-                                            || rr.compareByConataination(r)== 2
-                                            || rr.compareByConataination(r)==-1
-                                    ) {
+                            PolyDefault pdrr = Polygon.convertToGpcjPoly(rr);
+                            PolyDefault pdr = Polygon.convertToGpcjPoly(r);
+                            Poly pri = pdrr.intersection(pdr);
+                            if(pri.getNumInnerPoly()!=0) {
                                 recSet.add(r);
                                 isInserted = true;
                                 break;
+
                             }
+//                            if(
+//                                    rr.compareByConataination(r)==1
+//                                            || rr.compareByConataination(r)== 2
+//                                            || rr.compareByConataination(r)==-1
+//                                            || rr.compareByConataination(r)==2
+//                                    ) {
+//                            }
                         }
                         if(isInserted) {
                             break;

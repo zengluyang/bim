@@ -53,7 +53,12 @@ public class test {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int i = frame1.getBox().getSelectedIndex();
-				PloyGpcjResult ployGpcjResult = ifcExtrator.ployGpcjResultList.get(i);
+				PloyGpcjResult ployGpcjResult;
+				if(frame1.getTextField().getText().equals("")) {
+					ployGpcjResult = ifcExtrator.ployGpcjResultList.get(i);
+				} else {
+					ployGpcjResult = ifcExtrator.ployGpcjResultHashMap.get(frame1.getTextField().getText());
+				}
 				PolyDefault pd =  (PolyDefault)ployGpcjResult.polyGpcj;
 				double intersectValue = ployGpcjResult.intersectValue;
 				int direction  =ployGpcjResult.direction;
