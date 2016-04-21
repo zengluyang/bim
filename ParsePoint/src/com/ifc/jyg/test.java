@@ -1,5 +1,6 @@
 package com.ifc.jyg;
 
+import com.bim.jyg.RectangleDecompositor;
 import com.seisw.util.geom.Poly;
 import com.seisw.util.geom.PolyDefault;
 import com.seisw.util.geom.PolySimple;
@@ -12,6 +13,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -38,14 +42,13 @@ public class test {
 		frame1.setVisible(true);
 		JButton button = frame1.getButton();
 		final IfcExtrator ifcExtrator = new IfcExtrator();
-
-
 		JButton button3 = new JButton("draw");
 		button3.setBounds(103,110,71,27);
 		button3.setText("draw");
 		button3.setToolTipText("draw");
 		frame1.add(button3);
-
+		final RectangleDecompositor[] rectangleDecompositor = new RectangleDecompositor[1];
+		double standardLength = 0.6;
 		button3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -55,9 +58,9 @@ public class test {
 				double intersectValue = ployGpcjResult.intersectValue;
 				int direction  =ployGpcjResult.direction;
 				String ids =  ployGpcjResult.getIds();
+				Map<Integer,ArrayList<CoordinateOfPoint>> idRecPoinListMap = rectangleDecompositor[0].getStandardRectangleIDAndPointsMapPolyIdMap().get(ids+" "+ployGpcjResult.direction+" "+ployGpcjResult.intersectValue);
 
-
-				Plot2DPanel plot2DPanel = ployPolyDeafult(pd, intersectValue, direction, ids);
+				Plot2DPanel plot2DPanel = ployPolyDeafult(pd, intersectValue, direction, ids+" "+ployGpcjResult.direction+" "+ployGpcjResult.intersectValue,idRecPoinListMap,standardLength);
 //				File png = new File("png\\"+ids.replace(':',' ').trim()+".png");
 //				try {
 //					plot2DPanel;
@@ -92,6 +95,8 @@ public class test {
 							ifcExtrator.extract();
 							ifcExtrator.printResultToFile();
 							ifcExtrator.printResultToFile2();
+							rectangleDecompositor[0] = new RectangleDecompositor(ifcExtrator.rectangleIDAndPointsMap,"output.txt",standardLength);
+							rectangleDecompositor[0].doDecompose();
 							frame1.getLabel().setText("Extrated "+ ifcExtrator.ployGpcjResultList.size()+" results.");
 							for(Polygon p:ifcExtrator.getPolyRlt()) {
 								//frame1.getBox().addItem(p.Id+" "+Polygon.directionString[p.getDirection()]);
@@ -114,9 +119,8 @@ public class test {
 
 	}
 
-	private static Plot2DPanel ployPolyDeafult(PolyDefault pd, double intersectValue, int type, String id) {
+	private static Plot2DPanel ployPolyDeafult(PolyDefault pd, double intersectValue, int type, String id,Map<Integer,ArrayList<CoordinateOfPoint>> idRecPoinListMap,double standardLength) {
 		Plot2DPanel plot = new Plot2DPanel();
-
 		addLineFromPloyDeafult(plot,pd,intersectValue,type,id);
 		JFrame frame = new JFrame(id+" "+Polygon.directionString[type]);
 		frame.setContentPane(plot);
@@ -186,9 +190,24 @@ public class test {
 		frame.setSize(width,height);
 		plot.setBounds((d.width - width) / 2, (d.height - height) / 2, width, height);
 		plot.setSize(width,height);
-		double [][] XY = {{0,bw},{0,bw}};
 		Plot2DCanvas plot2DCanvas = (Plot2DCanvas) plot.plotCanvas;
-		//plot2DCanvas.addPlot(new TextPlot("",Color.blue,XY,"test",bw/2,bh/2));
+		for (Integer i: idRecPoinListMap.keySet()
+			 ) {
+			ArrayList<CoordinateOfPoint> points = idRecPoinListMap.get(i);
+			Rectangle rec = new Rectangle(points,id);
+			PolyDefault polyDefault = converToGpcjPoly(rec);
+			addLineFromPloyDeafult(plot,polyDefault,intersectValue,type,id);
+
+			double [][] XY = {
+					{rec.downLeft.getX2d(rec.getDirection()),rec.downLeft.getY2d(rec.getDirection())},
+					{rec.topRight.getX2d(rec.getDirection()),rec.topRight.getY2d(rec.getDirection())}
+			};
+			double x = (rec.downLeft.getX2d(rec.getDirection())+rec.topRight.getX2d(rec.getDirection()))/2.0;
+			double y = (rec.downLeft.getY2d(rec.getDirection())+rec.topRight.getY2d(rec.getDirection()))/2.0;
+			String wh = (int)(standardLength*500)+"*"+(int)(standardLength*1000);
+			plot2DCanvas.addPlot(new TextPlot("",Color.blue,XY,wh,x,y));
+
+		}
 
 		return plot;
 	}

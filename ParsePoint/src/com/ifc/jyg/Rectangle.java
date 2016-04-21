@@ -876,4 +876,173 @@ public class Rectangle extends Polygon implements Comparable<Object> {
 		System.out.println("testGetEdges "+edges);
 
 	}
+
+	private void assignPoints(ArrayList<CoordinateOfPoint> points) {
+		if (points.size() != 4) {
+			System.out.println("error!! rectangle:" + Id + " don't have right point!");
+			return;
+		}
+		CoordinateOfPoint a = points.get(0);
+		CoordinateOfPoint b = points.get(1);
+		CoordinateOfPoint c = points.get(2);
+		CoordinateOfPoint d = points.get(3);
+		if (a.getX() == b.getX() && b.getX() == c.getX() && c.getX() == d.getX() && d.getX() == a.getX()) {
+			this.direction = FRONT_BOOTOM;
+		} else if (a.getY() == b.getY() && b.getY() == c.getY() && c.getY() == d.getY() && d.getY() == a.getY()) {
+			this.direction = LEFT_RIGHT;
+		} else if (a.getZ() == b.getZ() && b.getZ() == c.getZ() && c.getZ() == d.getZ() && d.getZ() == a.getZ()) {
+			this.direction = UP_DOWN;
+		} else {
+			System.out.println("rectangle ArrayList<CoordinateOfPoint> points error!");
+		}
+
+		switch (this.direction) {
+			case FRONT_BOOTOM:
+			{
+				double ymax = 0.0;
+				double zmax = 0.0;
+				double ymin = 0.0;
+				double zmin = 0.0;
+				for (int i = 0; i < points.size(); i++) {
+					if (i == 0) {
+						ymax = points.get(0).getY();
+						zmax = points.get(0).getZ();
+
+						ymin = points.get(0).getY();
+						zmin = points.get(0).getZ();
+					}
+
+					if (points.get(i).getY() >= ymax && points.get(i).getZ() >= zmax) {
+						ymax = points.get(i).getY();
+						zmax = points.get(i).getZ();
+						this.topRight = points.get(i);
+					}
+
+					if (points.get(i).getY() <= ymin && points.get(i).getZ() <= zmin) {
+						ymin = points.get(i).getY();
+						zmin = points.get(i).getZ();
+						this.downLeft = points.get(i);
+					}
+				}
+//				System.out.println("this.topLeft:" + this.topLeft);
+//				System.out.println("this.downRight:" + this.downRight);
+				for (CoordinateOfPoint point : points) {
+					if (point.getY() == this.topRight.getY() && point.getZ() == this.downLeft.getZ()) {
+						this.downRight = point;
+					}
+
+					if (point.getY() == this.downLeft.getY() && point.getZ() == this.topRight.getZ()) {
+						this.topLeft = point;
+					}
+				}
+				break;
+			}
+			case LEFT_RIGHT:
+			{
+				double xmax = 0.0;
+				double zmax = 0.0;
+				double xmin = 0.0;
+				double zmin = 0.0;
+				for (int i = 0; i < points.size(); i++) {
+					if (i == 0) {
+						xmax = points.get(0).getX();
+						zmax = points.get(0).getZ();
+						xmin = points.get(0).getX();
+						zmin = points.get(0).getZ();
+					}
+
+					if (points.get(i).getX() >= xmax && points.get(i).getZ() >= zmax) {
+						xmax = points.get(i).getX();
+						zmax = points.get(i).getZ();
+						this.topLeft = points.get(i);
+					}
+
+					if (points.get(i).getX() <= xmin && points.get(i).getZ() <= zmin) {
+						xmin = points.get(i).getX();
+						zmin = points.get(i).getZ();
+						this.downRight = points.get(i);
+					}
+				}
+//				System.out.println("this.topLeft:" + this.topLeft);
+//				System.out.println("this.downRight:" + this.downRight);
+				for (CoordinateOfPoint point : points) {
+					if (point.getX() == this.topLeft.getX() && point.getZ() == this.downRight.getZ()) {
+						this.downLeft = point;
+					}
+
+					if (point.getX() == this.downRight.getX() && point.getZ() == this.topLeft.getZ()) {
+						this.topRight = point;
+					}
+				}
+				break;
+			}
+			case UP_DOWN:
+			{
+				double xmax = 0.0;
+				double ymax = 0.0;
+				double xmin = 0.0;
+				double ymin = 0.0;
+				for (int i = 0; i < points.size(); i++) {
+					if (i == 0) {
+						xmax = points.get(0).getX();
+						ymax = points.get(0).getY();
+						xmin = points.get(0).getX();
+						ymin = points.get(0).getY();
+					}
+
+					if (points.get(i).getX() <= xmin && points.get(i).getY() <= ymin) {
+						xmin = points.get(i).getX();
+						ymin = points.get(i).getY();
+						this.topLeft = points.get(i);
+					}
+
+					if (points.get(i).getX() >= xmax && points.get(i).getY() >= ymax) {
+						xmax = points.get(i).getX();
+						ymax = points.get(i).getY();
+						this.downRight = points.get(i);
+					}
+				}
+
+				for (CoordinateOfPoint point : points) {
+//					System.out.println("...." + point.toString());
+					if (point.getX() == this.downRight.getX() && point.getY() == this.topLeft.getY()) {
+						this.downLeft = point;
+					}
+
+					if (point.getX() == this.topLeft.getX() && point.getY() == this.downRight.getY()) {
+						this.topRight = point;
+					}
+				}
+				break;
+			}
+			default:
+				break;
+		}
+//		System.out.println("!!!!!!!!");
+//		System.out.println("this.topLeft:" + this.topLeft);
+//		System.out.println("this.topRight:" + this.topRight);
+//		System.out.println("this.downRight:" + this.downRight);
+//		System.out.println("this.downLeft:" + this.downLeft);
+		ArrayList<Edge> listEdges = new ArrayList<Edge>();
+		listEdges.add(new Edge(this.topLeft, 	this.topRight,	this.Id));
+		listEdges.add(new Edge(this.topRight, 	this.downRight,	this.Id));
+		listEdges.add(new Edge(this.downRight, 	this.downLeft,	this.Id));
+		listEdges.add(new Edge(this.downLeft, 	this.topLeft,	this.Id));
+		this.edgeList = listEdges;
+
+		ArrayList<CoordinateOfPoint> listPoints = new ArrayList<CoordinateOfPoint>();
+		listPoints.add(this.topLeft);
+		listPoints.add(this.topRight);
+		listPoints.add(this.downRight);
+		listPoints.add(this.downLeft);
+		this.pointList = listPoints;
+	}
+
+
+
+	public Rectangle(ArrayList<CoordinateOfPoint> points, String ID) {
+		this.Id = ID;
+		this.assignPoints(points);
+	}
+
 }

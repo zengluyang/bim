@@ -99,9 +99,9 @@ public class CoordinateOfPoint implements Comparable<Object>{
 	}
 
 	@Override
-	public String toString() { 
+	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Point (").append(x).append(",").append(y).append(",").append(z).append(") "); 
+		sb.append("E ").append(x).append(" ").append(y).append(" ").append(z);
 		return sb.toString();
 	}
 

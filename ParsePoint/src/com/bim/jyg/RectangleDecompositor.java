@@ -1,5 +1,7 @@
 package com.bim.jyg;
 
+import com.ifc.jyg.CoordinateOfPoint;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,6 +20,7 @@ public class RectangleDecompositor {
     private Map<Integer, Integer> totalNumberMap = new TreeMap<Integer, Integer>();
     private ParseRectangleResult rectangleResult;
     private double standardLength;
+    private Map<Integer, Map<String, ArrayList<CoordinateOfPoint>>> rectangleIDAndPointsMap;
     private HashMap<String,ArrayList<CoordinateOfPoint>> newPolygonPointListMap = new HashMap<String,ArrayList<CoordinateOfPoint>>();
     private HashMap<String,Map<Integer,ArrayList<CoordinateOfPoint>>>  standardRectangleIDAndPointsMapPolyIdMap = new HashMap<String,Map<Integer,ArrayList<CoordinateOfPoint>>>();
 
@@ -26,10 +29,17 @@ public class RectangleDecompositor {
         bw = new BufferedWriter(new FileWriter(outputFileName));
         out = new PrintWriter(bw);
         standardLength=length;
+        rectangleIDAndPointsMap = rectangleResult.getRectangleIDAndPoints();
+    }
+
+    public RectangleDecompositor(Map<Integer, Map<String, ArrayList<CoordinateOfPoint>>> rectangleIDAndPointsMap, String outputFileName, double length) throws IOException {
+        this.rectangleIDAndPointsMap = rectangleIDAndPointsMap;
+        bw = new BufferedWriter(new FileWriter(outputFileName));
+        out = new PrintWriter(bw);
+        standardLength=length;
     }
 
     public void doDecompose () {
-        Map<Integer, Map<String, ArrayList<CoordinateOfPoint>>> rectangleIDAndPointsMap = rectangleResult.getRectangleIDAndPoints();
         for (Integer rectangleNumber : rectangleIDAndPointsMap.keySet()) {
 //				System.out.println(rectangleNumber);
             Map<String, ArrayList<CoordinateOfPoint>> IDAndPointsMap = rectangleIDAndPointsMap.get(rectangleNumber);
