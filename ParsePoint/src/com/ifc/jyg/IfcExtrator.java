@@ -258,8 +258,9 @@ public class IfcExtrator {
                 //System.out.println("pps.size() "+pps.size());
             }
             for(Polygon p:pps) {
-
-                outFinalResult2.println(String.format("POL %s %d %f",p.Id,p.getDirection(),p.getIntersectValue()));
+                String POL = "POL";
+                String REC = "REC";
+                outFinalResult2.println(String.format("%s %s %d %f",p.getPointList().size()==4?REC:POL,p.Id,p.getDirection(),p.getIntersectValue()));
                 for(CoordinateOfPoint cop:p.getPointList()) {
                     if(cop!=null)
                         outFinalResult2.println(String.format("V %f %f %f",cop.getX(),cop.getY(),cop.getZ()));
