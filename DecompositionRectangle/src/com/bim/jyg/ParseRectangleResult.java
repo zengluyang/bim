@@ -33,7 +33,7 @@ public class ParseRectangleResult {
 				if (line.startsWith("REC")) { 
 					rectangleNumber++;
 //					System.out.println("rectangleNumber:"+ rectangleNumber);
-					ID = line; 	
+					ID = line.split(" ")[1];
 					Rec = true;
 				} else if (line.startsWith("V ") && Rec == true) {
 					String[] coordinate = line.split(" ");
