@@ -75,7 +75,7 @@ class NewFrame extends JFrame{
         int height = 500;
         this.setBounds((d.width - width) / 2, (d.height - height) / 2, width, height);
 
-        this.setSize(1000,200);
+        this.setSize(1000,230);
 
     }
 
